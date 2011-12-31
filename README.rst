@@ -5,7 +5,7 @@ This is a Sphinx web support demo repository.
 
 This can
 
-- Full-Text Search with N-gram
+- n-gram full-text search by using whoosh
 
 Can not
 
@@ -19,10 +19,10 @@ To local environment
 ::
 
   % git clone 
-	% cd 
+  % cd 
   % virtualenv --no-site-packages .
-	% bin/activate
-	% pip install -r requirements.txt
+  % bin/activate
+  % pip install -r requirements.txt
 
 
 To Heroku
@@ -31,8 +31,7 @@ To Heroku
 ::
 
   % (activate heroku)
-	% git push heroku master
-
+  % git push heroku master
 
 
 
