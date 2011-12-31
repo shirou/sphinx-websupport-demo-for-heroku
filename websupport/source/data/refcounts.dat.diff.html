@@ -1,0 +1,289 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>data/refcounts.dat</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -46,24 +46,63 @@</span>
+ 
+ PyBuffer_FromMemory:PyObject*::+1:
+ PyBuffer_FromMemory:void*:ptr::
+ PyBuffer_FromMemory:int:size::
+ 
+ PyBuffer_FromReadWriteMemory:PyObject*::+1:
+ PyBuffer_FromReadWriteMemory:void*:ptr::
+ PyBuffer_FromReadWriteMemory:int:size::
+ 
+ PyBuffer_New:PyObject*::+1:
+ PyBuffer_New:int:size::
+ 
+<span class="gi">+PyCapsule_GetContext:void *:::</span>
+<span class="gi">+PyCapsule_GetContext:PyObject*:self:0:</span>
+<span class="gi">+</span>
+<span class="gi">+PyCapsule_GetDestructor:void (*)(PyObject *):::</span>
+<span class="gi">+PyCapsule_GetDestructor:PyObject*:self:0:</span>
+<span class="gi">+</span>
+<span class="gi">+PyCapsule_GetName:const char *:::</span>
+<span class="gi">+PyCapsule_GetName:PyObject*:self:0:</span>
+<span class="gi">+</span>
+<span class="gi">+PyCapsule_GetPointer:void*:::</span>
+<span class="gi">+PyCapsule_GetPointer:PyObject*:self:0:</span>
+<span class="gi">+PyCapsule_GetPointer:const char *:name::</span>
+<span class="gi">+</span>
+<span class="gi">+PyCapsule_Import:void *:::</span>
+<span class="gi">+PyCapsule_Import:const char *:name::</span>
+<span class="gi">+PyCapsule_Import:int:no_block::</span>
+<span class="gi">+</span>
+<span class="gi">+PyCapsule_New:PyObject*::+1:</span>
+<span class="gi">+PyCapsule_New:void*:pointer::</span>
+<span class="gi">+PyCapsule_New:const char *:name::</span>
+<span class="gi">+PyCapsule_New::void (* destructor)(PyObject* )::</span>
+<span class="gi">+</span>
+<span class="gi">+PyCapsule_SetContext:int:::</span>
+<span class="gi">+PyCapsule_SetContext:PyObject*:self:0:</span>
+<span class="gi">+PyCapsule_SetContext:void *:context::</span>
+<span class="gi">+</span>
+<span class="gi">+PyCapsule_SetDestructor:int:::</span>
+<span class="gi">+PyCapsule_SetDestructor:PyObject*:self:0:</span>
+<span class="gi">+PyCapsule_SetDestructor:void (*)(PyObject *):destructor::</span>
+<span class="gi">+</span>
+<span class="gi">+PyCapsule_SetName:int:::</span>
+<span class="gi">+PyCapsule_SetName:PyObject*:self:0:</span>
+<span class="gi">+PyCapsule_SetName:const char *:name::</span>
+<span class="gi">+</span>
+<span class="gi">+PyCapsule_SetPointer:int:::</span>
+<span class="gi">+PyCapsule_SetPointer:PyObject*:self:0:</span>
+<span class="gi">+PyCapsule_SetPointer:void*:pointer::</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ PyCObject_AsVoidPtr:void*:::
+ PyCObject_AsVoidPtr:PyObject*:self:0:
+ 
+ PyCObject_FromVoidPtr:PyObject*::+1:
+ PyCObject_FromVoidPtr:void*:cobj::
+ PyCObject_FromVoidPtr::void (* destr)(void* )::
+ 
+ PyCObject_FromVoidPtrAndDesc:PyObject*::+1:
+ PyCObject_FromVoidPtrAndDesc:void*:cobj::
+ PyCObject_FromVoidPtrAndDesc:void*:desc::
+ PyCObject_FromVoidPtrAndDesc:void(*)(void*,void*):destr::
+ 
+<span class="gu">@@ -233,24 +272,30 @@</span>
+ PyErr_Fetch:PyObject**:pvalue:0:
+ PyErr_Fetch:PyObject**:ptraceback:0:
+ 
+ PyErr_GivenExceptionMatches:int:::
+ PyErr_GivenExceptionMatches:PyObject*:given:0:
+ PyErr_GivenExceptionMatches:PyObject*:exc:0:
+ 
+ PyErr_NewException:PyObject*::+1:
+ PyErr_NewException:char*:name::
+ PyErr_NewException:PyObject*:base:0:
+ PyErr_NewException:PyObject*:dict:0:
+ 
+<span class="gi">+PyErr_NewExceptionWithDoc:PyObject*::+1:</span>
+<span class="gi">+PyErr_NewExceptionWithDoc:char*:name::</span>
+<span class="gi">+PyErr_NewExceptionWithDoc:char*:doc::</span>
+<span class="gi">+PyErr_NewExceptionWithDoc:PyObject*:base:0:</span>
+<span class="gi">+PyErr_NewExceptionWithDoc:PyObject*:dict:0:</span>
+<span class="gi">+</span>
+ PyErr_NoMemory:PyObject*::null:
+ 
+ PyErr_NormalizeException:void:::
+ PyErr_NormalizeException:PyObject**:exc::???
+ PyErr_NormalizeException:PyObject**:val::???
+ PyErr_NormalizeException:PyObject**:tb::???
+ 
+ PyErr_Occurred:PyObject*::0:
+ 
+ PyErr_Print:void:::
+ 
+ PyErr_Restore:void:::
+<span class="gu">@@ -584,42 +629,51 @@</span>
+ PyList_Size:int:::
+ PyList_Size:PyObject*:list:0:
+ 
+ PyList_Sort:int:::
+ PyList_Sort:PyObject*:list:0:
+ 
+ PyLong_AsDouble:double:::
+ PyLong_AsDouble:PyObject*:pylong:0:
+ 
+ PyLong_AsLong:long:::
+ PyLong_AsLong:PyObject*:pylong:0:
+ 
+<span class="gi">+PyLong_AsSsize_t:ssize_t:::</span>
+<span class="gi">+PyLong_AsSsize_t:PyObject*:pylong:0:</span>
+<span class="gi">+</span>
+ PyLong_AsUnsignedLong:unsigned long:::
+ PyLong_AsUnsignedLong:PyObject*:pylong:0:
+ 
+ PyLong_Check:int:::
+ PyLong_Check:PyObject*:p:0:
+ 
+ PyLong_FromDouble:PyObject*::+1:
+ PyLong_FromDouble:double:v::
+ 
+ PyLong_FromLong:PyObject*::+1:
+ PyLong_FromLong:long:v::
+ 
+ PyLong_FromLongLong:PyObject*::+1:
+ PyLong_FromLongLong:long long:v::
+ 
+ PyLong_FromUnsignedLongLong:PyObject*::+1:
+ PyLong_FromUnsignedLongLong:unsigned long long:v::
+ 
+<span class="gi">+PyLong_FromSize_t:PyObject*::+1:</span>
+<span class="gi">+PyLong_FromSize_t:size_t:v::</span>
+<span class="gi">+</span>
+<span class="gi">+PyLong_FromSsize_t:PyObject*::+1:</span>
+<span class="gi">+PyLong_FromSsize_t:ssize_t:v::</span>
+<span class="gi">+</span>
+ PyLong_FromString:PyObject*::+1:
+ PyLong_FromString:char*:str::
+ PyLong_FromString:char**:pend::
+ PyLong_FromString:int:base::
+ 
+ PyLong_FromUnicode:PyObject*::+1:
+ PyLong_FromUnicode:Py_UNICODE:u::
+ PyLong_FromUnicode:int:length::
+ PyLong_FromUnicode:int:base::
+ 
+ PyLong_FromUnsignedLong:PyObject*::+1:
+ PyLong_FromUnsignedLong:unsignedlong:v::
+<span class="gu">@@ -844,27 +898,24 @@</span>
+ PyNumber_Subtract:PyObject*::+1:
+ PyNumber_Subtract:PyObject*:o1:0:
+ PyNumber_Subtract:PyObject*:o2:0:
+ 
+ PyNumber_TrueDivide:PyObject*::+1:
+ PyNumber_TrueDivide:PyObject*:v:0:
+ PyNumber_TrueDivide:PyObject*:w:0:
+ 
+ PyNumber_Xor:PyObject*::+1:
+ PyNumber_Xor:PyObject*:o1:0:
+ PyNumber_Xor:PyObject*:o2:0:
+ 
+<span class="gd">-PyOS_GetLastModificationTime:long:::</span>
+<span class="gd">-PyOS_GetLastModificationTime:char*:filename::</span>
+<span class="gd">-</span>
+ PyObject_AsFileDescriptor:int::: 
+ PyObject_AsFileDescriptor:PyObject*:o:0:
+ 
+ PyObject_Call:PyObject*::+1:
+ PyObject_Call:PyObject*:callable_object:0:
+ PyObject_Call:PyObject*:args:0:
+ PyObject_Call:PyObject*:kw:0:
+ 
+ PyObject_CallFunction:PyObject*::+1:
+ PyObject_CallFunction:PyObject*:callable_object:0:
+ PyObject_CallFunction:char*:format::
+ PyObject_CallFunction::...::
+<span class="gu">@@ -1422,24 +1473,39 @@</span>
+ 
+ PyUnicode_GetSize:int:::
+ PyUnicode_GetSize:PyObject :*unicode:0:
+ 
+ PyUnicode_FromObject:PyObject*::+1:
+ PyUnicode_FromObject:PyObject*:*obj:0:
+ 
+ PyUnicode_FromEncodedObject:PyObject*::+1:
+ PyUnicode_FromEncodedObject:PyObject*:*obj:0:
+ PyUnicode_FromEncodedObject:const char*:encoding::
+ PyUnicode_FromEncodedObject:const char*:errors::
+ 
+<span class="gi">+PyUnicode_FromFormat:PyObject*::+1:</span>
+<span class="gi">+PyUnicode_FromFormat:const char*:format::</span>
+<span class="gi">+PyUnicode_FromFormat::...::</span>
+<span class="gi">+</span>
+<span class="gi">+PyUnicode_FromFormatV:PyObject*::+1:</span>
+<span class="gi">+PyUnicode_FromFormatV:const char*:format::</span>
+<span class="gi">+PyUnicode_FromFormatV:va_list:vargs::</span>
+<span class="gi">+</span>
+<span class="gi">+PyUnicode_FromString:PyObject*::+1:</span>
+<span class="gi">+PyUnicode_FromString:const char*:u::</span>
+<span class="gi">+</span>
+<span class="gi">+PyUnicode_FromStringAndSize:PyObject*::+1:</span>
+<span class="gi">+PyUnicode_FromStringAndSize:const char*:u::</span>
+<span class="gi">+PyUnicode_FromStringAndSize:ssize_t:size::</span>
+<span class="gi">+</span>
+ PyUnicode_FromWideChar:PyObject*::+1:
+ PyUnicode_FromWideChar:const wchar_t*:w::
+ PyUnicode_FromWideChar:int:size::
+ 
+ PyUnicode_AsWideChar:int:::
+ PyUnicode_AsWideChar:PyObject*:*unicode:0:
+ PyUnicode_AsWideChar:wchar_t*:w::
+ PyUnicode_AsWideChar:int:size::
+ 
+ PyUnicode_Decode:PyObject*::+1:
+ PyUnicode_Decode:const char*:s::
+ PyUnicode_Decode:int:size::
+</pre></div>
+
+</body>
+</html>

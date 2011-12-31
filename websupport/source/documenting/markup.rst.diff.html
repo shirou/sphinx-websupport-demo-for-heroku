@@ -1,0 +1,234 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>documenting/markup.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -143,65 +143,82 @@</span>
+ 
+ .. describe:: cvar
+ 
+    Describes a global C variable.  The signature should include the type, such
+    as::
+ 
+       .. cvar:: PyObject* PyClass_Type
+ 
+ .. describe:: data
+ 
+    Describes global data in a module, including both variables and values used
+    as &quot;defined constants.&quot;  Class and object attributes are not documented
+<span class="gd">-   using this environment.</span>
+<span class="gi">+   using this directive.</span>
+ 
+ .. describe:: exception
+ 
+    Describes an exception class.  The signature can, but need not include
+    parentheses with constructor arguments.
+ 
+ .. describe:: function
+ 
+    Describes a module-level function.  The signature should include the
+    parameters, enclosing optional parameters in brackets.  Default values can be
+    given if it enhances clarity.  For example::
+ 
+<span class="gd">-      .. function:: Timer.repeat([repeat=3[, number=1000000]])</span>
+<span class="gi">+      .. function:: repeat([repeat=3[, number=1000000]])</span>
+ 
+    Object methods are not documented using this directive. Bound object methods
+    placed in the module namespace as part of the public interface of the module
+    are documented using this, as they are equivalent to normal functions for
+    most purposes.
+ 
+    The description should include information about the parameters required and
+    how they are used (especially whether mutable objects passed as parameters
+    are modified), side effects, and possible exceptions.  A small example may be
+    provided.
+ 
+ .. describe:: class
+ 
+    Describes a class.  The signature can include parentheses with parameters
+    which will be shown as the constructor arguments.
+ 
+ .. describe:: attribute
+ 
+    Describes an object data attribute.  The description should include
+    information about the type of the data to be expected and whether it may be
+<span class="gd">-   changed directly.</span>
+<span class="gi">+   changed directly.  This directive should be nested in a class directive,</span>
+<span class="gi">+   like in this example::</span>
+<span class="gi">+</span>
+<span class="gi">+      .. class:: Spam</span>
+<span class="gi">+</span>
+<span class="gi">+            Description of the class.</span>
+<span class="gi">+</span>
+<span class="gi">+            .. data:: ham</span>
+<span class="gi">+</span>
+<span class="gi">+               Description of the attribute.</span>
+<span class="gi">+</span>
+<span class="gi">+   If is also possible to document an attribute outside of a class directive,</span>
+<span class="gi">+   for example if the documentation for different attributes and methods is</span>
+<span class="gi">+   split in multiple sections.  The class name should then be included</span>
+<span class="gi">+   explicitly::</span>
+<span class="gi">+</span>
+<span class="gi">+      .. data:: Spam.eggs</span>
+ 
+ .. describe:: method
+ 
+    Describes an object method.  The parameters should not include the ``self``
+    parameter.  The description should include similar information to that
+<span class="gd">-   described for ``function``.</span>
+<span class="gi">+   described for ``function``.  This directive should be nested in a class</span>
+<span class="gi">+   directive, like in the example above.</span>
+ 
+ .. describe:: opcode
+ 
+    Describes a Python :term:`bytecode` instruction.
+ 
+ .. describe:: cmdoption
+ 
+    Describes a Python command line option or switch.  Option argument names
+    should be enclosed in angle brackets.  Example::
+ 
+       .. cmdoption:: -m &lt;module&gt;
+ 
+<span class="gu">@@ -515,28 +532,24 @@</span>
+ .. describe:: regexp
+ 
+    A regular expression. Quotes should not be included.
+ 
+ .. describe:: samp
+ 
+    A piece of literal text, such as code.  Within the contents, you can use
+    curly braces to indicate a &quot;variable&quot; part, as in ``:file:``.
+ 
+    If you don&#39;t need the &quot;variable part&quot; indication, use the standard
+    ````code```` instead.
+ 
+<span class="gd">-.. describe:: var</span>
+<span class="gd">-</span>
+<span class="gd">-   A Python or C variable or parameter name.</span>
+<span class="gd">-</span>
+ 
+ The following roles generate external links:
+ 
+ .. describe:: pep
+ 
+    A reference to a Python Enhancement Proposal.  This generates appropriate
+    index entries. The text &quot;PEP *number*\ &quot; is generated; in the HTML output,
+    this text is a hyperlink to an online copy of the specified PEP.
+ 
+ .. describe:: rfc
+ 
+    A reference to an Internet Request for Comments.  This generates appropriate
+<span class="gu">@@ -690,37 +703,37 @@</span>
+ .. describe:: toctree
+ 
+    This directive inserts a &quot;TOC tree&quot; at the current location, using the
+    individual TOCs (including &quot;sub-TOC trees&quot;) of the files given in the
+    directive body.  A numeric ``maxdepth`` option may be given to indicate the
+    depth of the tree; by default, all levels are included.
+ 
+    Consider this example (taken from the library reference index)::
+ 
+       .. toctree::
+          :maxdepth: 2
+ 
+<span class="gd">-         intro.rst</span>
+<span class="gd">-         strings.rst</span>
+<span class="gd">-         datatypes.rst</span>
+<span class="gd">-         numeric.rst</span>
+<span class="gi">+         intro</span>
+<span class="gi">+         strings</span>
+<span class="gi">+         datatypes</span>
+<span class="gi">+         numeric</span>
+          (many more files listed here)
+ 
+    This accomplishes two things:
+ 
+    * Tables of contents from all those files are inserted, with a maximum depth
+      of two, that means one nested heading.  ``toctree`` directives in those
+      files are also taken into account.
+<span class="gd">-   * Sphinx knows that the relative order of the files ``intro.rst``,</span>
+<span class="gd">-     ``strings.rst`` and so forth, and it knows that they are children of the</span>
+<span class="gi">+   * Sphinx knows that the relative order of the files ``intro``,</span>
+<span class="gi">+     ``strings`` and so forth, and it knows that they are children of the</span>
+      shown file, the library index.  From this information it generates &quot;next
+      chapter&quot;, &quot;previous chapter&quot; and &quot;parent chapter&quot; links.
+ 
+    In the end, all files included in the build process must occur in one
+    ``toctree`` directive; Sphinx will emit a warning if it finds a file that is
+    not included, because that means that this file will not be reachable through
+    standard navigation.
+ 
+    The special file ``contents.rst`` at the root of the source directory is the
+    &quot;root&quot; of the TOC tree hierarchy; from it the &quot;Contents&quot; page is generated.
+ 
+ 
+</pre></div>
+
+</body>
+</html>

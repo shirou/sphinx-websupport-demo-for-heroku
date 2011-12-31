@@ -1,0 +1,292 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>howto/sockets.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -34,79 +34,80 @@</span>
+ 
+ Part of the trouble with understanding these things is that &quot;socket&quot; can mean a
+ number of subtly different things, depending on context. So first, let&#39;s make a
+ distinction between a &quot;client&quot; socket - an endpoint of a conversation, and a
+ &quot;server&quot; socket, which is more like a switchboard operator. The client
+ application (your browser, for example) uses &quot;client&quot; sockets exclusively; the
+ web server it&#39;s talking to uses both &quot;server&quot; sockets and &quot;client&quot; sockets.
+ 
+ 
+ History
+ -------
+ 
+<span class="gd">-Of the various forms of IPC (*Inter Process Communication*), sockets are by far</span>
+<span class="gd">-the most popular.  On any given platform, there are likely to be other forms of</span>
+<span class="gd">-IPC that are faster, but for cross-platform communication, sockets are about the</span>
+<span class="gd">-only game in town.</span>
+<span class="gi">+Of the various forms of :abbr:`IPC (Inter Process Communication)`,</span>
+<span class="gi">+sockets are by far the most popular.  On any given platform, there are</span>
+<span class="gi">+likely to be other forms of IPC that are faster, but for</span>
+<span class="gi">+cross-platform communication, sockets are about the only game in town.</span>
+ 
+ They were invented in Berkeley as part of the BSD flavor of Unix. They spread
+ like wildfire with the Internet. With good reason --- the combination of sockets
+ with INET makes talking to arbitrary machines around the world unbelievably easy
+ (at least compared to other schemes).
+ 
+ 
+ Creating a Socket
+ =================
+ 
+ Roughly speaking, when you clicked on the link that brought you to this page,
+ your browser did something like the following::
+ 
+    #create an INET, STREAMing socket
+    s = socket.socket(
+        socket.AF_INET, socket.SOCK_STREAM)
+    #now connect to the web server on port 80
+    # - the normal http port
+    s.connect((&quot;www.mcmillan-inc.com&quot;, 80))
+ 
+<span class="gd">-When the ``connect`` completes, the socket ``s`` can now be used to send in a</span>
+<span class="gd">-request for the text of this page. The same socket will read the reply, and then</span>
+<span class="gd">-be destroyed. That&#39;s right - destroyed. Client sockets are normally only used</span>
+<span class="gd">-for one exchange (or a small set of sequential exchanges).</span>
+<span class="gi">+When the ``connect`` completes, the socket ``s`` can be used to send</span>
+<span class="gi">+in a request for the text of the page. The same socket will read the</span>
+<span class="gi">+reply, and then be destroyed. That&#39;s right, destroyed. Client sockets</span>
+<span class="gi">+are normally only used for one exchange (or a small set of sequential</span>
+<span class="gi">+exchanges).</span>
+ 
+ What happens in the web server is a bit more complex. First, the web server
+<span class="gd">-creates a &quot;server socket&quot;. ::</span>
+<span class="gi">+creates a &quot;server socket&quot;::</span>
+ 
+    #create an INET, STREAMing socket
+    serversocket = socket.socket(
+        socket.AF_INET, socket.SOCK_STREAM)
+    #bind the socket to a public host,
+    # and a well-known port
+    serversocket.bind((socket.gethostname(), 80))
+    #become a server socket
+    serversocket.listen(5)
+ 
+ A couple things to notice: we used ``socket.gethostname()`` so that the socket
+ would be visible to the outside world. If we had used ``s.bind((&#39;&#39;, 80))`` or
+ ``s.bind((&#39;localhost&#39;, 80))`` or ``s.bind((&#39;127.0.0.1&#39;, 80))`` we would still
+ have a &quot;server&quot; socket, but one that was only visible within the same machine.
+ 
+ A second thing to note: low number ports are usually reserved for &quot;well known&quot;
+ services (HTTP, SNMP etc). If you&#39;re playing around, use a nice high number (4
+ digits).
+ 
+ Finally, the argument to ``listen`` tells the socket library that we want it to
+ queue up as many as 5 connect requests (the normal max) before refusing outside
+ connections. If the rest of the code is written properly, that should be plenty.
+ 
+<span class="gd">-OK, now we have a &quot;server&quot; socket, listening on port 80. Now we enter the</span>
+<span class="gi">+Now that we have a &quot;server&quot; socket, listening on port 80, we can enter the</span>
+ mainloop of the web server::
+ 
+    while 1:
+        #accept connections from outside
+        (clientsocket, address) = serversocket.accept()
+        #now do something with the clientsocket
+        #in this case, we&#39;ll pretend this is a threaded server
+        ct = client_thread(clientsocket)
+        ct.run()
+ 
+ There&#39;s actually 3 general ways in which this loop could work - dispatching a
+ thread to handle ``clientsocket``, create a new process to handle
+<span class="gu">@@ -137,50 +138,50 @@</span>
+ Using a Socket
+ ==============
+ 
+ The first thing to note, is that the web browser&#39;s &quot;client&quot; socket and the web
+ server&#39;s &quot;client&quot; socket are identical beasts. That is, this is a &quot;peer to peer&quot;
+ conversation. Or to put it another way, *as the designer, you will have to
+ decide what the rules of etiquette are for a conversation*. Normally, the
+ ``connect``\ ing socket starts the conversation, by sending in a request, or
+ perhaps a signon. But that&#39;s a design decision - it&#39;s not a rule of sockets.
+ 
+ Now there are two sets of verbs to use for communication. You can use ``send``
+ and ``recv``, or you can transform your client socket into a file-like beast and
+<span class="gd">-use ``read`` and ``write``. The latter is the way Java presents their sockets.</span>
+<span class="gi">+use ``read`` and ``write``. The latter is the way Java presents its sockets.</span>
+ I&#39;m not going to talk about it here, except to warn you that you need to use
+ ``flush`` on sockets. These are buffered &quot;files&quot;, and a common mistake is to
+ ``write`` something, and then ``read`` for a reply. Without a ``flush`` in
+ there, you may wait forever for the reply, because the request may still be in
+ your output buffer.
+ 
+ Now we come the major stumbling block of sockets - ``send`` and ``recv`` operate
+ on the network buffers. They do not necessarily handle all the bytes you hand
+ them (or expect from them), because their major focus is handling the network
+ buffers. In general, they return when the associated network buffers have been
+ filled (``send``) or emptied (``recv``). They then tell you how many bytes they
+ handled. It is *your* responsibility to call them again until your message has
+ been completely dealt with.
+ 
+ When a ``recv`` returns 0 bytes, it means the other side has closed (or is in
+ the process of closing) the connection.  You will not receive any more data on
+ this connection. Ever.  You may be able to send data successfully; I&#39;ll talk
+ about that some on the next page.
+ 
+ A protocol like HTTP uses a socket for only one transfer. The client sends a
+<span class="gd">-request, the reads a reply.  That&#39;s it. The socket is discarded. This means that</span>
+<span class="gi">+request, then reads a reply.  That&#39;s it. The socket is discarded. This means that</span>
+ a client can detect the end of the reply by receiving 0 bytes.
+ 
+ But if you plan to reuse your socket for further transfers, you need to realize
+<span class="gd">-that *there is no &quot;EOT&quot; (End of Transfer) on a socket.* I repeat: if a socket</span>
+<span class="gi">+that *there is no* :abbr:`EOT (End of Transfer)` *on a socket.* I repeat: if a socket</span>
+ ``send`` or ``recv`` returns after handling 0 bytes, the connection has been
+ broken.  If the connection has *not* been broken, you may wait on a ``recv``
+ forever, because the socket will *not* tell you that there&#39;s nothing more to
+ read (for now).  Now if you think about that a bit, you&#39;ll come to realize a
+ fundamental truth of sockets: *messages must either be fixed length* (yuck), *or
+ be delimited* (shrug), *or indicate how long they are* (much better), *or end by
+ shutting down the connection*. The choice is entirely yours, (but some ways are
+ righter than others).
+ 
+ Assuming you don&#39;t want to end the connection, the simplest solution is a fixed
+ length message::
+ 
+<span class="gu">@@ -305,68 +306,67 @@</span>
+ essentially dead. There&#39;s not much you can do about it. As long as you aren&#39;t
+ doing something dumb, like holding a lock while doing a blocking read, the
+ thread isn&#39;t really consuming much in the way of resources. Do *not* try to kill
+ the thread - part of the reason that threads are more efficient than processes
+ is that they avoid the overhead associated with the automatic recycling of
+ resources. In other words, if you do manage to kill the thread, your whole
+ process is likely to be screwed up.
+ 
+ 
+ Non-blocking Sockets
+ ====================
+ 
+<span class="gd">-If you&#39;ve understood the preceeding, you already know most of what you need to</span>
+<span class="gi">+If you&#39;ve understood the preceding, you already know most of what you need to</span>
+ know about the mechanics of using sockets. You&#39;ll still use the same calls, in
+ much the same ways. It&#39;s just that, if you do it right, your app will be almost
+ inside-out.
+ 
+ In Python, you use ``socket.setblocking(0)`` to make it non-blocking. In C, it&#39;s
+ more complex, (for one thing, you&#39;ll need to choose between the BSD flavor
+ ``O_NONBLOCK`` and the almost indistinguishable Posix flavor ``O_NDELAY``, which
+ is completely different from ``TCP_NODELAY``), but it&#39;s the exact same idea. You
+ do this after creating the socket, but before using it. (Actually, if you&#39;re
+ nuts, you can switch back and forth.)
+ 
+ The major mechanical difference is that ``send``, ``recv``, ``connect`` and
+ ``accept`` can return without having done anything. You have (of course) a
+ number of choices. You can check return code and error codes and generally drive
+ yourself crazy. If you don&#39;t believe me, try it sometime. Your app will grow
+ large, buggy and suck CPU. So let&#39;s skip the brain-dead solutions and do it
+ right.
+ 
+ Use ``select``.
+ 
+ In C, coding ``select`` is fairly complex. In Python, it&#39;s a piece of cake, but
+ it&#39;s close enough to the C version that if you understand ``select`` in Python,
+<span class="gd">-you&#39;ll have little trouble with it in C. ::</span>
+<span class="gi">+you&#39;ll have little trouble with it in C::</span>
+ 
+    ready_to_read, ready_to_write, in_error = \
+                   select.select(
+                      potential_readers,
+                      potential_writers,
+                      potential_errs,
+                      timeout)
+ 
+ You pass ``select`` three lists: the first contains all sockets that you might
+ want to try reading; the second all the sockets you might want to try writing
+ to, and the last (normally left empty) those that you want to check for errors.
+ You should note that a socket can go into more than one list. The ``select``
+ call is blocking, but you can give it a timeout. This is generally a sensible
+ thing to do - give it a nice long timeout (say a minute) unless you have good
+ reason to do otherwise.
+ 
+<span class="gd">-In return, you will get three lists. They have the sockets that are actually</span>
+<span class="gi">+In return, you will get three lists. They contain the sockets that are actually</span>
+ readable, writable and in error. Each of these lists is a subset (possibly
+<span class="gd">-empty) of the corresponding list you passed in. And if you put a socket in more</span>
+<span class="gd">-than one input list, it will only be (at most) in one output list.</span>
+<span class="gi">+empty) of the corresponding list you passed in.</span>
+ 
+ If a socket is in the output readable list, you can be
+ as-close-to-certain-as-we-ever-get-in-this-business that a ``recv`` on that
+ socket will return *something*. Same idea for the writable list. You&#39;ll be able
+ to send *something*. Maybe not all you want to, but *something* is better than
+ nothing.  (Actually, any reasonably healthy socket will return as writable - it
+ just means outbound network buffer space is available.)
+ 
+ If you have a &quot;server&quot; socket, put it in the potential_readers list. If it comes
+ out in the readable list, your ``accept`` will (almost certainly) work. If you
+ have created a new socket to ``connect`` to someone else, put it in the
+ potential_writers list. If it shows up in the writable list, you have a decent
+</pre></div>
+
+</body>
+</html>

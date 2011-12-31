@@ -1,0 +1,130 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>c-api/structures.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -128,48 +128,46 @@</span>
+ The :attr:`ml_flags` field is a bitfield which can include the following flags.
+ The individual flags indicate either a calling convention or a binding
+ convention.  Of the calling convention flags, only :const:`METH_VARARGS` and
+ :const:`METH_KEYWORDS` can be combined (but note that :const:`METH_KEYWORDS`
+ alone is equivalent to ``METH_VARARGS | METH_KEYWORDS``). Any of the calling
+ convention flags can be combined with a binding flag.
+ 
+ 
+ .. data:: METH_VARARGS
+ 
+    This is the typical calling convention, where the methods have the type
+    :ctype:`PyCFunction`. The function expects two :ctype:`PyObject\*` values.
+<span class="gd">-   The first one is the *self* object for methods; for module functions, it</span>
+<span class="gd">-   has the value given to :cfunc:`Py_InitModule4` (or *NULL* if</span>
+<span class="gd">-   :cfunc:`Py_InitModule` was used).  The second parameter (often called</span>
+<span class="gd">-   *args*) is a tuple object representing all arguments. This parameter is</span>
+<span class="gd">-   typically processed using :cfunc:`PyArg_ParseTuple` or</span>
+<span class="gd">-   :cfunc:`PyArg_UnpackTuple`.</span>
+<span class="gi">+   The first one is the *self* object for methods; for module functions, it is</span>
+<span class="gi">+   the module object.  The second parameter (often called *args*) is a tuple</span>
+<span class="gi">+   object representing all arguments.  This parameter is typically processed</span>
+<span class="gi">+   using :cfunc:`PyArg_ParseTuple` or :cfunc:`PyArg_UnpackTuple`.</span>
+ 
+ 
+ .. data:: METH_KEYWORDS
+ 
+    Methods with these flags must be of type :ctype:`PyCFunctionWithKeywords`.
+    The function expects three parameters: *self*, *args*, and a dictionary of
+    all the keyword arguments.  The flag is typically combined with
+    :const:`METH_VARARGS`, and the parameters are typically processed using
+    :cfunc:`PyArg_ParseTupleAndKeywords`.
+ 
+ 
+ .. data:: METH_NOARGS
+ 
+    Methods without parameters don&#39;t need to check whether arguments are given if
+    they are listed with the :const:`METH_NOARGS` flag.  They need to be of type
+<span class="gd">-   :ctype:`PyCFunction`.  When used with object methods, the first parameter is</span>
+<span class="gd">-   typically named ``self`` and will hold a reference to the object instance.</span>
+<span class="gd">-   In all cases the second parameter will be *NULL*.</span>
+<span class="gi">+   :ctype:`PyCFunction`.  The first parameter is typically named ``self`` and</span>
+<span class="gi">+   will hold a reference to the module or object instance.  In all cases the</span>
+<span class="gi">+   second parameter will be *NULL*.</span>
+ 
+ 
+ .. data:: METH_O
+ 
+    Methods with a single object argument can be listed with the :const:`METH_O`
+    flag, instead of invoking :cfunc:`PyArg_ParseTuple` with a ``&quot;O&quot;`` argument.
+    They have the type :ctype:`PyCFunction`, with the *self* parameter, and a
+    :ctype:`PyObject\*` parameter representing the single argument.
+ 
+ 
+ .. data:: METH_OLDARGS
+ 
+</pre></div>
+
+</body>
+</html>

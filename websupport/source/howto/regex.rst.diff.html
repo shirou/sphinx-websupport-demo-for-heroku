@@ -1,0 +1,396 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>howto/regex.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -1,20 +1,19 @@</span>
+ .. _regex-howto:
+ 
+ ****************************
+   Regular Expression HOWTO
+ ****************************
+ 
+ :Author: A.M. Kuchling &lt;amk@amk.ca&gt;
+<span class="gd">-:Release: 0.05</span>
+ 
+ .. TODO:
+    Document lookbehind assertions
+    Better way of displaying a RE, a string, and what it matches
+    Mention optional argument to match.groups()
+    Unicode (at least a reference)
+ 
+ 
+ .. topic:: Abstract
+ 
+    This document is an introductory tutorial to using regular expressions in Python
+    with the :mod:`re` module.  It provides a gentler introduction than the
+<span class="gu">@@ -73,25 +72,25 @@</span>
+ enable a case-insensitive mode that would let this RE match ``Test`` or ``TEST``
+ as well; more about this later.)
+ 
+ There are exceptions to this rule; some characters are special
+ :dfn:`metacharacters`, and don&#39;t match themselves.  Instead, they signal that
+ some out-of-the-ordinary thing should be matched, or they affect other portions
+ of the RE by repeating them or changing their meaning.  Much of this document is
+ devoted to discussing various metacharacters and what they do.
+ 
+ Here&#39;s a complete list of the metacharacters; their meanings will be discussed
+ in the rest of this HOWTO. ::
+ 
+<span class="gd">-   . ^ $ * + ? { [ ] \ | ( )</span>
+<span class="gi">+   . ^ $ * + ? { } [ ] \ | ( )</span>
+ 
+ The first metacharacters we&#39;ll look at are ``[`` and ``]``. They&#39;re used for
+ specifying a character class, which is a set of characters that you wish to
+ match.  Characters can be listed individually, or a range of characters can be
+ indicated by giving two characters and separating them by a ``&#39;-&#39;``.  For
+ example, ``[abc]`` will match any of the characters ``a``, ``b``, or ``c``; this
+ is the same as ``[a-c]``, which uses a range to express the same set of
+ characters.  If you wanted to match only lowercase letters, your RE would be
+ ``[a-z]``.
+ 
+ Metacharacters are not active inside classes.  For example, ``[akm$]`` will
+ match any of the characters ``&#39;a&#39;``, ``&#39;k&#39;``, ``&#39;m&#39;``, or ``&#39;$&#39;``; ``&#39;$&#39;`` is
+<span class="gu">@@ -104,25 +103,28 @@</span>
+ character.  For example, ``[^5]`` will match any character except ``&#39;5&#39;``.
+ 
+ Perhaps the most important metacharacter is the backslash, ``\``.   As in Python
+ string literals, the backslash can be followed by various characters to signal
+ various special sequences.  It&#39;s also used to escape all the metacharacters so
+ you can still match them in patterns; for example, if you need to match a ``[``
+ or  ``\``, you can precede them with a backslash to remove their special
+ meaning: ``\[`` or ``\\``.
+ 
+ Some of the special sequences beginning with ``&#39;\&#39;`` represent predefined sets
+ of characters that are often useful, such as the set of digits, the set of
+ letters, or the set of anything that isn&#39;t whitespace.  The following predefined
+<span class="gd">-special sequences are available:</span>
+<span class="gi">+special sequences are a subset of those available. The equivalent classes are</span>
+<span class="gi">+for byte string patterns. For a complete list of sequences and expanded class</span>
+<span class="gi">+definitions for Unicode string patterns, see the last part of</span>
+<span class="gi">+:ref:`Regular Expression Syntax &lt;re-syntax&gt;`.</span>
+ 
+ ``\d``
+    Matches any decimal digit; this is equivalent to the class ``[0-9]``.
+ 
+ ``\D``
+    Matches any non-digit character; this is equivalent to the class ``[^0-9]``.
+ 
+ ``\s``
+    Matches any whitespace character; this is equivalent to the class ``[
+    \t\n\r\f\v]``.
+ 
+ ``\S``
+<span class="gu">@@ -255,25 +257,25 @@</span>
+ 
+ 
+ Compiling Regular Expressions
+ -----------------------------
+ 
+ Regular expressions are compiled into pattern objects, which have
+ methods for various operations such as searching for pattern matches or
+ performing string substitutions. ::
+ 
+    &gt;&gt;&gt; import re
+    &gt;&gt;&gt; p = re.compile(&#39;ab*&#39;)
+    &gt;&gt;&gt; print p
+<span class="gd">-   &lt;_sre.SRE_Pattern object at 80b4150&gt;</span>
+<span class="gi">+   &lt;_sre.SRE_Pattern object at 0x...&gt;</span>
+ 
+ :func:`re.compile` also accepts an optional *flags* argument, used to enable
+ various special features and syntax variations.  We&#39;ll go over the available
+ settings later, but for now a single example will do::
+ 
+    &gt;&gt;&gt; p = re.compile(&#39;ab*&#39;, re.IGNORECASE)
+ 
+ The RE is passed to :func:`re.compile` as a string.  REs are handled as strings
+ because regular expressions aren&#39;t part of the core Python language, and no
+ special syntax was created for expressing them.  (There are applications that
+ don&#39;t need REs at all, so there&#39;s no need to bloat the language specification by
+ including them.) Instead, the :mod:`re` module is simply a C extension module
+<span class="gu">@@ -368,43 +370,43 @@</span>
+ whether the RE matches or fails. :file:`redemo.py` can be quite useful when
+ trying to debug a complicated RE.  Phil Schwartz&#39;s `Kodos
+ &lt;http://kodos.sourceforge.net/&gt;`_ is also an interactive tool for developing and
+ testing RE patterns.
+ 
+ This HOWTO uses the standard Python interpreter for its examples. First, run the
+ Python interpreter, import the :mod:`re` module, and compile a RE::
+ 
+    Python 2.2.2 (#1, Feb 10 2003, 12:57:01)
+    &gt;&gt;&gt; import re
+    &gt;&gt;&gt; p = re.compile(&#39;[a-z]+&#39;)
+    &gt;&gt;&gt; p
+<span class="gd">-   &lt;_sre.SRE_Pattern object at 80c3c28&gt;</span>
+<span class="gi">+   &lt;_sre.SRE_Pattern object at 0x...&gt;</span>
+ 
+ Now, you can try matching various strings against the RE ``[a-z]+``.  An empty
+ string shouldn&#39;t match at all, since ``+`` means &#39;one or more repetitions&#39;.
+ :meth:`match` should return ``None`` in this case, which will cause the
+ interpreter to print no output.  You can explicitly print the result of
+ :meth:`match` to make this clear. ::
+ 
+    &gt;&gt;&gt; p.match(&quot;&quot;)
+    &gt;&gt;&gt; print p.match(&quot;&quot;)
+    None
+ 
+ Now, let&#39;s try it on a string that it should match, such as ``tempo``.  In this
+ case, :meth:`match` will return a :class:`MatchObject`, so you should store the
+ result in a variable for later use. ::
+ 
+    &gt;&gt;&gt; m = p.match(&#39;tempo&#39;)
+    &gt;&gt;&gt; print m
+<span class="gd">-   &lt;_sre.SRE_Match object at 80c4f68&gt;</span>
+<span class="gi">+   &lt;_sre.SRE_Match object at 0x...&gt;</span>
+ 
+ Now you can query the :class:`MatchObject` for information about the matching
+ string.   :class:`MatchObject` instances also have several methods and
+ attributes; the most important ones are:
+ 
+ +------------------+--------------------------------------------+
+ | Method/Attribute | Purpose                                    |
+ +==================+============================================+
+ | ``group()``      | Return the string matched by the RE        |
+ +------------------+--------------------------------------------+
+ | ``start()``      | Return the starting position of the match  |
+ +------------------+--------------------------------------------+
+<span class="gu">@@ -425,25 +427,25 @@</span>
+ 
+ :meth:`group` returns the substring that was matched by the RE.  :meth:`start`
+ and :meth:`end` return the starting and ending index of the match. :meth:`span`
+ returns both start and end indexes in a single tuple.  Since the :meth:`match`
+ method only checks if the RE matches at the start of a string, :meth:`start`
+ will always be zero.  However, the :meth:`search` method of patterns
+ scans through the string, so  the match may not start at zero in that
+ case. ::
+ 
+    &gt;&gt;&gt; print p.match(&#39;::: message&#39;)
+    None
+    &gt;&gt;&gt; m = p.search(&#39;::: message&#39;) ; print m
+<span class="gd">-   &lt;re.MatchObject instance at 80c9650&gt;</span>
+<span class="gi">+   &lt;_sre.SRE_Match object at 0x...&gt;</span>
+    &gt;&gt;&gt; m.group()
+    &#39;message&#39;
+    &gt;&gt;&gt; m.span()
+    (4, 11)
+ 
+ In actual programs, the most common style is to store the :class:`MatchObject`
+ in a variable, and then check if it was ``None``.  This usually looks like::
+ 
+    p = re.compile( ... )
+    m = p.match( &#39;string goes here&#39; )
+    if m:
+        print &#39;Match found: &#39;, m.group()
+<span class="gu">@@ -476,25 +478,25 @@</span>
+ ----------------------
+ 
+ You don&#39;t have to create a pattern object and call its methods; the
+ :mod:`re` module also provides top-level functions called :func:`match`,
+ :func:`search`, :func:`findall`, :func:`sub`, and so forth.  These functions
+ take the same arguments as the corresponding pattern method, with
+ the RE string added as the first argument, and still return either ``None`` or a
+ :class:`MatchObject` instance. ::
+ 
+    &gt;&gt;&gt; print re.match(r&#39;From\s+&#39;, &#39;Fromage amk&#39;)
+    None
+    &gt;&gt;&gt; re.match(r&#39;From\s+&#39;, &#39;From amk Thu May 14 19:12:10 1998&#39;)
+<span class="gd">-   &lt;re.MatchObject instance at 80c5978&gt;</span>
+<span class="gi">+   &lt;_sre.SRE_Match object at 0x...&gt;</span>
+ 
+ Under the hood, these functions simply create a pattern object for you
+ and call the appropriate method on it.  They also store the compiled object in a
+ cache, so future calls using the same RE are faster.
+ 
+ Should you use these module-level functions, or should you get the
+ pattern and call its methods yourself?  That choice depends on how
+ frequently the RE will be used, and on your personal coding style.  If the RE is
+ being used at only one point in the code, then the module functions are probably
+ more convenient.  If a program contains a lot of regular expressions, or re-uses
+ the same ones in several locations, then it might be worthwhile to collect all
+ the definitions in one place, in a section of code that compiles all the REs
+<span class="gu">@@ -677,84 +679,84 @@</span>
+    To match a literal ``&#39;|&#39;``, use ``\|``, or enclose it inside a character class,
+    as in ``[|]``.
+ 
+ ``^``
+    Matches at the beginning of lines.  Unless the :const:`MULTILINE` flag has been
+    set, this will only match at the beginning of the string.  In :const:`MULTILINE`
+    mode, this also matches immediately after each newline within the string.
+ 
+    For example, if you wish to match the word ``From`` only at the beginning of a
+    line, the RE to use is ``^From``. ::
+ 
+       &gt;&gt;&gt; print re.search(&#39;^From&#39;, &#39;From Here to Eternity&#39;)
+<span class="gd">-      &lt;re.MatchObject instance at 80c1520&gt;</span>
+<span class="gi">+      &lt;_sre.SRE_Match object at 0x...&gt;</span>
+       &gt;&gt;&gt; print re.search(&#39;^From&#39;, &#39;Reciting From Memory&#39;)
+       None
+ 
+    .. To match a literal \character{\^}, use \regexp{\e\^} or enclose it
+    .. inside a character class, as in \regexp{[{\e}\^]}.
+ 
+ ``$``
+    Matches at the end of a line, which is defined as either the end of the string,
+    or any location followed by a newline character.     ::
+ 
+       &gt;&gt;&gt; print re.search(&#39;}$&#39;, &#39;{block}&#39;)
+<span class="gd">-      &lt;re.MatchObject instance at 80adfa8&gt;</span>
+<span class="gi">+      &lt;_sre.SRE_Match object at 0x...&gt;</span>
+       &gt;&gt;&gt; print re.search(&#39;}$&#39;, &#39;{block} &#39;)
+       None
+       &gt;&gt;&gt; print re.search(&#39;}$&#39;, &#39;{block}\n&#39;)
+<span class="gd">-      &lt;re.MatchObject instance at 80adfa8&gt;</span>
+<span class="gi">+      &lt;_sre.SRE_Match object at 0x...&gt;</span>
+ 
+    To match a literal ``&#39;$&#39;``, use ``\$`` or enclose it inside a character class,
+    as in  ``[$]``.
+ 
+ ``\A``
+    Matches only at the start of the string.  When not in :const:`MULTILINE` mode,
+    ``\A`` and ``^`` are effectively the same.  In :const:`MULTILINE` mode, they&#39;re
+    different: ``\A`` still matches only at the beginning of the string, but ``^``
+    may match at any location inside the string that follows a newline character.
+ 
+ ``\Z``
+    Matches only at the end of the string.
+ 
+ ``\b``
+    Word boundary.  This is a zero-width assertion that matches only at the
+    beginning or end of a word.  A word is defined as a sequence of alphanumeric
+    characters, so the end of a word is indicated by whitespace or a
+    non-alphanumeric character.
+ 
+    The following example matches ``class`` only when it&#39;s a complete word; it won&#39;t
+    match when it&#39;s contained inside another word. ::
+ 
+       &gt;&gt;&gt; p = re.compile(r&#39;\bclass\b&#39;)
+       &gt;&gt;&gt; print p.search(&#39;no class at all&#39;)
+<span class="gd">-      &lt;re.MatchObject instance at 80c8f28&gt;</span>
+<span class="gi">+      &lt;_sre.SRE_Match object at 0x...&gt;</span>
+       &gt;&gt;&gt; print p.search(&#39;the declassified algorithm&#39;)
+       None
+       &gt;&gt;&gt; print p.search(&#39;one subclass is&#39;)
+       None
+ 
+    There are two subtleties you should remember when using this special sequence.
+    First, this is the worst collision between Python&#39;s string literals and regular
+    expression sequences.  In Python&#39;s string literals, ``\b`` is the backspace
+    character, ASCII value 8.  If you&#39;re not using raw strings, then Python will
+    convert the ``\b`` to a backspace, and your RE won&#39;t match as you expect it to.
+    The following example looks the same as our previous RE, but omits the ``&#39;r&#39;``
+    in front of the RE string. ::
+ 
+       &gt;&gt;&gt; p = re.compile(&#39;\bclass\b&#39;)
+       &gt;&gt;&gt; print p.search(&#39;no class at all&#39;)
+       None
+       &gt;&gt;&gt; print p.search(&#39;\b&#39; + &#39;class&#39; + &#39;\b&#39;)
+<span class="gd">-      &lt;re.MatchObject instance at 80c3ee0&gt;</span>
+<span class="gi">+      &lt;_sre.SRE_Match object at 0x...&gt;</span>
+ 
+    Second, inside a character class, where there&#39;s no use for this assertion,
+    ``\b`` represents the backspace character, for compatibility with Python&#39;s
+    string literals.
+ 
+ ``\B``
+    Another zero-width assertion, this is the opposite of ``\b``, only matching when
+    the current position is not at a word boundary.
+ 
+ 
+ Grouping
+ --------
+<span class="gu">@@ -1306,25 +1308,25 @@</span>
+ at every step.  This produces just the right result::
+ 
+    &gt;&gt;&gt; print re.match(&#39;&lt;.*?&gt;&#39;, s).group()
+    &lt;html&gt;
+ 
+ (Note that parsing HTML or XML with regular expressions is painful.
+ Quick-and-dirty patterns will handle common cases, but HTML and XML have special
+ cases that will break the obvious regular expression; by the time you&#39;ve written
+ a regular expression that handles all of the possible cases, the patterns will
+ be *very* complicated.  Use an HTML or XML parser module for such tasks.)
+ 
+ 
+<span class="gd">-Not Using re.VERBOSE</span>
+<span class="gi">+Using re.VERBOSE</span>
+ --------------------
+ 
+ By now you&#39;ve probably noticed that regular expressions are a very compact
+ notation, but they&#39;re not terribly readable.  REs of moderate complexity can
+ become lengthy collections of backslashes, parentheses, and metacharacters,
+ making them difficult to read and understand.
+ 
+ For such REs, specifying the ``re.VERBOSE`` flag when compiling the regular
+ expression can be helpful, because it allows you to format the regular
+ expression more clearly.
+ 
+ The ``re.VERBOSE`` flag has several effects.  Whitespace in the regular
+</pre></div>
+
+</body>
+</html>

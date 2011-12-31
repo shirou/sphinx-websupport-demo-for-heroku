@@ -1,0 +1,28 @@
+@@ -1,23 +1,26 @@
+ .. highlightlang:: c
+ 
+ .. _cobjects:
+ 
+ CObjects
+ --------
+ 
+ .. index:: object: CObject
+ 
+-Refer to :ref:`using-cobjects` for more information on using these objects.
+ 
++.. warning::
++
++   The CObject API is deprecated as of Python 2.7.  Please switch to the new
++   :ref:`capsules` API.
+ 
+ .. ctype:: PyCObject
+ 
+    This subtype of :ctype:`PyObject` represents an opaque value, useful for C
+    extension modules who need to pass an opaque value (as a :ctype:`void\*`
+    pointer) through Python code to other C code.  It is often used to make a C
+    function pointer defined in one module available to other modules, so the
+    regular import mechanism can be used to access C APIs defined in dynamically
+    loaded modules.
+ 
+ 
+ .. cfunction:: int PyCObject_Check(PyObject *p)

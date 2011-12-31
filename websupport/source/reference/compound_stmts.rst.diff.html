@@ -1,0 +1,162 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>reference/compound_stmts.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -324,64 +324,83 @@</span>
+ =============================
+ 
+ .. index:: statement: with
+ 
+ .. versionadded:: 2.5
+ 
+ The :keyword:`with` statement is used to wrap the execution of a block with
+ methods defined by a context manager (see section :ref:`context-managers`). This
+ allows common :keyword:`try`...\ :keyword:`except`...\ :keyword:`finally` usage
+ patterns to be encapsulated for convenient reuse.
+ 
+ .. productionlist::
+<span class="gd">-   with_stmt: &quot;with&quot; `expression` [&quot;as&quot; `target`] &quot;:&quot; `suite`</span>
+<span class="gi">+   with_stmt: &quot;with&quot; with_item (&quot;,&quot; with_item)* &quot;:&quot; `suite`</span>
+<span class="gi">+   with_item: `expression` [&quot;as&quot; `target`]</span>
+ 
+<span class="gd">-The execution of the :keyword:`with` statement proceeds as follows:</span>
+<span class="gi">+The execution of the :keyword:`with` statement with one &quot;item&quot; proceeds as follows:</span>
+ 
+<span class="gd">-#. The context expression is evaluated to obtain a context manager.</span>
+<span class="gi">+#. The context expression (the expression given in the :token:`with_item`) is</span>
+<span class="gi">+   evaluated to obtain a context manager.</span>
+<span class="gi">+</span>
+<span class="gi">+#. The context manager&#39;s :meth:`__exit__` is loaded for later use.</span>
+ 
+ #. The context manager&#39;s :meth:`__enter__` method is invoked.
+ 
+ #. If a target was included in the :keyword:`with` statement, the return value
+    from :meth:`__enter__` is assigned to it.
+ 
+    .. note::
+ 
+       The :keyword:`with` statement guarantees that if the :meth:`__enter__` method
+       returns without an error, then :meth:`__exit__` will always be called. Thus, if
+       an error occurs during the assignment to the target list, it will be treated the
+<span class="gd">-      same as an error occurring within the suite would be. See step 5 below.</span>
+<span class="gi">+      same as an error occurring within the suite would be. See step 6 below.</span>
+ 
+ #. The suite is executed.
+ 
+ #. The context manager&#39;s :meth:`__exit__` method is invoked. If an exception
+    caused the suite to be exited, its type, value, and traceback are passed as
+    arguments to :meth:`__exit__`. Otherwise, three :const:`None` arguments are
+    supplied.
+ 
+    If the suite was exited due to an exception, and the return value from the
+    :meth:`__exit__` method was false, the exception is reraised. If the return
+    value was true, the exception is suppressed, and execution continues with the
+    statement following the :keyword:`with` statement.
+ 
+    If the suite was exited for any reason other than an exception, the return value
+    from :meth:`__exit__` is ignored, and execution proceeds at the normal location
+    for the kind of exit that was taken.
+ 
+<span class="gi">+With more than one item, the context managers are processed as if multiple</span>
+<span class="gi">+:keyword:`with` statements were nested::</span>
+<span class="gi">+</span>
+<span class="gi">+   with A() as a, B() as b:</span>
+<span class="gi">+       suite</span>
+<span class="gi">+</span>
+<span class="gi">+is equivalent to ::</span>
+<span class="gi">+</span>
+<span class="gi">+   with A() as a:</span>
+<span class="gi">+       with B() as b:</span>
+<span class="gi">+           suite</span>
+<span class="gi">+</span>
+ .. note::
+ 
+    In Python 2.5, the :keyword:`with` statement is only allowed when the
+    ``with_statement`` feature has been enabled.  It is always enabled in
+    Python 2.6.
+ 
+<span class="gi">+.. versionchanged:: 2.7</span>
+<span class="gi">+   Support for multiple context expressions.</span>
+<span class="gi">+</span>
+ .. seealso::
+ 
+    :pep:`0343` - The &quot;with&quot; statement
+       The specification, background, and examples for the Python :keyword:`with`
+       statement.
+ 
+ 
+ .. _function:
+ .. _def:
+ 
+ Function definitions
+ ====================
+</pre></div>
+
+</body>
+</html>

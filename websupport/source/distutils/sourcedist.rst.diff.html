@@ -1,0 +1,347 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>distutils/sourcedist.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -17,111 +17,179 @@</span>
+ You can specify as many formats as you like using the :option:`--formats`
+ option, for example::
+ 
+    python setup.py sdist --formats=gztar,zip
+ 
+ to create a gzipped tarball and a zip file.  The available formats are:
+ 
+ +-----------+-------------------------+---------+
+ | Format    | Description             | Notes   |
+ +===========+=========================+=========+
+ | ``zip``   | zip file (:file:`.zip`) | (1),(3) |
+ +-----------+-------------------------+---------+
+<span class="gd">-| ``gztar`` | gzip&#39;ed tar file        | (2),(4) |</span>
+<span class="gi">+| ``gztar`` | gzip&#39;ed tar file        | \(2)    |</span>
+ |           | (:file:`.tar.gz`)       |         |
+ +-----------+-------------------------+---------+
+<span class="gd">-| ``bztar`` | bzip2&#39;ed tar file       | \(4)    |</span>
+<span class="gi">+| ``bztar`` | bzip2&#39;ed tar file       |         |</span>
+ |           | (:file:`.tar.bz2`)      |         |
+ +-----------+-------------------------+---------+
+ | ``ztar``  | compressed tar file     | \(4)    |
+ |           | (:file:`.tar.Z`)        |         |
+ +-----------+-------------------------+---------+
+<span class="gd">-| ``tar``   | tar file (:file:`.tar`) | \(4)    |</span>
+<span class="gi">+| ``tar``   | tar file (:file:`.tar`) |         |</span>
+ +-----------+-------------------------+---------+
+ 
+ Notes:
+ 
+ (1)
+    default on Windows
+ 
+ (2)
+    default on Unix
+ 
+ (3)
+    requires either external :program:`zip` utility or :mod:`zipfile` module (part
+    of the standard Python library since Python 1.6)
+ 
+ (4)
+<span class="gd">-   requires external utilities: :program:`tar` and possibly one of :program:`gzip`,</span>
+<span class="gd">-   :program:`bzip2`, or :program:`compress`</span>
+<span class="gi">+   requires the :program:`compress` program. Notice that this format is now</span>
+<span class="gi">+   pending for deprecation and will be removed in the future versions of Python.</span>
+<span class="gi">+</span>
+<span class="gi">+When using any ``tar`` format (``gztar``, ``bztar``, ``ztar`` or</span>
+<span class="gi">+``tar``) under Unix, you can specify the ``owner`` and ``group`` names</span>
+<span class="gi">+that will be set for each member of the archive.</span>
+<span class="gi">+</span>
+<span class="gi">+For example, if you want all files of the archive to be owned by root::</span>
+<span class="gi">+</span>
+<span class="gi">+    python setup.py sdist --owner=root --group=root</span>
+ 
+ 
+ .. _manifest:
+ 
+ Specifying the files to distribute
+ ==================================
+ 
+ If you don&#39;t supply an explicit list of files (or instructions on how to
+ generate one), the :command:`sdist` command puts a minimal default set into the
+ source distribution:
+ 
+ * all Python source files implied by the :option:`py_modules` and
+   :option:`packages` options
+ 
+ * all C source files mentioned in the :option:`ext_modules` or
+   :option:`libraries` options
+ 
+   .. XXX Getting C library sources is currently broken -- no
+      :meth:`get_source_files` method in :file:`build_clib.py`!
+ 
+ * scripts identified by the :option:`scripts` option
+<span class="gi">+  See :ref:`distutils-installing-scripts`.</span>
+ 
+ * anything that looks like a test script: :file:`test/test\*.py` (currently, the
+   Distutils don&#39;t do anything with test scripts except include them in source
+   distributions, but in the future there will be a standard for testing Python
+   module distributions)
+ 
+ * :file:`README.txt` (or :file:`README`), :file:`setup.py` (or whatever  you
+   called your setup script), and :file:`setup.cfg`
+ 
+<span class="gi">+* all files that matches the ``package_data`` metadata.</span>
+<span class="gi">+  See :ref:`distutils-installing-package-data`.</span>
+<span class="gi">+</span>
+<span class="gi">+* all files that matches the ``data_files`` metadata.</span>
+<span class="gi">+  See :ref:`distutils-additional-files`.</span>
+<span class="gi">+</span>
+ Sometimes this is enough, but usually you will want to specify additional files
+ to distribute.  The typical way to do this is to write a *manifest template*,
+ called :file:`MANIFEST.in` by default.  The manifest template is just a list of
+ instructions for how to generate your manifest file, :file:`MANIFEST`, which is
+ the exact list of files to include in your source distribution.  The
+ :command:`sdist` command processes this template and generates a manifest based
+ on its instructions and what it finds in the filesystem.
+ 
+ If you prefer to roll your own manifest file, the format is simple: one filename
+ per line, regular files (or symlinks to them) only.  If you do supply your own
+ :file:`MANIFEST`, you must specify everything: the default set of files
+ described above does not apply in this case.
+ 
+<span class="gi">+.. versionadded:: 2.7</span>
+<span class="gi">+   :file:`MANIFEST` files start with a comment indicating they are generated.</span>
+<span class="gi">+   Files without this comment are not overwritten or removed.</span>
+<span class="gi">+</span>
+<span class="gi">+See :ref:`manifest_template` section for a syntax reference.</span>
+<span class="gi">+</span>
+<span class="gi">+.. _manifest-options:</span>
+<span class="gi">+</span>
+<span class="gi">+Manifest-related options</span>
+<span class="gi">+========================</span>
+<span class="gi">+</span>
+<span class="gi">+The normal course of operations for the :command:`sdist` command is as follows:</span>
+<span class="gi">+</span>
+<span class="gi">+* if the manifest file, :file:`MANIFEST` doesn&#39;t exist, read :file:`MANIFEST.in`</span>
+<span class="gi">+  and create the manifest</span>
+<span class="gi">+</span>
+<span class="gi">+* if neither :file:`MANIFEST` nor :file:`MANIFEST.in` exist, create a manifest</span>
+<span class="gi">+  with just the default file set</span>
+<span class="gi">+</span>
+<span class="gi">+* if either :file:`MANIFEST.in` or the setup script (:file:`setup.py`) are more</span>
+<span class="gi">+  recent than :file:`MANIFEST`, recreate :file:`MANIFEST` by reading</span>
+<span class="gi">+  :file:`MANIFEST.in`</span>
+<span class="gi">+</span>
+<span class="gi">+* use the list of files now in :file:`MANIFEST` (either just generated or read</span>
+<span class="gi">+  in) to create the source distribution archive(s)</span>
+<span class="gi">+</span>
+<span class="gi">+There are a couple of options that modify this behaviour.  First, use the</span>
+<span class="gi">+:option:`--no-defaults` and :option:`--no-prune` to disable the standard</span>
+<span class="gi">+&quot;include&quot; and &quot;exclude&quot; sets.</span>
+<span class="gi">+</span>
+<span class="gi">+Second, you might just want to (re)generate the manifest, but not create a</span>
+<span class="gi">+source distribution::</span>
+<span class="gi">+</span>
+<span class="gi">+   python setup.py sdist --manifest-only</span>
+<span class="gi">+</span>
+<span class="gi">+:option:`-o` is a shortcut for :option:`--manifest-only`.</span>
+<span class="gi">+</span>
+<span class="gi">+.. _manifest_template:</span>
+<span class="gi">+</span>
+<span class="gi">+The MANIFEST.in template</span>
+<span class="gi">+========================</span>
+<span class="gi">+</span>
+<span class="gi">+A :file:`MANIFEST.in` file can be added in a project to define the list of</span>
+<span class="gi">+files to include in the distribution built by the :command:`sdist` command.</span>
+<span class="gi">+</span>
+<span class="gi">+When :command:`sdist` is run, it will look for the :file:`MANIFEST.in` file</span>
+<span class="gi">+and interpret it to generate the :file:`MANIFEST` file that contains the</span>
+<span class="gi">+list of files that will be included in the package.</span>
+<span class="gi">+</span>
+<span class="gi">+This mechanism can be used when the default list of files is not enough.</span>
+<span class="gi">+(See :ref:`manifest`).</span>
+<span class="gi">+</span>
+<span class="gi">+Principle</span>
+<span class="gi">+---------</span>
+<span class="gi">+</span>
+ The manifest template has one command per line, where each command specifies a
+ set of files to include or exclude from the source distribution.  For an
+<span class="gd">-example, again we turn to the Distutils&#39; own manifest template::</span>
+<span class="gi">+example, let&#39;s look at the Distutils&#39; own manifest template::</span>
+ 
+    include *.txt
+    recursive-include examples *.txt *.py
+    prune examples/sample?/build
+ 
+ The meanings should be fairly clear: include all files in the distribution root
+ matching :file:`\*.txt`, all files anywhere under the :file:`examples` directory
+ matching :file:`\*.txt` or :file:`\*.py`, and exclude all directories matching
+ :file:`examples/sample?/build`.  All of this is done *after* the standard
+ include set, so you can exclude files from the standard set with explicit
+ instructions in the manifest template.  (Or, you can use the
+<span class="gd">-:option:`--no-defaults` option to disable the standard set entirely.)  There are</span>
+<span class="gd">-several other commands available in the manifest template mini-language; see</span>
+<span class="gd">-section :ref:`sdist-cmd`.</span>
+<span class="gi">+:option:`--no-defaults` option to disable the standard set entirely.)</span>
+ 
+ The order of commands in the manifest template matters: initially, we have the
+ list of default files as described above, and each command in the template adds
+ to or removes from that list of files.  Once we have fully processed the
+ manifest template, we remove files that should not be included in the source
+ distribution:
+ 
+ * all files in the Distutils &quot;build&quot; tree (default :file:`build/`)
+ 
+ * all files in directories named :file:`RCS`, :file:`CVS`, :file:`.svn`,
+   :file:`.hg`, :file:`.git`, :file:`.bzr` or :file:`_darcs`
+ 
+<span class="gu">@@ -157,45 +225,54 @@</span>
+    previous two steps, so it&#39;s important that the ``prune`` command in the manifest
+    template comes after the ``recursive-include`` command
+ 
+ #. exclude the entire :file:`build` tree, and any :file:`RCS`, :file:`CVS`,
+    :file:`.svn`, :file:`.hg`, :file:`.git`, :file:`.bzr` and :file:`_darcs`
+    directories
+ 
+ Just like in the setup script, file and directory names in the manifest template
+ should always be slash-separated; the Distutils will take care of converting
+ them to the standard representation on your platform. That way, the manifest
+ template is portable across operating systems.
+ 
+<span class="gi">+Commands</span>
+<span class="gi">+--------</span>
+ 
+<span class="gd">-.. _manifest-options:</span>
+<span class="gi">+The manifest template commands are:</span>
+ 
+<span class="gd">-Manifest-related options</span>
+<span class="gd">-========================</span>
+<span class="gi">++-------------------------------------------+-----------------------------------------------+</span>
+<span class="gi">+| Command                                   | Description                                   |</span>
+<span class="gi">++===========================================+===============================================+</span>
+<span class="gi">+| :command:`include pat1 pat2 ...`          | include all files matching any of the listed  |</span>
+<span class="gi">+|                                           | patterns                                      |</span>
+<span class="gi">++-------------------------------------------+-----------------------------------------------+</span>
+<span class="gi">+| :command:`exclude pat1 pat2 ...`          | exclude all files matching any of the listed  |</span>
+<span class="gi">+|                                           | patterns                                      |</span>
+<span class="gi">++-------------------------------------------+-----------------------------------------------+</span>
+<span class="gi">+| :command:`recursive-include dir pat1 pat2 | include all files under *dir* matching any of |</span>
+<span class="gi">+| ...`                                      | the listed patterns                           |</span>
+<span class="gi">++-------------------------------------------+-----------------------------------------------+</span>
+<span class="gi">+| :command:`recursive-exclude dir pat1 pat2 | exclude all files under *dir* matching any of |</span>
+<span class="gi">+| ...`                                      | the listed patterns                           |</span>
+<span class="gi">++-------------------------------------------+-----------------------------------------------+</span>
+<span class="gi">+| :command:`global-include pat1 pat2 ...`   | include all files anywhere in the source tree |</span>
+<span class="gi">+|                                           | matching --- &amp; any of the listed patterns     |</span>
+<span class="gi">++-------------------------------------------+-----------------------------------------------+</span>
+<span class="gi">+| :command:`global-exclude pat1 pat2 ...`   | exclude all files anywhere in the source tree |</span>
+<span class="gi">+|                                           | matching --- &amp; any of the listed patterns     |</span>
+<span class="gi">++-------------------------------------------+-----------------------------------------------+</span>
+<span class="gi">+| :command:`prune dir`                      | exclude all files under *dir*                 |</span>
+<span class="gi">++-------------------------------------------+-----------------------------------------------+</span>
+<span class="gi">+| :command:`graft dir`                      | include all files under *dir*                 |</span>
+<span class="gi">++-------------------------------------------+-----------------------------------------------+</span>
+ 
+<span class="gd">-The normal course of operations for the :command:`sdist` command is as follows:</span>
+<span class="gi">+The patterns here are Unix-style &quot;glob&quot; patterns: ``*`` matches any sequence of</span>
+<span class="gi">+regular filename characters, ``?`` matches any single regular filename</span>
+<span class="gi">+character, and ``[range]`` matches any of the characters in *range* (e.g.,</span>
+<span class="gi">+``a-z``, ``a-zA-Z``, ``a-f0-9_.``).  The definition of &quot;regular filename</span>
+<span class="gi">+character&quot; is platform-specific: on Unix it is anything except slash; on Windows</span>
+<span class="gi">+anything except backslash or colon.</span>
+ 
+<span class="gd">-* if the manifest file, :file:`MANIFEST` doesn&#39;t exist, read :file:`MANIFEST.in`</span>
+<span class="gd">-  and create the manifest</span>
+<span class="gd">-</span>
+<span class="gd">-* if neither :file:`MANIFEST` nor :file:`MANIFEST.in` exist, create a manifest</span>
+<span class="gd">-  with just the default file set</span>
+<span class="gd">-</span>
+<span class="gd">-* if either :file:`MANIFEST.in` or the setup script (:file:`setup.py`) are more</span>
+<span class="gd">-  recent than :file:`MANIFEST`, recreate :file:`MANIFEST` by reading</span>
+<span class="gd">-  :file:`MANIFEST.in`</span>
+<span class="gd">-</span>
+<span class="gd">-* use the list of files now in :file:`MANIFEST` (either just generated or read</span>
+<span class="gd">-  in) to create the source distribution archive(s)</span>
+<span class="gd">-</span>
+<span class="gd">-There are a couple of options that modify this behaviour.  First, use the</span>
+<span class="gd">-:option:`--no-defaults` and :option:`--no-prune` to disable the standard</span>
+<span class="gd">-&quot;include&quot; and &quot;exclude&quot; sets.</span>
+<span class="gd">-</span>
+<span class="gd">-Second, you might just want to (re)generate the manifest, but not create a source</span>
+<span class="gd">-distribution::</span>
+<span class="gd">-</span>
+<span class="gd">-   python setup.py sdist --manifest-only</span>
+<span class="gd">-</span>
+<span class="gd">-:option:`-o` is a shortcut for :option:`--manifest-only`.</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gi">+.. versionchanged:: 2.7</span>
+<span class="gi">+    An existing generated :file:`MANIFEST` will be regenerated without</span>
+<span class="gi">+    :command:`sdist` comparing its modification time to the one of</span>
+<span class="gi">+    :file:`MANIFEST.in` or :file:`setup.py`.</span>
+</pre></div>
+
+</body>
+</html>

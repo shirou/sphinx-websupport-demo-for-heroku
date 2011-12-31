@@ -1,0 +1,210 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>c-api/buffer.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -1,20 +1,21 @@</span>
+ .. highlightlang:: c
+ 
+ .. _bufferobjects:
+ 
+<span class="gd">-Buffer Objects</span>
+<span class="gd">---------------</span>
+<span class="gi">+Buffers and Memoryview Objects</span>
+<span class="gi">+------------------------------</span>
+ 
+ .. sectionauthor:: Greg Stein &lt;gstein@lyra.org&gt;
+<span class="gi">+.. sectionauthor:: Benjamin Peterson</span>
+ 
+ 
+ .. index::
+    object: buffer
+    single: buffer interface
+ 
+ Python objects implemented in C can export a group of functions called the
+ &quot;buffer interface.&quot;  These functions can be used by an object to expose its
+ data in a raw, byte-oriented format. Clients of the object can use the buffer
+ interface to access the object data directly, without needing to copy it
+ first.
+ 
+<span class="gu">@@ -256,65 +257,95 @@</span>
+ .. cfunction:: void PyBuffer_Release(Py_buffer *view)
+ 
+    Release the buffer *view*.  This should be called when the buffer
+    is no longer being used as it may free memory from it.
+ 
+ 
+ .. cfunction:: Py_ssize_t PyBuffer_SizeFromFormat(const char *)
+ 
+    Return the implied :cdata:`~Py_buffer.itemsize` from the struct-stype
+    :cdata:`~Py_buffer.format`.
+ 
+ 
+<span class="gd">-.. cfunction:: int PyObject_CopyToObject(PyObject *obj, void *buf, Py_ssize_t len, char fortran)</span>
+<span class="gd">-</span>
+<span class="gd">-   Copy *len* bytes of data pointed to by the contiguous chunk of memory</span>
+<span class="gd">-   pointed to by *buf* into the buffer exported by obj.  The buffer must of</span>
+<span class="gd">-   course be writable.  Return 0 on success and return -1 and raise an error</span>
+<span class="gd">-   on failure.  If the object does not have a writable buffer, then an error</span>
+<span class="gd">-   is raised.  If *fortran* is ``&#39;F&#39;``, then if the object is</span>
+<span class="gd">-   multi-dimensional, then the data will be copied into the array in</span>
+<span class="gd">-   Fortran-style (first dimension varies the fastest).  If *fortran* is</span>
+<span class="gd">-   ``&#39;C&#39;``, then the data will be copied into the array in C-style (last</span>
+<span class="gd">-   dimension varies the fastest).  If *fortran* is ``&#39;A&#39;``, then it does not</span>
+<span class="gd">-   matter and the copy will be made in whatever way is more efficient.</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+ .. cfunction:: int PyBuffer_IsContiguous(Py_buffer *view, char fortran)
+ 
+    Return 1 if the memory defined by the *view* is C-style (*fortran* is
+    ``&#39;C&#39;``) or Fortran-style (*fortran* is ``&#39;F&#39;``) contiguous or either one
+    (*fortran* is ``&#39;A&#39;``).  Return 0 otherwise.
+ 
+ 
+ .. cfunction:: void PyBuffer_FillContiguousStrides(int ndim, Py_ssize_t *shape, Py_ssize_t *strides, Py_ssize_t itemsize, char fortran)
+ 
+    Fill the *strides* array with byte-strides of a contiguous (C-style if
+<span class="gd">-   *fortran* is ``&#39;C&#39;`` or Fortran-style if *fortran* is ``&#39;F&#39;`` array of the</span>
+<span class="gi">+   *fortran* is ``&#39;C&#39;`` or Fortran-style if *fortran* is ``&#39;F&#39;``) array of the</span>
+    given shape with the given number of bytes per element.
+ 
+ 
+ .. cfunction:: int PyBuffer_FillInfo(Py_buffer *view, PyObject *obj, void *buf, Py_ssize_t len, int readonly, int infoflags)
+ 
+    Fill in a buffer-info structure, *view*, correctly for an exporter that can
+    only share a contiguous chunk of memory of &quot;unsigned bytes&quot; of the given
+    length.  Return 0 on success and -1 (with raising an error) on error.
+ 
+ 
+<span class="gi">+MemoryView objects</span>
+<span class="gi">+==================</span>
+<span class="gi">+</span>
+<span class="gi">+.. versionadded:: 2.7</span>
+<span class="gi">+</span>
+<span class="gi">+A :class:`memoryview` object exposes the new C level buffer interface as a</span>
+<span class="gi">+Python object which can then be passed around like any other object.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject *PyMemoryView_FromObject(PyObject *obj)</span>
+<span class="gi">+</span>
+<span class="gi">+   Create a memoryview object from an object that defines the new buffer</span>
+<span class="gi">+   interface.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject *PyMemoryView_FromBuffer(Py_buffer *view)</span>
+<span class="gi">+</span>
+<span class="gi">+   Create a memoryview object wrapping the given buffer-info structure *view*.</span>
+<span class="gi">+   The memoryview object then owns the buffer, which means you shouldn&#39;t</span>
+<span class="gi">+   try to release it yourself: it will be released on deallocation of the</span>
+<span class="gi">+   memoryview object.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject *PyMemoryView_GetContiguous(PyObject *obj, int buffertype, char order)</span>
+<span class="gi">+</span>
+<span class="gi">+   Create a memoryview object to a contiguous chunk of memory (in either</span>
+<span class="gi">+   &#39;C&#39; or &#39;F&#39;ortran *order*) from an object that defines the buffer</span>
+<span class="gi">+   interface. If memory is contiguous, the memoryview object points to the</span>
+<span class="gi">+   original memory. Otherwise copy is made and the memoryview points to a</span>
+<span class="gi">+   new bytes object.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: int PyMemoryView_Check(PyObject *obj)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return true if the object *obj* is a memoryview object.  It is not</span>
+<span class="gi">+   currently allowed to create subclasses of :class:`memoryview`.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: Py_buffer *PyMemoryView_GET_BUFFER(PyObject *obj)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return a pointer to the buffer-info structure wrapped by the given</span>
+<span class="gi">+   object.  The object **must** be a memoryview instance; this macro doesn&#39;t</span>
+<span class="gi">+   check its type, you must do it yourself or you will risk crashes.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ Old-style buffer objects
+ ========================
+ 
+ .. index:: single: PyBufferProcs
+ 
+<span class="gd">-More information on the buffer interface is provided in the section</span>
+<span class="gi">+More information on the old buffer interface is provided in the section</span>
+ :ref:`buffer-structs`, under the description for :ctype:`PyBufferProcs`.
+ 
+ A &quot;buffer object&quot; is defined in the :file:`bufferobject.h` header (included by
+ :file:`Python.h`). These objects look very similar to string objects at the
+ Python programming level: they support slicing, indexing, concatenation, and
+ some other standard string operations. However, their data can come from one
+ of two sources: from a block of memory, or from another object which exports
+ the buffer interface.
+ 
+ Buffer objects are useful as a way to expose the data from another object&#39;s
+ buffer interface to the Python programmer. They can also be used as a
+ zero-copy slicing mechanism. Using their ability to reference a block of
+</pre></div>
+
+</body>
+</html>

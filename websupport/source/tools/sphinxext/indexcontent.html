@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% set title = _('Overview') %}
+{% block body %}
+  <h1>{{ docstitle|e }}</h1>
+  <p>
+  {% block description %}
+  {{ project|e }} {{ release|e }} ドキュメント
+  {% if last_updated %}<br/>最終更新日: {{ last_updated|e }}{% endif %}
+  {% endblock %}
+  </p>
+  <p>
+  Python 2.7.2 のドキュメントの日本語訳です。
+  </p>
+  </p>
+    {% block tables %}
+      <p><strong>ドキュメントの一覧</strong></p>
+      <table class="contentstable" align="center"><tr>
+        <td width="50%">
+          <p class="biglink"><a class="biglink" href="{{ pathto("whatsnew/" + version) }}">What's new in Python {{ version }}? </a><br/>
+          {# What's new は古いのは翻訳しないでいいかな？
+             <span class="linkdescr">2.0からの<a href="{{ pathto("whatsnew/index") }}">全ての "What's new" ドキュメント</a>(構築中)</span></p>
+         #}
+          <p class="biglink"><a class="biglink" href="{{ pathto("tutorial/index") }}">チュートリアル</a><br/>
+             <span class="linkdescr">ここから始めましょう</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("library/index") }}">ライブラリリファレンス</a><br/>
+             <span class="linkdescr">枕の下に置いておきましょう</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("reference/index") }}">言語リファレンス</a><br/>
+             <span class="linkdescr">構文と言語要素の解説</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("using/index") }}">Python のセットアップと利用法</a><br/>
+             <span class="linkdescr">各プラットフォームでのPythonの使い方</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("howto/index") }}">Python HOWTO</a><br/>
+             <span class="linkdescr">特定のトピックに関する、より深いドキュメント</span></p>
+        </td><td width="50%">
+          <p class="biglink"><a class="biglink" href="{{ pathto("extending/index") }}">拡張と埋め込み</a><br/>
+             <span class="linkdescr">C/C++ プログラマ向けチュートリアル</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("c-api/index") }}">Python/C API</a><br/>
+             <span class="linkdescr">C/C++ プログラマ向けリファレンス</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("install/index") }}">Python モジュールのインストール</a><br/>
+             <span class="linkdescr">インストールと、システム管理者向けの情報</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("distutils/index") }}">Python モジュールの配布</a><br/>
+             <span class="linkdescr">モジュールを他の人と共有する</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("documenting/index") }}">Python ドキュメントの作成</a><br/>
+             <span class="linkdescr">ドキュメント著者向けのガイド</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("faq/index") }}">FAQ</a><br/>
+             <span class="linkdescr">よくある質問 (とその回答！)</span></p>
+        </td></tr>
+      </table>
+
+      <p><strong>インデックスとテーブル:</strong></p>
+      <table class="contentstable" align="center"><tr>
+        <td width="50%">
+          <p class="biglink"><a class="biglink" href="{{ pathto("py-modindex") }}">モジュールインデックス</a><br/>
+             <span class="linkdescr">すべてのモジュールに素早くアクセス</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("genindex") }}">全体のインデックス</a><br/>
+             <span class="linkdescr">すべての関数、クラス、単語</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("glossary") }}">用語集</a><br/>
+             <span class="linkdescr">重要な用語の説明</span></p>
+        </td><td width="50%">
+          <p class="biglink"><a class="biglink" href="{{ pathto("search") }}">検索ページ</a><br/>
+             <span class="linkdescr">このドキュメントの中から検索する</span></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("contents") }}">完全な内容の一覧</a><br/>
+             <span class="linkdescr">セクションとサブセクションのリスト</span></p>
+        </td></tr>
+      </table>
+
+      <p><strong>メタ情報:</strong></p>
+      <table class="contentstable" align="center"><tr>
+        <td width="50%">
+          <p class="biglink"><a class="biglink" href="{{ pathto("bugs") }}">バグを報告する</a></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("about") }}">このドキュメントについて</a></p>
+        </td><td width="50%">
+          <p class="biglink"><a class="biglink" href="{{ pathto("license") }}">History and License of Python</a></p>
+          <p class="biglink"><a class="biglink" href="{{ pathto("copyright") }}">Copyright</a></p>
+        </td></tr>
+      </table>
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,691 @@
+@@ -138,29 +138,29 @@
+    |               | been parsed (and the data stored in the     |
+    |               | :class:`Distribution` instance.)            |
+    +---------------+---------------------------------------------+
+    | *run*         | Stop after all commands have been run (the  |
+    |               | same as  if :func:`setup` had been called   |
+    |               | in the usual way). This is the default      |
+    |               | value.                                      |
+    +---------------+---------------------------------------------+
+ 
+ In addition, the :mod:`distutils.core` module exposed a number of  classes that
+ live elsewhere.
+ 
+-* :class:`Extension` from :mod:`distutils.extension`
+-
+-* :class:`Command` from :mod:`distutils.cmd`
+-
+-* :class:`Distribution` from :mod:`distutils.dist`
++* :class:`~distutils.extension.Extension` from :mod:`distutils.extension`
++
++* :class:`~distutils.cmd.Command` from :mod:`distutils.cmd`
++
++* :class:`~distutils.dist.Distribution` from :mod:`distutils.dist`
+ 
+ A short description of each of these follows, but see the relevant module for
+ the full reference.
+ 
+ 
+ .. class:: Extension
+ 
+    The Extension class describes a single C or C++extension module in a setup
+    script. It accepts the following keyword arguments in its constructor
+ 
+    +------------------------+--------------------------------+---------------------------+
+    | argument name          | value                          | type                      |
+@@ -838,41 +838,24 @@
+ 
+ :mod:`distutils.emxccompiler` --- OS/2 EMX Compiler
+ ===================================================
+ 
+ .. module:: distutils.emxccompiler
+    :synopsis: OS/2 EMX Compiler support
+ 
+ 
+ This module provides the EMXCCompiler class, a subclass of
+ :class:`UnixCCompiler` that handles the EMX port of the GNU C compiler to OS/2.
+ 
+ 
+-:mod:`distutils.mwerkscompiler` --- Metrowerks CodeWarrior support
+-==================================================================
+-
+-.. module:: distutils.mwerkscompiler
+-   :synopsis: Metrowerks CodeWarrior support
+-
+-
+-Contains :class:`MWerksCompiler`, an implementation of the abstract
+-:class:`CCompiler` class for MetroWerks CodeWarrior on the pre-Mac OS X
+-Macintosh. Needs work to support CW on Windows or Mac OS X.
+-
+-.. % \subsection{Utility modules}
+-.. %
+-.. % The following modules all provide general utility functions. They haven't
+-.. % all been documented yet.
+-
+-
+ :mod:`distutils.archive_util` ---  Archiving utilities
+ ======================================================
+ 
+ .. module:: distutils.archive_util
+    :synopsis: Utility functions for creating archive files (tarballs, zip files, ...)
+ 
+ 
+ This module provides a few functions for creating archive files, such as
+ tarballs or zipfiles.
+ 
+ 
+ .. function:: make_archive(base_name, format[, root_dir=None, base_dir=None, verbose=0, dry_run=0])
+@@ -896,25 +879,25 @@
+    ``'bzip2'``, or ``None``.  Both :program:`tar` and the compression utility named
+    by *compress* must be on the  default program search path, so this is probably
+    Unix-specific.  The  output tar file will be named :file:`base_dir.tar`,
+    possibly plus the appropriate compression extension (:file:`.gz`, :file:`.bz2`
+    or :file:`.Z`).  Return the output filename.
+ 
+    .. XXX This should be replaced with calls to the :mod:`tarfile` module.
+ 
+ 
+ .. function:: make_zipfile(base_name, base_dir[, verbose=0, dry_run=0])
+ 
+    Create a zip file from all files in and under *base_dir*.  The output zip file
+-   will be named *base_dir* + :file:`.zip`.  Uses either the  :mod:`zipfile` Python
++   will be named *base_name* + :file:`.zip`.  Uses either the  :mod:`zipfile` Python
+    module (if available) or the InfoZIP :file:`zip`  utility (if installed and
+    found on the default search path).  If neither  tool is available, raises
+    :exc:`DistutilsExecError`.   Returns the name of the output zip file.
+ 
+ 
+ :mod:`distutils.dep_util` --- Dependency checking
+ =================================================
+ 
+ .. module:: distutils.dep_util
+    :synopsis: Utility functions for simple dependency checking
+ 
+ 
+@@ -1687,289 +1670,67 @@
+ .. % todo
+ .. % \section{Distutils Commands}
+ .. %
+ .. % This part of Distutils implements the various Distutils commands, such
+ .. % as \code{build}, \code{install} \&c. Each command is implemented as a
+ .. % separate module, with the command name as the name of the module.
+ 
+ 
+ :mod:`distutils.cmd` --- Abstract base class for Distutils commands
+ ===================================================================
+ 
+ .. module:: distutils.cmd
+-   :synopsis: This module provides the abstract base class Command. This class is subclassed
+-              by the modules in the distutils.command  subpackage.
++   :synopsis: This module provides the abstract base class Command. This class
++              is subclassed by the modules in the distutils.command subpackage.
+ 
+ 
+ This module supplies the abstract base class :class:`Command`.
+ 
+ 
+ .. class:: Command(dist)
+ 
+    Abstract base class for defining command classes, the "worker bees" of the
+    Distutils.  A useful analogy for command classes is to think of them as
+-   subroutines with local variables called *options*.  The options are declared in
+-   :meth:`initialize_options` and defined (given their final values) in
+-   :meth:`finalize_options`, both of which must be defined by every command class.
+-   The distinction between the two is necessary because option values might come
+-   from the outside world (command line, config file, ...), and any options
+-   dependent on other options must be computed after these outside influences have
+-   been processed --- hence :meth:`finalize_options`.  The body of the subroutine,
+-   where it does all its work based on the values of its options, is the
+-   :meth:`run` method, which must also be implemented by every command class.
+-
+-   The class constructor takes a single argument *dist*, a  :class:`Distribution`
++   subroutines with local variables called *options*.  The options are declared
++   in :meth:`initialize_options` and defined (given their final values) in
++   :meth:`finalize_options`, both of which must be defined by every command
++   class.  The distinction between the two is necessary because option values
++   might come from the outside world (command line, config file, ...), and any
++   options dependent on other options must be computed after these outside
++   influences have been processed --- hence :meth:`finalize_options`.  The body
++   of the subroutine, where it does all its work based on the values of its
++   options, is the :meth:`run` method, which must also be implemented by every
++   command class.
++
++   The class constructor takes a single argument *dist*, a :class:`Distribution`
+    instance.
+ 
+ 
+-:mod:`distutils.command` --- Individual Distutils commands
+-==========================================================
+-
+-.. module:: distutils.command
+-   :synopsis: This subpackage contains one module for each standard Distutils command.
+-
+-
+-.. % \subsubsection{Individual Distutils commands}
+-.. % todo
+-
+-
+-:mod:`distutils.command.bdist` --- Build a binary installer
+-===========================================================
+-
+-.. module:: distutils.command.bdist
+-   :synopsis: Build a binary installer for a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.bdist_packager` --- Abstract base class for packagers
+-=============================================================================
+-
+-.. module:: distutils.command.bdist_packager
+-   :synopsis: Abstract base class for packagers
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.bdist_dumb` --- Build a "dumb" installer
+-================================================================
+-
+-.. module:: distutils.command.bdist_dumb
+-   :synopsis: Build a "dumb" installer - a simple archive of files
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.bdist_msi` --- Build a Microsoft Installer binary package
+-=================================================================================
+-
+-.. module:: distutils.command.bdist_msi
+-   :synopsis: Build a binary distribution as a Windows MSI file
+-
+-.. class:: bdist_msi(Command)
+-
+-   Builds a `Windows Installer`_ (.msi) binary package.
+-
+-   .. _Windows Installer: http://msdn.microsoft.com/en-us/library/cc185688(VS.85).aspx
+-
+-   In most cases, the ``bdist_msi`` installer is a better choice than the
+-   ``bdist_wininst`` installer, because it provides better support for
+-   Win64 platforms, allows administrators to perform non-interactive
+-   installations, and allows installation through group policies.
+-
+-
+-:mod:`distutils.command.bdist_rpm` --- Build a binary distribution as a Redhat RPM and SRPM
+-===========================================================================================
+-
+-.. module:: distutils.command.bdist_rpm
+-   :synopsis: Build a binary distribution as a Redhat RPM and SRPM
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.bdist_wininst` --- Build a Windows installer
+-====================================================================
+-
+-.. module:: distutils.command.bdist_wininst
+-   :synopsis: Build a Windows installer
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.sdist` --- Build a source distribution
+-==============================================================
+-
+-.. module:: distutils.command.sdist
+-   :synopsis: Build a source distribution
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.build` --- Build all files of a package
+-===============================================================
+-
+-.. module:: distutils.command.build
+-   :synopsis: Build all files of a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.build_clib` --- Build any C libraries in a package
+-==========================================================================
+-
+-.. module:: distutils.command.build_clib
+-   :synopsis: Build any C libraries in a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.build_ext` --- Build any extensions in a package
+-========================================================================
+-
+-.. module:: distutils.command.build_ext
+-   :synopsis: Build any extensions in a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.build_py` --- Build the .py/.pyc files of a package
+-===========================================================================
+-
+-.. module:: distutils.command.build_py
+-   :synopsis: Build the .py/.pyc files of a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.build_scripts` --- Build the scripts of a package
+-=========================================================================
+-
+-.. module:: distutils.command.build_scripts
+-   :synopsis: Build the scripts of a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.clean` --- Clean a package build area
+-=============================================================
+-
+-.. module:: distutils.command.clean
+-   :synopsis: Clean a package build area
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.config` --- Perform package configuration
+-=================================================================
+-
+-.. module:: distutils.command.config
+-   :synopsis: Perform package configuration
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.install` --- Install a package
+-======================================================
+-
+-.. module:: distutils.command.install
+-   :synopsis: Install a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.install_data` --- Install data files from a package
+-===========================================================================
+-
+-.. module:: distutils.command.install_data
+-   :synopsis: Install data files from a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.install_headers` --- Install C/C++ header files from a package
+-======================================================================================
+-
+-.. module:: distutils.command.install_headers
+-   :synopsis: Install C/C++ header files from a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.install_lib` --- Install library files from a package
+-=============================================================================
+-
+-.. module:: distutils.command.install_lib
+-   :synopsis: Install library files from a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.install_scripts` --- Install script files from a package
+-================================================================================
+-
+-.. module:: distutils.command.install_scripts
+-   :synopsis: Install script files from a package
+-
+-
+-.. % todo
+-
+-
+-:mod:`distutils.command.register` --- Register a module with the Python Package Index
+-=====================================================================================
+-
+-.. module:: distutils.command.register
+-   :synopsis: Register a module with the Python Package Index
+-
+-
+-The ``register`` command registers the package with the Python Package  Index.
+-This is described in more detail in :pep:`301`.
+-
+-.. % todo
+-
+-
+ Creating a new Distutils command
+ ================================
+ 
+ This section outlines the steps to create a new Distutils command.
+ 
+ A new command lives in a module in the :mod:`distutils.command` package. There
+-is a sample template in that directory called  :file:`command_template`. Copy
++is a sample template in that directory called :file:`command_template`.  Copy
+ this file to a new module with the same name as the new command you're
+-implementing. This module should implement a class with the same name as the
+-module (and the command). So, for instance, to create the command
++implementing.  This module should implement a class with the same name as the
++module (and the command).  So, for instance, to create the command
+ ``peel_banana`` (so that users can run ``setup.py peel_banana``), you'd copy
+-:file:`command_template`  to :file:`distutils/command/peel_banana.py`, then edit
++:file:`command_template` to :file:`distutils/command/peel_banana.py`, then edit
+ it so that it's implementing the class :class:`peel_banana`, a subclass of
+ :class:`distutils.cmd.Command`.
+ 
+ Subclasses of :class:`Command` must define the following methods.
+ 
+-
+ .. method:: Command.initialize_options()
+ 
+    Set default values for all the options that this command supports.  Note that
+    these defaults may be overridden by other commands, by the setup script, by
+    config files, or by the command-line.  Thus, this is not the place to code
+    dependencies between options; generally, :meth:`initialize_options`
+    implementations are just a bunch of ``self.foo = None`` assignments.
+ 
+ 
+ .. method:: Command.finalize_options()
+ 
+    Set final values for all the options that this command supports. This is
+@@ -1979,25 +1740,265 @@
+    set *foo* from *bar* as long as *foo* still has the same value it was
+    assigned in :meth:`initialize_options`.
+ 
+ 
+ .. method:: Command.run()
+ 
+    A command's raison d'etre: carry out the action it exists to perform, controlled
+    by the options initialized in :meth:`initialize_options`, customized by other
+    commands, the setup script, the command-line, and config files, and finalized in
+    :meth:`finalize_options`.  All terminal output and filesystem interaction should
+    be done by :meth:`run`.
+ 
+-*sub_commands* formalizes the notion of a "family" of commands, eg. ``install``
+-as the parent with sub-commands ``install_lib``, ``install_headers``, etc.  The
+-parent of a family of commands defines *sub_commands* as a class attribute; it's
+-a list of 2-tuples ``(command_name, predicate)``, with *command_name* a string
+-and *predicate* an unbound method, a string or None. *predicate* is a method of
+-the parent command that determines whether the corresponding command is
+-applicable in the current situation.  (Eg. we ``install_headers`` is only
+-applicable if we have any C header files to install.)  If *predicate* is None,
+-that command is always applicable.
+-
+-*sub_commands* is usually defined at the \*end\* of a class, because predicates
+-can be unbound methods, so they must already have been defined.  The canonical
+-example is the :command:`install` command.
++
++.. attribute:: Command.sub_commands
++
++   *sub_commands* formalizes the notion of a "family" of commands,
++   e.g. ``install`` as the parent with sub-commands ``install_lib``,
++   ``install_headers``, etc.  The parent of a family of commands defines
++   *sub_commands* as a class attribute; it's a list of 2-tuples ``(command_name,
++   predicate)``, with *command_name* a string and *predicate* a function, a
++   string or ``None``.  *predicate* is a method of the parent command that
++   determines whether the corresponding command is applicable in the current
++   situation.  (E.g. ``install_headers`` is only applicable if we have any C
++   header files to install.)  If *predicate* is ``None``, that command is always
++   applicable.
++
++   *sub_commands* is usually defined at the *end* of a class, because
++   predicates can be methods of the class, so they must already have been
++   defined.  The canonical example is the :command:`install` command.
++
++
++:mod:`distutils.command` --- Individual Distutils commands
++==========================================================
++
++.. module:: distutils.command
++   :synopsis: This subpackage contains one module for each standard Distutils command.
++
++
++.. % \subsubsection{Individual Distutils commands}
++.. % todo
++
++
++:mod:`distutils.command.bdist` --- Build a binary installer
++===========================================================
++
++.. module:: distutils.command.bdist
++   :synopsis: Build a binary installer for a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.bdist_packager` --- Abstract base class for packagers
++=============================================================================
++
++.. module:: distutils.command.bdist_packager
++   :synopsis: Abstract base class for packagers
++
++
++.. % todo
++
++
++:mod:`distutils.command.bdist_dumb` --- Build a "dumb" installer
++================================================================
++
++.. module:: distutils.command.bdist_dumb
++   :synopsis: Build a "dumb" installer - a simple archive of files
++
++
++.. % todo
++
++
++:mod:`distutils.command.bdist_msi` --- Build a Microsoft Installer binary package
++=================================================================================
++
++.. module:: distutils.command.bdist_msi
++   :synopsis: Build a binary distribution as a Windows MSI file
++
++.. class:: bdist_msi(Command)
++
++   Builds a `Windows Installer`_ (.msi) binary package.
++
++   .. _Windows Installer: http://msdn.microsoft.com/en-us/library/cc185688(VS.85).aspx
++
++   In most cases, the ``bdist_msi`` installer is a better choice than the
++   ``bdist_wininst`` installer, because it provides better support for
++   Win64 platforms, allows administrators to perform non-interactive
++   installations, and allows installation through group policies.
++
++
++:mod:`distutils.command.bdist_rpm` --- Build a binary distribution as a Redhat RPM and SRPM
++===========================================================================================
++
++.. module:: distutils.command.bdist_rpm
++   :synopsis: Build a binary distribution as a Redhat RPM and SRPM
++
++
++.. % todo
++
++
++:mod:`distutils.command.bdist_wininst` --- Build a Windows installer
++====================================================================
++
++.. module:: distutils.command.bdist_wininst
++   :synopsis: Build a Windows installer
++
++
++.. % todo
++
++
++:mod:`distutils.command.sdist` --- Build a source distribution
++==============================================================
++
++.. module:: distutils.command.sdist
++   :synopsis: Build a source distribution
++
++
++.. % todo
++
++
++:mod:`distutils.command.build` --- Build all files of a package
++===============================================================
++
++.. module:: distutils.command.build
++   :synopsis: Build all files of a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.build_clib` --- Build any C libraries in a package
++==========================================================================
++
++.. module:: distutils.command.build_clib
++   :synopsis: Build any C libraries in a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.build_ext` --- Build any extensions in a package
++========================================================================
++
++.. module:: distutils.command.build_ext
++   :synopsis: Build any extensions in a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.build_py` --- Build the .py/.pyc files of a package
++===========================================================================
++
++.. module:: distutils.command.build_py
++   :synopsis: Build the .py/.pyc files of a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.build_scripts` --- Build the scripts of a package
++=========================================================================
++
++.. module:: distutils.command.build_scripts
++   :synopsis: Build the scripts of a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.clean` --- Clean a package build area
++=============================================================
++
++.. module:: distutils.command.clean
++   :synopsis: Clean a package build area
++
++
++.. % todo
++
++
++:mod:`distutils.command.config` --- Perform package configuration
++=================================================================
++
++.. module:: distutils.command.config
++   :synopsis: Perform package configuration
++
++
++.. % todo
++
++
++:mod:`distutils.command.install` --- Install a package
++======================================================
++
++.. module:: distutils.command.install
++   :synopsis: Install a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.install_data` --- Install data files from a package
++===========================================================================
++
++.. module:: distutils.command.install_data
++   :synopsis: Install data files from a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.install_headers` --- Install C/C++ header files from a package
++======================================================================================
++
++.. module:: distutils.command.install_headers
++   :synopsis: Install C/C++ header files from a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.install_lib` --- Install library files from a package
++=============================================================================
++
++.. module:: distutils.command.install_lib
++   :synopsis: Install library files from a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.install_scripts` --- Install script files from a package
++================================================================================
++
++.. module:: distutils.command.install_scripts
++   :synopsis: Install script files from a package
++
++
++.. % todo
++
++
++:mod:`distutils.command.register` --- Register a module with the Python Package Index
++=====================================================================================
++
++.. module:: distutils.command.register
++   :synopsis: Register a module with the Python Package Index
++
++
++The ``register`` command registers the package with the Python Package  Index.
++This is described in more detail in :pep:`301`.
++
++.. % todo
++
++
++:mod:`distutils.command.check` --- Check the meta-data of a package
++===================================================================
++
++.. module:: distutils.command.check
++   :synopsis: Check the metadata of a package
++
++
++The ``check`` command performs some tests on the meta-data of a package.
++For example, it verifies that all required meta-data are provided as
++the arguments passed to the :func:`setup` function.
++
++.. % todo

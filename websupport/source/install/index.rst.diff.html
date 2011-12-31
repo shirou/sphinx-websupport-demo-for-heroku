@@ -1,0 +1,223 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>install/index.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -232,25 +232,25 @@</span>
+ location for third-party Python modules.  This location varies by platform and
+ by how you built/installed Python itself.  On Unix (and Mac OS X, which is also
+ Unix-based), it also depends on whether the module distribution being installed
+ is pure Python or contains extensions (&quot;non-pure&quot;):
+ 
+ +-----------------+-----------------------------------------------------+--------------------------------------------------+-------+
+ | Platform        | Standard installation location                      | Default value                                    | Notes |
+ +=================+=====================================================+==================================================+=======+
+ | Unix (pure)     | :file:`{prefix}/lib/python{X.Y}/site-packages`      | :file:`/usr/local/lib/python{X.Y}/site-packages` | \(1)  |
+ +-----------------+-----------------------------------------------------+--------------------------------------------------+-------+
+ | Unix (non-pure) | :file:`{exec-prefix}/lib/python{X.Y}/site-packages` | :file:`/usr/local/lib/python{X.Y}/site-packages` | \(1)  |
+ +-----------------+-----------------------------------------------------+--------------------------------------------------+-------+
+<span class="gd">-| Windows         | :file:`{prefix}`                                    | :file:`C:\\Python`                               | \(2)  |</span>
+<span class="gi">+| Windows         | :file:`{prefix}\\Lib\\site-packages`                | :file:`C:\\Python{XY}\\Lib\\site-packages`       | \(2)  |</span>
+ +-----------------+-----------------------------------------------------+--------------------------------------------------+-------+
+ 
+ Notes:
+ 
+ (1)
+    Most Linux distributions include Python as a standard part of the system, so
+    :file:`{prefix}` and :file:`{exec-prefix}` are usually both :file:`/usr` on
+    Linux.  If you build Python yourself on Linux (or any Unix-like system), the
+    default :file:`{prefix}` and :file:`{exec-prefix}` are :file:`/usr/local`.
+ 
+ (2)
+    The default installation directory on Windows was :file:`C:\\Program
+<span class="gu">@@ -685,24 +685,27 @@</span>
+ And on Windows, the configuration files are:
+ 
+ +--------------+-------------------------------------------------+-------+
+ | Type of file | Location and filename                           | Notes |
+ +==============+=================================================+=======+
+ | system       | :file:`{prefix}\\Lib\\distutils\\distutils.cfg` | \(4)  |
+ +--------------+-------------------------------------------------+-------+
+ | personal     | :file:`%HOME%\\pydistutils.cfg`                 | \(5)  |
+ +--------------+-------------------------------------------------+-------+
+ | local        | :file:`setup.cfg`                               | \(3)  |
+ +--------------+-------------------------------------------------+-------+
+ 
+<span class="gi">+On all platforms, the &quot;personal&quot; file can be temporarily disabled by</span>
+<span class="gi">+passing the `--no-user-cfg` option.</span>
+<span class="gi">+</span>
+ Notes:
+ 
+ (1)
+    Strictly speaking, the system-wide configuration file lives in the directory
+    where the Distutils are installed; under Python 1.6 and later on Unix, this is
+    as shown. For Python 1.5.2, the Distutils will normally be installed to
+    :file:`{prefix}/lib/python1.5/site-packages/distutils`, so the system
+    configuration file should be put there under Python 1.5.2.
+ 
+ (2)
+    On Unix, if the :envvar:`HOME` environment variable is not defined, the user&#39;s
+    home directory will be determined with the :func:`getpwuid` function from the
+<span class="gu">@@ -920,33 +923,52 @@</span>
+    `C++Builder Compiler &lt;http://www.codegear.com/downloads/free/cppbuilder&gt;`_
+       Information about the free C++ compiler from Borland, including links to the
+       download pages.
+ 
+    `Creating Python Extensions Using Borland&#39;s Free Compiler &lt;http://www.cyberus.ca/~g_will/pyExtenDL.shtml&gt;`_
+       Document describing how to use Borland&#39;s free command-line C++ compiler to build
+       Python.
+ 
+ 
+ GNU C / Cygwin / MinGW
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+<span class="gd">-These instructions only apply if you&#39;re using a version of Python prior  to</span>
+<span class="gd">-2.4.1 with a MinGW prior to 3.0.0 (with binutils-2.13.90-20030111-1).</span>
+<span class="gd">-</span>
+ This section describes the necessary steps to use Distutils with the GNU C/C++
+ compilers in their Cygwin and MinGW distributions. [#]_ For a Python interpreter
+ that was built with Cygwin, everything should work without any of these
+ following steps.
+ 
+<span class="gd">-These compilers require some special libraries. This task is more complex than</span>
+<span class="gi">+Not all extensions can be built with MinGW or Cygwin, but many can.  Extensions</span>
+<span class="gi">+most likely to not work are those that use C++ or depend on Microsoft Visual C</span>
+<span class="gi">+extensions.</span>
+<span class="gi">+</span>
+<span class="gi">+To let Distutils compile your extension with Cygwin you have to type::</span>
+<span class="gi">+</span>
+<span class="gi">+   python setup.py build --compiler=cygwin</span>
+<span class="gi">+</span>
+<span class="gi">+and for Cygwin in no-cygwin mode [#]_ or for MinGW type::</span>
+<span class="gi">+</span>
+<span class="gi">+   python setup.py build --compiler=mingw32</span>
+<span class="gi">+</span>
+<span class="gi">+If you want to use any of these options/compilers as default, you should</span>
+<span class="gi">+consider writing it in your personal or system-wide configuration file for</span>
+<span class="gi">+Distutils (see section :ref:`inst-config-files`.)</span>
+<span class="gi">+</span>
+<span class="gi">+Older Versions of Python and MinGW</span>
+<span class="gi">+&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</span>
+<span class="gi">+The following instructions only apply if you&#39;re using a version of Python</span>
+<span class="gi">+inferior to 2.4.1 with a MinGW inferior to 3.0.0 (with</span>
+<span class="gi">+binutils-2.13.90-20030111-1).</span>
+<span class="gi">+</span>
+<span class="gi">+These compilers require some special libraries.  This task is more complex than</span>
+ for Borland&#39;s C++, because there is no program to convert the library.  First
+ you have to create a list of symbols which the Python DLL exports. (You can find
+ a good program for this task at
+ http://www.emmestech.com/software/pexports-0.43/download_pexports.html).
+ 
+ .. I don&#39;t understand what the next line means. --amk
+ .. (inclusive the references on data structures.)
+ 
+ ::
+ 
+    pexports python25.dll &gt;python25.def
+ 
+<span class="gu">@@ -958,36 +980,24 @@</span>
+ Then you can create from these information an import library for gcc. ::
+ 
+    /cygwin/bin/dlltool --dllname python25.dll --def python25.def --output-lib libpython25.a
+ 
+ The resulting library has to be placed in the same directory as
+ :file:`python25.lib`. (Should be the :file:`libs` directory under your Python
+ installation directory.)
+ 
+ If your extension uses other libraries (zlib,...) you might  have to convert
+ them too. The converted files have to reside in the same directories as the
+ normal libraries do.
+ 
+<span class="gd">-To let Distutils compile your extension with Cygwin you now have to type ::</span>
+<span class="gd">-</span>
+<span class="gd">-   python setup.py build --compiler=cygwin</span>
+<span class="gd">-</span>
+<span class="gd">-and for Cygwin in no-cygwin mode [#]_ or for MinGW type::</span>
+<span class="gd">-</span>
+<span class="gd">-   python setup.py build --compiler=mingw32</span>
+<span class="gd">-</span>
+<span class="gd">-If you want to use any of these options/compilers as default, you should</span>
+<span class="gd">-consider to write it in your personal or system-wide configuration file for</span>
+<span class="gd">-Distutils (see section :ref:`inst-config-files`.)</span>
+<span class="gd">-</span>
+ 
+ .. seealso::
+ 
+    `Building Python modules on MS Windows platform with MinGW &lt;http://www.zope.org/Members/als/tips/win32_mingw_modules&gt;`_
+       Information about building the required libraries for the MinGW environment.
+ 
+ 
+ .. rubric:: Footnotes
+ 
+ .. [#] This also means you could replace all existing COFF-libraries with OMF-libraries
+    of the same name.
+ 
+</pre></div>
+
+</body>
+</html>

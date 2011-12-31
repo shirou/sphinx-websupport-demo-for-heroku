@@ -1,0 +1,12 @@
+Flask==0.8
+Jinja2==2.6
+Pygments==1.4
+SQLAlchemy==0.7.4
+Sphinx==1.1.2
+Werkzeug==0.8.2
+Whoosh==2.3.2
+distribute==0.6.15
+docutils==0.8.1
+gunicorn==0.13.4
+wsgiref==0.1.2
+psycopg2

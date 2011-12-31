@@ -1,0 +1,260 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>c-api/long.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -56,47 +56,63 @@</span>
+ 
+    .. versionadded:: 2.6
+ 
+ 
+ .. cfunction:: PyObject* PyLong_FromSize_t(size_t v)
+ 
+    Return a new :ctype:`PyLongObject` object from a C :ctype:`size_t`, or
+    *NULL* on failure.
+ 
+    .. versionadded:: 2.6
+ 
+ 
+<span class="gi">+.. cfunction:: PyObject* PyLong_FromSsize_t(Py_ssize_t v)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return a new :ctype:`PyLongObject` object with a value of *v*, or *NULL*</span>
+<span class="gi">+   on failure.</span>
+<span class="gi">+</span>
+<span class="gi">+   .. versionadded:: 2.6</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject* PyLong_FromSize_t(size_t v)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return a new :ctype:`PyLongObject` object with a value of *v*, or *NULL*</span>
+<span class="gi">+   on failure.</span>
+<span class="gi">+</span>
+<span class="gi">+   .. versionadded:: 2.6</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ .. cfunction:: PyObject* PyLong_FromLongLong(PY_LONG_LONG v)
+ 
+    Return a new :ctype:`PyLongObject` object from a C :ctype:`long long`, or *NULL*
+    on failure.
+ 
+ 
+ .. cfunction:: PyObject* PyLong_FromUnsignedLongLong(unsigned PY_LONG_LONG v)
+ 
+    Return a new :ctype:`PyLongObject` object from a C :ctype:`unsigned long long`,
+    or *NULL* on failure.
+ 
+ 
+ .. cfunction:: PyObject* PyLong_FromDouble(double v)
+ 
+    Return a new :ctype:`PyLongObject` object from the integer part of *v*, or
+    *NULL* on failure.
+ 
+ 
+ .. cfunction:: PyObject* PyLong_FromString(char *str, char **pend, int base)
+ 
+    Return a new :ctype:`PyLongObject` based on the string value in *str*, which is
+    interpreted according to the radix in *base*.  If *pend* is non-*NULL*,
+<span class="gd">-   ``*pend`` will point to the first character in *str* which follows the</span>
+<span class="gi">+   *\*pend* will point to the first character in *str* which follows the</span>
+    representation of the number.  If *base* is ``0``, the radix will be determined
+    based on the leading characters of *str*: if *str* starts with ``&#39;0x&#39;`` or
+    ``&#39;0X&#39;``, radix 16 will be used; if *str* starts with ``&#39;0&#39;``, radix 8 will be
+    used; otherwise radix 10 will be used.  If *base* is not ``0``, it must be
+    between ``2`` and ``36``, inclusive.  Leading spaces are ignored.  If there are
+    no digits, :exc:`ValueError` will be raised.
+ 
+ 
+ .. cfunction:: PyObject* PyLong_FromUnicode(Py_UNICODE *u, Py_ssize_t length, int base)
+ 
+    Convert a sequence of Unicode digits to a Python long integer value.  The first
+    parameter, *u*, points to the first character of the Unicode string, *length*
+<span class="gu">@@ -124,65 +140,114 @@</span>
+ 
+ .. cfunction:: long PyLong_AsLong(PyObject *pylong)
+ 
+    .. index::
+       single: LONG_MAX
+       single: OverflowError (built-in exception)
+ 
+    Return a C :ctype:`long` representation of the contents of *pylong*.  If
+    *pylong* is greater than :const:`LONG_MAX`, an :exc:`OverflowError` is raised
+    and ``-1`` will be returned.
+ 
+ 
+<span class="gi">+.. cfunction:: long PyLong_AsLongAndOverflow(PyObject *pylong, int *overflow)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return a C :ctype:`long` representation of the contents of</span>
+<span class="gi">+   *pylong*.  If *pylong* is greater than :const:`LONG_MAX` or less</span>
+<span class="gi">+   than :const:`LONG_MIN`, set *\*overflow* to ``1`` or ``-1``,</span>
+<span class="gi">+   respectively, and return ``-1``; otherwise, set *\*overflow* to</span>
+<span class="gi">+   ``0``.  If any other exception occurs (for example a TypeError or</span>
+<span class="gi">+   MemoryError), then ``-1`` will be returned and *\*overflow* will</span>
+<span class="gi">+   be ``0``.</span>
+<span class="gi">+</span>
+<span class="gi">+   .. versionadded:: 2.7</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PY_LONG_LONG PyLong_AsLongLongAndOverflow(PyObject *pylong, int *overflow)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return a C :ctype:`long long` representation of the contents of</span>
+<span class="gi">+   *pylong*.  If *pylong* is greater than :const:`PY_LLONG_MAX` or less</span>
+<span class="gi">+   than :const:`PY_LLONG_MIN`, set *\*overflow* to ``1`` or ``-1``,</span>
+<span class="gi">+   respectively, and return ``-1``; otherwise, set *\*overflow* to</span>
+<span class="gi">+   ``0``.  If any other exception occurs (for example a TypeError or</span>
+<span class="gi">+   MemoryError), then ``-1`` will be returned and *\*overflow* will</span>
+<span class="gi">+   be ``0``.</span>
+<span class="gi">+</span>
+<span class="gi">+   .. versionadded:: 2.7</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ .. cfunction:: Py_ssize_t PyLong_AsSsize_t(PyObject *pylong)
+ 
+    .. index::
+       single: PY_SSIZE_T_MAX
+       single: OverflowError (built-in exception)
+ 
+    Return a C :ctype:`Py_ssize_t` representation of the contents of *pylong*.  If
+    *pylong* is greater than :const:`PY_SSIZE_T_MAX`, an :exc:`OverflowError` is raised
+    and ``-1`` will be returned.
+ 
+    .. versionadded:: 2.6
+ 
+ 
+ .. cfunction:: unsigned long PyLong_AsUnsignedLong(PyObject *pylong)
+ 
+    .. index::
+       single: ULONG_MAX
+       single: OverflowError (built-in exception)
+ 
+    Return a C :ctype:`unsigned long` representation of the contents of *pylong*.
+    If *pylong* is greater than :const:`ULONG_MAX`, an :exc:`OverflowError` is
+    raised.
+ 
+ 
+<span class="gi">+.. cfunction:: Py_ssize_t PyLong_AsSsize_t(PyObject *pylong)</span>
+<span class="gi">+</span>
+<span class="gi">+   .. index::</span>
+<span class="gi">+      single: PY_SSIZE_T_MAX</span>
+<span class="gi">+</span>
+<span class="gi">+   Return a :ctype:`Py_ssize_t` representation of the contents of *pylong*.  If</span>
+<span class="gi">+   *pylong* is greater than :const:`PY_SSIZE_T_MAX`, an :exc:`OverflowError` is</span>
+<span class="gi">+   raised.</span>
+<span class="gi">+</span>
+<span class="gi">+   .. versionadded:: 2.6</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ .. cfunction:: PY_LONG_LONG PyLong_AsLongLong(PyObject *pylong)
+ 
+<span class="gd">-   Return a C :ctype:`long long` from a Python long integer.  If *pylong* cannot be</span>
+<span class="gd">-   represented as a :ctype:`long long`, an :exc:`OverflowError` will be raised.</span>
+<span class="gi">+   .. index::</span>
+<span class="gi">+      single: OverflowError (built-in exception)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return a C :ctype:`long long` from a Python long integer.  If</span>
+<span class="gi">+   *pylong* cannot be represented as a :ctype:`long long`, an</span>
+<span class="gi">+   :exc:`OverflowError` is raised and ``-1`` is returned.</span>
+ 
+    .. versionadded:: 2.2
+ 
+ 
+ .. cfunction:: unsigned PY_LONG_LONG PyLong_AsUnsignedLongLong(PyObject *pylong)
+ 
+<span class="gd">-   Return a C :ctype:`unsigned long long` from a Python long integer. If *pylong*</span>
+<span class="gd">-   cannot be represented as an :ctype:`unsigned long long`, an :exc:`OverflowError`</span>
+<span class="gd">-   will be raised if the value is positive, or a :exc:`TypeError` will be raised if</span>
+<span class="gd">-   the value is negative.</span>
+<span class="gi">+   .. index::</span>
+<span class="gi">+      single: OverflowError (built-in exception)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return a C :ctype:`unsigned long long` from a Python long integer. If</span>
+<span class="gi">+   *pylong* cannot be represented as an :ctype:`unsigned long long`, an</span>
+<span class="gi">+   :exc:`OverflowError` is raised and ``(unsigned long long)-1`` is</span>
+<span class="gi">+   returned.</span>
+ 
+    .. versionadded:: 2.2
+ 
+<span class="gi">+   .. versionchanged:: 2.7</span>
+<span class="gi">+      A negative *pylong* now raises :exc:`OverflowError`, not</span>
+<span class="gi">+      :exc:`TypeError`.</span>
+<span class="gi">+</span>
+ 
+ .. cfunction:: unsigned long PyLong_AsUnsignedLongMask(PyObject *io)
+ 
+    Return a C :ctype:`unsigned long` from a Python long integer, without checking
+    for overflow.
+ 
+    .. versionadded:: 2.3
+ 
+ 
+ .. cfunction:: unsigned PY_LONG_LONG PyLong_AsUnsignedLongLongMask(PyObject *io)
+ 
+    Return a C :ctype:`unsigned long long` from a Python long integer, without
+</pre></div>
+
+</body>
+</html>

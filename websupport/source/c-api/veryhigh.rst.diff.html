@@ -1,0 +1,190 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>c-api/veryhigh.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -23,29 +23,29 @@</span>
+ use different libraries, so care should be taken that :ctype:`FILE\*` parameters
+ are only passed to these functions if it is certain that they were created by
+ the same library that the Python runtime is using.
+ 
+ 
+ .. cfunction:: int Py_Main(int argc, char **argv)
+ 
+    The main program for the standard interpreter.  This is made available for
+    programs which embed Python.  The *argc* and *argv* parameters should be
+    prepared exactly as those which are passed to a C program&#39;s :cfunc:`main`
+    function.  It is important to note that the argument list may be modified (but
+    the contents of the strings pointed to by the argument list are not). The return
+<span class="gd">-   value will be the integer passed to the :func:`sys.exit` function, ``1`` if the</span>
+<span class="gd">-   interpreter exits due to an exception, or ``2`` if the parameter list does not</span>
+<span class="gd">-   represent a valid Python command line.</span>
+<span class="gi">+   value will be ```0``` if the interpreter exits normally (ie, without an</span>
+<span class="gi">+   exception), ``1`` if the interpreter exits due to an exception, or ``2``</span>
+<span class="gi">+   if the parameter list does not represent a valid Python command line.</span>
+ 
+<span class="gd">-   Note that if an otherwise unhandled :exc:`SystemError` is raised, this</span>
+<span class="gi">+   Note that if an otherwise unhandled :exc:`SystemExit` is raised, this</span>
+    function will not return ``1``, but exit the process, as long as
+    ``Py_InspectFlag`` is not set.
+ 
+ 
+ .. cfunction:: int PyRun_AnyFile(FILE *fp, const char *filename)
+ 
+    This is a simplified interface to :cfunc:`PyRun_AnyFileExFlags` below, leaving
+    *closeit* set to ``0`` and *flags* set to *NULL*.
+ 
+ 
+ .. cfunction:: int PyRun_AnyFileFlags(FILE *fp, const char *filename, PyCompilerFlags *flags)
+ 
+<span class="gu">@@ -73,25 +73,25 @@</span>
+    This is a simplified interface to :cfunc:`PyRun_SimpleStringFlags` below,
+    leaving the *PyCompilerFlags\** argument set to NULL.
+ 
+ 
+ .. cfunction:: int PyRun_SimpleStringFlags(const char *command, PyCompilerFlags *flags)
+ 
+    Executes the Python source code from *command* in the :mod:`__main__` module
+    according to the *flags* argument. If :mod:`__main__` does not already exist, it
+    is created.  Returns ``0`` on success or ``-1`` if an exception was raised.  If
+    there was an error, there is no way to get the exception information. For the
+    meaning of *flags*, see below.
+ 
+<span class="gd">-   Note that if an otherwise unhandled :exc:`SystemError` is raised, this</span>
+<span class="gi">+   Note that if an otherwise unhandled :exc:`SystemExit` is raised, this</span>
+    function will not return ``-1``, but exit the process, as long as
+    ``Py_InspectFlag`` is not set.
+ 
+ 
+ .. cfunction:: int PyRun_SimpleFile(FILE *fp, const char *filename)
+ 
+    This is a simplified interface to :cfunc:`PyRun_SimpleFileExFlags` below,
+    leaving *closeit* set to ``0`` and *flags* set to *NULL*.
+ 
+ 
+ .. cfunction:: int PyRun_SimpleFileFlags(FILE *fp, const char *filename, PyCompilerFlags *flags)
+ 
+<span class="gu">@@ -112,44 +112,44 @@</span>
+    file.  If *closeit* is true, the file is closed before PyRun_SimpleFileExFlags
+    returns.
+ 
+ 
+ .. cfunction:: int PyRun_InteractiveOne(FILE *fp, const char *filename)
+ 
+    This is a simplified interface to :cfunc:`PyRun_InteractiveOneFlags` below,
+    leaving *flags* set to *NULL*.
+ 
+ 
+ .. cfunction:: int PyRun_InteractiveOneFlags(FILE *fp, const char *filename, PyCompilerFlags *flags)
+ 
+<span class="gd">-   Read and execute a single statement from a file associated with an interactive</span>
+<span class="gd">-   device according to the *flags* argument.  If *filename* is *NULL*, ``&quot;???&quot;`` is</span>
+<span class="gd">-   used instead.  The user will be prompted using ``sys.ps1`` and ``sys.ps2``.</span>
+<span class="gd">-   Returns ``0`` when the input was executed successfully, ``-1`` if there was an</span>
+<span class="gd">-   exception, or an error code from the :file:`errcode.h` include file distributed</span>
+<span class="gd">-   as part of Python if there was a parse error.  (Note that :file:`errcode.h` is</span>
+<span class="gd">-   not included by :file:`Python.h`, so must be included specifically if needed.)</span>
+<span class="gi">+   Read and execute a single statement from a file associated with an</span>
+<span class="gi">+   interactive device according to the *flags* argument.  The user will be</span>
+<span class="gi">+   prompted using ``sys.ps1`` and ``sys.ps2``.  Returns ``0`` when the input was</span>
+<span class="gi">+   executed successfully, ``-1`` if there was an exception, or an error code</span>
+<span class="gi">+   from the :file:`errcode.h` include file distributed as part of Python if</span>
+<span class="gi">+   there was a parse error.  (Note that :file:`errcode.h` is not included by</span>
+<span class="gi">+   :file:`Python.h`, so must be included specifically if needed.)</span>
+ 
+ 
+ .. cfunction:: int PyRun_InteractiveLoop(FILE *fp, const char *filename)
+ 
+    This is a simplified interface to :cfunc:`PyRun_InteractiveLoopFlags` below,
+    leaving *flags* set to *NULL*.
+ 
+ 
+<span class="gd">-.. cfunction:: int PyRun_InteractiveLoopFlags(FILE *fp,  const char *filename, PyCompilerFlags *flags)</span>
+<span class="gi">+.. cfunction:: int PyRun_InteractiveLoopFlags(FILE *fp, const char *filename, PyCompilerFlags *flags)</span>
+ 
+    Read and execute statements from a file associated with an interactive device
+<span class="gd">-   until EOF is reached.  If *filename* is *NULL*, ``&quot;???&quot;`` is used instead.  The</span>
+<span class="gd">-   user will be prompted using ``sys.ps1`` and ``sys.ps2``.  Returns ``0`` at EOF.</span>
+<span class="gi">+   until EOF is reached.  The user will be prompted using ``sys.ps1`` and</span>
+<span class="gi">+   ``sys.ps2``.  Returns ``0`` at EOF.</span>
+ 
+ 
+ .. cfunction:: struct _node* PyParser_SimpleParseString(const char *str, int start)
+ 
+    This is a simplified interface to
+    :cfunc:`PyParser_SimpleParseStringFlagsFilename` below, leaving  *filename* set
+    to *NULL* and *flags* set to ``0``.
+ 
+ 
+ .. cfunction:: struct _node* PyParser_SimpleParseStringFlags( const char *str, int start, int flags)
+ 
+    This is a simplified interface to
+</pre></div>
+
+</body>
+</html>

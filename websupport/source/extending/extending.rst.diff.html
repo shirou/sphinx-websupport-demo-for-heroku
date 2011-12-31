@@ -1,0 +1,345 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>extending/extending.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -80,28 +80,26 @@</span>
+ 
+        if (!PyArg_ParseTuple(args, &quot;s&quot;, &amp;command))
+            return NULL;
+        sts = system(command);
+        return Py_BuildValue(&quot;i&quot;, sts);
+    }
+ 
+ There is a straightforward translation from the argument list in Python (for
+ example, the single expression ``&quot;ls -l&quot;``) to the arguments passed to the C
+ function.  The C function always has two arguments, conventionally named *self*
+ and *args*.
+ 
+<span class="gd">-The *self* argument is only used when the C function implements a built-in</span>
+<span class="gd">-method, not a function. In the example, *self* will always be a *NULL* pointer,</span>
+<span class="gd">-since we are defining a function, not a method.  (This is done so that the</span>
+<span class="gd">-interpreter doesn&#39;t have to understand two different types of C functions.)</span>
+<span class="gi">+The *self* argument points to the module object for module-level functions;</span>
+<span class="gi">+for a method it would point to the object instance.</span>
+ 
+ The *args* argument will be a pointer to a Python tuple object containing the
+ arguments.  Each item of the tuple corresponds to an argument in the call&#39;s
+ argument list.  The arguments are Python objects --- in order to do anything
+ with them in our C function we have to convert them to C values.  The function
+ :cfunc:`PyArg_ParseTuple` in the Python API checks the argument types and
+ converts them to C values.  It uses a template string to determine the required
+ types of the arguments as well as the types of the C variables into which to
+ store the converted values.  More about this later.
+ 
+ :cfunc:`PyArg_ParseTuple` returns true (nonzero) if all arguments have the right
+ type and its components have been stored in the variables whose addresses are
+<span class="gu">@@ -382,30 +380,25 @@</span>
+    Removing entries from ``sys.modules`` or importing compiled modules into
+    multiple interpreters within a process (or following a :cfunc:`fork` without an
+    intervening :cfunc:`exec`) can create problems for some extension modules.
+    Extension module authors should exercise caution when initializing internal data
+    structures. Note also that the :func:`reload` function can be used with
+    extension modules, and will call the module initialization function
+    (:cfunc:`initspam` in the example), but will not load the module again if it was
+    loaded from a dynamically loadable object file (:file:`.so` on Unix,
+    :file:`.dll` on Windows).
+ 
+ A more substantial example module is included in the Python source distribution
+ as :file:`Modules/xxmodule.c`.  This file may be used as a  template or simply
+<span class="gd">-read as an example.  The :program:`modulator.py` script included in the source</span>
+<span class="gd">-distribution or Windows install provides  a simple graphical user interface for</span>
+<span class="gd">-declaring the functions and objects which a module should implement, and can</span>
+<span class="gd">-generate a template which can be filled in.  The script lives in the</span>
+<span class="gd">-:file:`Tools/modulator/` directory; see the :file:`README` file there for more</span>
+<span class="gd">-information.</span>
+<span class="gi">+read as an example.</span>
+ 
+ 
+ .. _compilation:
+ 
+ Compilation and Linkage
+ =======================
+ 
+ There are two more things to do before you can use your new extension: compiling
+ and linking it with the Python system.  If you use dynamic loading, the details
+ may depend on the style of dynamic loading your system uses; see the chapters
+ about building extension modules (chapter :ref:`building`) and additional
+ information that pertains only to building on Windows (chapter
+<span class="gu">@@ -1075,25 +1068,25 @@</span>
+ 
+ It is possible to write extension modules in C++.  Some restrictions apply.  If
+ the main program (the Python interpreter) is compiled and linked by the C
+ compiler, global or static objects with constructors cannot be used.  This is
+ not a problem if the main program is linked by the C++ compiler.  Functions that
+ will be called by the Python interpreter (in particular, module initialization
+ functions) have to be declared using ``extern &quot;C&quot;``. It is unnecessary to
+ enclose the Python header files in ``extern &quot;C&quot; {...}`` --- they use this form
+ already if the symbol ``__cplusplus`` is defined (all recent C++ compilers
+ define this symbol).
+ 
+ 
+<span class="gd">-.. _using-cobjects:</span>
+<span class="gi">+.. _using-capsules:</span>
+ 
+ Providing a C API for an Extension Module
+ =========================================
+ 
+ .. sectionauthor:: Konrad Hinsen &lt;hinsen@cnrs-orleans.fr&gt;
+ 
+ 
+ Many extension modules just provide new functions and types to be used from
+ Python, but sometimes the code in an extension module can be useful for other
+ extension modules. For example, an extension module could implement a type
+ &quot;collection&quot; which works like lists without order. Just like the standard Python
+ list type has a C API which permits extension modules to create and manipulate
+<span class="gu">@@ -1111,41 +1104,58 @@</span>
+ imported symbols at module link time (AIX is one example), or offer a choice of
+ different strategies (most Unices). And even if symbols are globally visible,
+ the module whose functions one wishes to call might not have been loaded yet!
+ 
+ Portability therefore requires not to make any assumptions about symbol
+ visibility. This means that all symbols in extension modules should be declared
+ ``static``, except for the module&#39;s initialization function, in order to
+ avoid name clashes with other extension modules (as discussed in section
+ :ref:`methodtable`). And it means that symbols that *should* be accessible from
+ other extension modules must be exported in a different way.
+ 
+ Python provides a special mechanism to pass C-level information (pointers) from
+<span class="gd">-one extension module to another one: CObjects. A CObject is a Python data type</span>
+<span class="gd">-which stores a pointer (:ctype:`void \*`).  CObjects can only be created and</span>
+<span class="gi">+one extension module to another one: Capsules. A Capsule is a Python data type</span>
+<span class="gi">+which stores a pointer (:ctype:`void \*`).  Capsules can only be created and</span>
+ accessed via their C API, but they can be passed around like any other Python
+ object. In particular,  they can be assigned to a name in an extension module&#39;s
+ namespace. Other extension modules can then import this module, retrieve the
+<span class="gd">-value of this name, and then retrieve the pointer from the CObject.</span>
+<span class="gi">+value of this name, and then retrieve the pointer from the Capsule.</span>
+ 
+<span class="gd">-There are many ways in which CObjects can be used to export the C API of an</span>
+<span class="gd">-extension module. Each name could get its own CObject, or all C API pointers</span>
+<span class="gd">-could be stored in an array whose address is published in a CObject. And the</span>
+<span class="gi">+There are many ways in which Capsules can be used to export the C API of an</span>
+<span class="gi">+extension module. Each function could get its own Capsule, or all C API pointers</span>
+<span class="gi">+could be stored in an array whose address is published in a Capsule. And the</span>
+ various tasks of storing and retrieving the pointers can be distributed in
+ different ways between the module providing the code and the client modules.
+ 
+<span class="gi">+Whichever method you choose, it&#39;s important to name your Capsules properly.</span>
+<span class="gi">+The function :cfunc:`PyCapsule_New` takes a name parameter</span>
+<span class="gi">+(:ctype:`const char \*`); you&#39;re permitted to pass in a *NULL* name, but</span>
+<span class="gi">+we strongly encourage you to specify a name.  Properly named Capsules provide</span>
+<span class="gi">+a degree of runtime type-safety; there is no feasible way to tell one unnamed</span>
+<span class="gi">+Capsule from another.</span>
+<span class="gi">+</span>
+<span class="gi">+In particular, Capsules used to expose C APIs should be given a name following</span>
+<span class="gi">+this convention::</span>
+<span class="gi">+</span>
+<span class="gi">+    modulename.attributename</span>
+<span class="gi">+</span>
+<span class="gi">+The convenience function :cfunc:`PyCapsule_Import` makes it easy to</span>
+<span class="gi">+load a C API provided via a Capsule, but only if the Capsule&#39;s name</span>
+<span class="gi">+matches this convention.  This behavior gives C API users a high degree</span>
+<span class="gi">+of certainty that the Capsule they load contains the correct C API.</span>
+<span class="gi">+</span>
+ The following example demonstrates an approach that puts most of the burden on
+ the writer of the exporting module, which is appropriate for commonly used
+ library modules. It stores all C API pointers (just one in the example!) in an
+<span class="gd">-array of :ctype:`void` pointers which becomes the value of a CObject. The header</span>
+<span class="gi">+array of :ctype:`void` pointers which becomes the value of a Capsule. The header</span>
+ file corresponding to the module provides a macro that takes care of importing
+ the module and retrieving its C API pointers; client modules only have to call
+ this macro before accessing the C API.
+ 
+ The exporting module is a modification of the :mod:`spam` module from section
+ :ref:`extending-simpleexample`. The function :func:`spam.system` does not call
+ the C library function :cfunc:`system` directly, but a function
+ :cfunc:`PySpam_System`, which would of course do something more complicated in
+ reality (such as adding &quot;spam&quot; to every command). This function
+ :cfunc:`PySpam_System` is also exported to other extension modules.
+ 
+ The function :cfunc:`PySpam_System` is a plain C function, declared
+<span class="gu">@@ -1189,26 +1199,26 @@</span>
+    {
+        PyObject *m;
+        static void *PySpam_API[PySpam_API_pointers];
+        PyObject *c_api_object;
+ 
+        m = Py_InitModule(&quot;spam&quot;, SpamMethods);
+        if (m == NULL)
+            return;
+ 
+        /* Initialize the C API pointer array */
+        PySpam_API[PySpam_System_NUM] = (void *)PySpam_System;
+ 
+<span class="gd">-       /* Create a CObject containing the API pointer array&#39;s address */</span>
+<span class="gd">-       c_api_object = PyCObject_FromVoidPtr((void *)PySpam_API, NULL);</span>
+<span class="gi">+       /* Create a Capsule containing the API pointer array&#39;s address */</span>
+<span class="gi">+       c_api_object = PyCapsule_New((void *)PySpam_API, &quot;spam._C_API&quot;, NULL);</span>
+ 
+        if (c_api_object != NULL)
+            PyModule_AddObject(m, &quot;_C_API&quot;, c_api_object);
+    }
+ 
+ Note that ``PySpam_API`` is declared ``static``; otherwise the pointer
+ array would disappear when :func:`initspam` terminates!
+ 
+ The bulk of the work is in the header file :file:`spammodule.h`, which looks
+ like this::
+ 
+    #ifndef Py_SPAMMODULE_H
+<span class="gu">@@ -1232,46 +1242,32 @@</span>
+    /* This section is used when compiling spammodule.c */
+ 
+    static PySpam_System_RETURN PySpam_System PySpam_System_PROTO;
+ 
+    #else
+    /* This section is used in modules that use spammodule&#39;s API */
+ 
+    static void **PySpam_API;
+ 
+    #define PySpam_System \
+     (*(PySpam_System_RETURN (*)PySpam_System_PROTO) PySpam_API[PySpam_System_NUM])
+ 
+<span class="gd">-   /* Return -1 and set exception on error, 0 on success. */</span>
+<span class="gi">+   /* Return -1 on error, 0 on success.</span>
+<span class="gi">+    * PyCapsule_Import will set an exception if there&#39;s an error.</span>
+<span class="gi">+    */</span>
+    static int
+    import_spam(void)
+    {
+<span class="gd">-       PyObject *c_api_object;</span>
+<span class="gd">-       PyObject *module;</span>
+<span class="gd">-</span>
+<span class="gd">-       module = PyImport_ImportModule(&quot;spam&quot;);</span>
+<span class="gd">-       if (module == NULL)</span>
+<span class="gd">-           return -1;</span>
+<span class="gd">-</span>
+<span class="gd">-       c_api_object = PyObject_GetAttrString(module, &quot;_C_API&quot;);</span>
+<span class="gd">-       if (c_api_object == NULL) {</span>
+<span class="gd">-           Py_DECREF(module);</span>
+<span class="gd">-           return -1;</span>
+<span class="gd">-       }</span>
+<span class="gd">-       if (PyCObject_Check(c_api_object))</span>
+<span class="gd">-           PySpam_API = (void **)PyCObject_AsVoidPtr(c_api_object);</span>
+<span class="gd">-</span>
+<span class="gd">-       Py_DECREF(c_api_object);</span>
+<span class="gd">-       Py_DECREF(module);</span>
+<span class="gd">-       return 0;</span>
+<span class="gi">+       PySpam_API = (void **)PyCapsule_Import(&quot;spam._C_API&quot;, 0);</span>
+<span class="gi">+       return (PySpam_API != NULL) ? 0 : -1;</span>
+    }
+ 
+    #endif
+ 
+    #ifdef __cplusplus
+    }
+    #endif
+ 
+    #endif /* !defined(Py_SPAMMODULE_H) */
+ 
+ All that a client module must do in order to have access to the function
+ :cfunc:`PySpam_System` is to call the function (or rather macro)
+<span class="gu">@@ -1285,29 +1281,29 @@</span>
+        m = Py_InitModule(&quot;client&quot;, ClientMethods);
+        if (m == NULL)
+            return;
+        if (import_spam() &lt; 0)
+            return;
+        /* additional initialization can happen here */
+    }
+ 
+ The main disadvantage of this approach is that the file :file:`spammodule.h` is
+ rather complicated. However, the basic structure is the same for each function
+ that is exported, so it has to be learned only once.
+ 
+<span class="gd">-Finally it should be mentioned that CObjects offer additional functionality,</span>
+<span class="gi">+Finally it should be mentioned that Capsules offer additional functionality,</span>
+ which is especially useful for memory allocation and deallocation of the pointer
+<span class="gd">-stored in a CObject. The details are described in the Python/C API Reference</span>
+<span class="gd">-Manual in the section :ref:`cobjects` and in the implementation of CObjects (files</span>
+<span class="gd">-:file:`Include/cobject.h` and :file:`Objects/cobject.c` in the Python source</span>
+<span class="gi">+stored in a Capsule. The details are described in the Python/C API Reference</span>
+<span class="gi">+Manual in the section :ref:`capsules` and in the implementation of Capsules (files</span>
+<span class="gi">+:file:`Include/pycapsule.h` and :file:`Objects/pycapsule.c` in the Python source</span>
+ code distribution).
+ 
+ .. rubric:: Footnotes
+ 
+ .. [#] An interface for this function already exists in the standard module :mod:`os`
+    --- it was chosen as a simple and straightforward example.
+ 
+ .. [#] The metaphor of &quot;borrowing&quot; a reference is not completely correct: the owner
+    still has a copy of the reference.
+ 
+ .. [#] Checking that the reference count is at least 1 **does not work** --- the
+    reference count itself could be in freed memory and may thus be reused for
+</pre></div>
+
+</body>
+</html>

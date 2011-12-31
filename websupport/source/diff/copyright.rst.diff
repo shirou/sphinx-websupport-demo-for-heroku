@@ -1,0 +1,23 @@
+--- r262/copyright.rst	2008-03-02 15:32:32.761366000 +0900
++++ r266/copyright.rst	2010-01-01 13:46:19.509433000 +0900
+@@ -1,19 +1,19 @@
+ *********
+ Copyright
+ *********
+ 
+ Python and this documentation is:
+ 
+-Copyright © 2001-2008 Python Software Foundation. All rights reserved.
++Copyright © 2001-2010 Python Software Foundation. All rights reserved.
+ 
+ Copyright © 2000 BeOpen.com. All rights reserved.
+ 
+ Copyright © 1995-2000 Corporation for National Research Initiatives. All rights
+ reserved.
+ 
+ Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
+ 
+ -------
+ 
+ See :ref:`history-and-license` for complete license and permissions information.
+ 

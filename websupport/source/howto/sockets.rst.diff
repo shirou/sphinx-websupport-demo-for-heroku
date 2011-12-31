@@ -1,0 +1,218 @@
+@@ -34,79 +34,80 @@
+ 
+ Part of the trouble with understanding these things is that "socket" can mean a
+ number of subtly different things, depending on context. So first, let's make a
+ distinction between a "client" socket - an endpoint of a conversation, and a
+ "server" socket, which is more like a switchboard operator. The client
+ application (your browser, for example) uses "client" sockets exclusively; the
+ web server it's talking to uses both "server" sockets and "client" sockets.
+ 
+ 
+ History
+ -------
+ 
+-Of the various forms of IPC (*Inter Process Communication*), sockets are by far
+-the most popular.  On any given platform, there are likely to be other forms of
+-IPC that are faster, but for cross-platform communication, sockets are about the
+-only game in town.
++Of the various forms of :abbr:`IPC (Inter Process Communication)`,
++sockets are by far the most popular.  On any given platform, there are
++likely to be other forms of IPC that are faster, but for
++cross-platform communication, sockets are about the only game in town.
+ 
+ They were invented in Berkeley as part of the BSD flavor of Unix. They spread
+ like wildfire with the Internet. With good reason --- the combination of sockets
+ with INET makes talking to arbitrary machines around the world unbelievably easy
+ (at least compared to other schemes).
+ 
+ 
+ Creating a Socket
+ =================
+ 
+ Roughly speaking, when you clicked on the link that brought you to this page,
+ your browser did something like the following::
+ 
+    #create an INET, STREAMing socket
+    s = socket.socket(
+        socket.AF_INET, socket.SOCK_STREAM)
+    #now connect to the web server on port 80
+    # - the normal http port
+    s.connect(("www.mcmillan-inc.com", 80))
+ 
+-When the ``connect`` completes, the socket ``s`` can now be used to send in a
+-request for the text of this page. The same socket will read the reply, and then
+-be destroyed. That's right - destroyed. Client sockets are normally only used
+-for one exchange (or a small set of sequential exchanges).
++When the ``connect`` completes, the socket ``s`` can be used to send
++in a request for the text of the page. The same socket will read the
++reply, and then be destroyed. That's right, destroyed. Client sockets
++are normally only used for one exchange (or a small set of sequential
++exchanges).
+ 
+ What happens in the web server is a bit more complex. First, the web server
+-creates a "server socket". ::
++creates a "server socket"::
+ 
+    #create an INET, STREAMing socket
+    serversocket = socket.socket(
+        socket.AF_INET, socket.SOCK_STREAM)
+    #bind the socket to a public host,
+    # and a well-known port
+    serversocket.bind((socket.gethostname(), 80))
+    #become a server socket
+    serversocket.listen(5)
+ 
+ A couple things to notice: we used ``socket.gethostname()`` so that the socket
+ would be visible to the outside world. If we had used ``s.bind(('', 80))`` or
+ ``s.bind(('localhost', 80))`` or ``s.bind(('127.0.0.1', 80))`` we would still
+ have a "server" socket, but one that was only visible within the same machine.
+ 
+ A second thing to note: low number ports are usually reserved for "well known"
+ services (HTTP, SNMP etc). If you're playing around, use a nice high number (4
+ digits).
+ 
+ Finally, the argument to ``listen`` tells the socket library that we want it to
+ queue up as many as 5 connect requests (the normal max) before refusing outside
+ connections. If the rest of the code is written properly, that should be plenty.
+ 
+-OK, now we have a "server" socket, listening on port 80. Now we enter the
++Now that we have a "server" socket, listening on port 80, we can enter the
+ mainloop of the web server::
+ 
+    while 1:
+        #accept connections from outside
+        (clientsocket, address) = serversocket.accept()
+        #now do something with the clientsocket
+        #in this case, we'll pretend this is a threaded server
+        ct = client_thread(clientsocket)
+        ct.run()
+ 
+ There's actually 3 general ways in which this loop could work - dispatching a
+ thread to handle ``clientsocket``, create a new process to handle
+@@ -137,50 +138,50 @@
+ Using a Socket
+ ==============
+ 
+ The first thing to note, is that the web browser's "client" socket and the web
+ server's "client" socket are identical beasts. That is, this is a "peer to peer"
+ conversation. Or to put it another way, *as the designer, you will have to
+ decide what the rules of etiquette are for a conversation*. Normally, the
+ ``connect``\ ing socket starts the conversation, by sending in a request, or
+ perhaps a signon. But that's a design decision - it's not a rule of sockets.
+ 
+ Now there are two sets of verbs to use for communication. You can use ``send``
+ and ``recv``, or you can transform your client socket into a file-like beast and
+-use ``read`` and ``write``. The latter is the way Java presents their sockets.
++use ``read`` and ``write``. The latter is the way Java presents its sockets.
+ I'm not going to talk about it here, except to warn you that you need to use
+ ``flush`` on sockets. These are buffered "files", and a common mistake is to
+ ``write`` something, and then ``read`` for a reply. Without a ``flush`` in
+ there, you may wait forever for the reply, because the request may still be in
+ your output buffer.
+ 
+ Now we come the major stumbling block of sockets - ``send`` and ``recv`` operate
+ on the network buffers. They do not necessarily handle all the bytes you hand
+ them (or expect from them), because their major focus is handling the network
+ buffers. In general, they return when the associated network buffers have been
+ filled (``send``) or emptied (``recv``). They then tell you how many bytes they
+ handled. It is *your* responsibility to call them again until your message has
+ been completely dealt with.
+ 
+ When a ``recv`` returns 0 bytes, it means the other side has closed (or is in
+ the process of closing) the connection.  You will not receive any more data on
+ this connection. Ever.  You may be able to send data successfully; I'll talk
+ about that some on the next page.
+ 
+ A protocol like HTTP uses a socket for only one transfer. The client sends a
+-request, the reads a reply.  That's it. The socket is discarded. This means that
++request, then reads a reply.  That's it. The socket is discarded. This means that
+ a client can detect the end of the reply by receiving 0 bytes.
+ 
+ But if you plan to reuse your socket for further transfers, you need to realize
+-that *there is no "EOT" (End of Transfer) on a socket.* I repeat: if a socket
++that *there is no* :abbr:`EOT (End of Transfer)` *on a socket.* I repeat: if a socket
+ ``send`` or ``recv`` returns after handling 0 bytes, the connection has been
+ broken.  If the connection has *not* been broken, you may wait on a ``recv``
+ forever, because the socket will *not* tell you that there's nothing more to
+ read (for now).  Now if you think about that a bit, you'll come to realize a
+ fundamental truth of sockets: *messages must either be fixed length* (yuck), *or
+ be delimited* (shrug), *or indicate how long they are* (much better), *or end by
+ shutting down the connection*. The choice is entirely yours, (but some ways are
+ righter than others).
+ 
+ Assuming you don't want to end the connection, the simplest solution is a fixed
+ length message::
+ 
+@@ -305,68 +306,67 @@
+ essentially dead. There's not much you can do about it. As long as you aren't
+ doing something dumb, like holding a lock while doing a blocking read, the
+ thread isn't really consuming much in the way of resources. Do *not* try to kill
+ the thread - part of the reason that threads are more efficient than processes
+ is that they avoid the overhead associated with the automatic recycling of
+ resources. In other words, if you do manage to kill the thread, your whole
+ process is likely to be screwed up.
+ 
+ 
+ Non-blocking Sockets
+ ====================
+ 
+-If you've understood the preceeding, you already know most of what you need to
++If you've understood the preceding, you already know most of what you need to
+ know about the mechanics of using sockets. You'll still use the same calls, in
+ much the same ways. It's just that, if you do it right, your app will be almost
+ inside-out.
+ 
+ In Python, you use ``socket.setblocking(0)`` to make it non-blocking. In C, it's
+ more complex, (for one thing, you'll need to choose between the BSD flavor
+ ``O_NONBLOCK`` and the almost indistinguishable Posix flavor ``O_NDELAY``, which
+ is completely different from ``TCP_NODELAY``), but it's the exact same idea. You
+ do this after creating the socket, but before using it. (Actually, if you're
+ nuts, you can switch back and forth.)
+ 
+ The major mechanical difference is that ``send``, ``recv``, ``connect`` and
+ ``accept`` can return without having done anything. You have (of course) a
+ number of choices. You can check return code and error codes and generally drive
+ yourself crazy. If you don't believe me, try it sometime. Your app will grow
+ large, buggy and suck CPU. So let's skip the brain-dead solutions and do it
+ right.
+ 
+ Use ``select``.
+ 
+ In C, coding ``select`` is fairly complex. In Python, it's a piece of cake, but
+ it's close enough to the C version that if you understand ``select`` in Python,
+-you'll have little trouble with it in C. ::
++you'll have little trouble with it in C::
+ 
+    ready_to_read, ready_to_write, in_error = \
+                   select.select(
+                      potential_readers,
+                      potential_writers,
+                      potential_errs,
+                      timeout)
+ 
+ You pass ``select`` three lists: the first contains all sockets that you might
+ want to try reading; the second all the sockets you might want to try writing
+ to, and the last (normally left empty) those that you want to check for errors.
+ You should note that a socket can go into more than one list. The ``select``
+ call is blocking, but you can give it a timeout. This is generally a sensible
+ thing to do - give it a nice long timeout (say a minute) unless you have good
+ reason to do otherwise.
+ 
+-In return, you will get three lists. They have the sockets that are actually
++In return, you will get three lists. They contain the sockets that are actually
+ readable, writable and in error. Each of these lists is a subset (possibly
+-empty) of the corresponding list you passed in. And if you put a socket in more
+-than one input list, it will only be (at most) in one output list.
++empty) of the corresponding list you passed in.
+ 
+ If a socket is in the output readable list, you can be
+ as-close-to-certain-as-we-ever-get-in-this-business that a ``recv`` on that
+ socket will return *something*. Same idea for the writable list. You'll be able
+ to send *something*. Maybe not all you want to, but *something* is better than
+ nothing.  (Actually, any reasonably healthy socket will return as writable - it
+ just means outbound network buffer space is available.)
+ 
+ If you have a "server" socket, put it in the potential_readers list. If it comes
+ out in the readable list, your ``accept`` will (almost certainly) work. If you
+ have created a new socket to ``connect`` to someone else, put it in the
+ potential_writers list. If it shows up in the writable list, you have a decent

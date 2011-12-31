@@ -1,0 +1,57 @@
+@@ -33,25 +33,25 @@
+    Return true if *p* is a list object, but not an instance of a subtype of
+    the list type.
+ 
+    .. versionadded:: 2.2
+ 
+ 
+ .. cfunction:: PyObject* PyList_New(Py_ssize_t len)
+ 
+    Return a new list of length *len* on success, or *NULL* on failure.
+ 
+    .. note::
+ 
+-      If *length* is greater than zero, the returned list object's items are
++      If *len* is greater than zero, the returned list object's items are
+       set to ``NULL``.  Thus you cannot use abstract API functions such as
+       :cfunc:`PySequence_SetItem`  or expose the object to Python code before
+       setting all items to a real object with :cfunc:`PyList_SetItem`.
+ 
+    .. versionchanged:: 2.5
+       This function used an :ctype:`int` for *size*. This might require
+       changes in your code for properly supporting 64-bit systems.
+ 
+ 
+ .. cfunction:: Py_ssize_t PyList_Size(PyObject *list)
+ 
+    .. index:: builtin: len
+@@ -66,27 +66,27 @@
+ 
+ .. cfunction:: Py_ssize_t PyList_GET_SIZE(PyObject *list)
+ 
+    Macro form of :cfunc:`PyList_Size` without error checking.
+ 
+    .. versionchanged:: 2.5
+       This macro returned an :ctype:`int`. This might require changes in your
+       code for properly supporting 64-bit systems.
+ 
+ 
+ .. cfunction:: PyObject* PyList_GetItem(PyObject *list, Py_ssize_t index)
+ 
+-   Return the object at position *pos* in the list pointed to by *p*.  The
++   Return the object at position *index* in the list pointed to by *list*.  The
+    position must be positive, indexing from the end of the list is not
+-   supported.  If *pos* is out of bounds, return *NULL* and set an
++   supported.  If *index* is out of bounds, return *NULL* and set an
+    :exc:`IndexError` exception.
+ 
+    .. versionchanged:: 2.5
+       This function used an :ctype:`int` for *index*. This might require
+       changes in your code for properly supporting 64-bit systems.
+ 
+ 
+ .. cfunction:: PyObject* PyList_GET_ITEM(PyObject *list, Py_ssize_t i)
+ 
+    Macro form of :cfunc:`PyList_GetItem` without error checking.
+ 
+    .. versionchanged:: 2.5

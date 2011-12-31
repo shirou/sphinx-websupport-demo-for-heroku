@@ -1,0 +1,21 @@
+@@ -96,19 +96,19 @@
+             # Encode the payload using Base64
+             encoders.encode_base64(msg)
+         # Set the filename parameter
+         msg.add_header('Content-Disposition', 'attachment', filename=filename)
+         outer.attach(msg)
+     # Now send or store the message
+     composed = outer.as_string()
+     if opts.output:
+         fp = open(opts.output, 'w')
+         fp.write(composed)
+         fp.close()
+     else:
+-        s = smtplib.SMTP()
++        s = smtplib.SMTP('localhost')
+         s.sendmail(opts.sender, opts.recipients, composed)
+         s.quit()
+ 
+ 
+ if __name__ == '__main__':
+     main()

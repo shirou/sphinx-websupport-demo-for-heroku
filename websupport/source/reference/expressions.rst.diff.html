@@ -1,0 +1,416 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>reference/expressions.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -56,25 +56,25 @@</span>
+ =====
+ 
+ .. index:: single: atom
+ 
+ Atoms are the most basic elements of expressions.  The simplest atoms are
+ identifiers or literals.  Forms enclosed in reverse quotes or in parentheses,
+ brackets or braces are also categorized syntactically as atoms.  The syntax for
+ atoms is:
+ 
+ .. productionlist::
+    atom: `identifier` | `literal` | `enclosure`
+    enclosure: `parenth_form` | `list_display`
+<span class="gd">-            : | `generator_expression` | `dict_display`</span>
+<span class="gi">+            : | `generator_expression` | `dict_display` | `set_display`</span>
+             : | `string_conversion` | `yield_atom`
+ 
+ 
+ .. _atom-identifiers:
+ 
+ Identifiers (Names)
+ -------------------
+ 
+ .. index::
+    single: name
+    single: identifier
+ 
+<span class="gu">@@ -197,100 +197,150 @@</span>
+ A list display yields a new list object.  Its contents are specified by
+ providing either a list of expressions or a list comprehension.  When a
+ comma-separated list of expressions is supplied, its elements are evaluated from
+ left to right and placed into the list object in that order.  When a list
+ comprehension is supplied, it consists of a single expression followed by at
+ least one :keyword:`for` clause and zero or more :keyword:`for` or :keyword:`if`
+ clauses.  In this case, the elements of the new list are those that would be
+ produced by considering each of the :keyword:`for` or :keyword:`if` clauses a
+ block, nesting from left to right, and evaluating the expression to produce a
+ list element each time the innermost block is reached [#]_.
+ 
+ 
+<span class="gi">+.. _comprehensions:</span>
+<span class="gi">+</span>
+<span class="gi">+Displays for sets and dictionaries</span>
+<span class="gi">+----------------------------------</span>
+<span class="gi">+</span>
+<span class="gi">+For constructing a set or a dictionary Python provides special syntax</span>
+<span class="gi">+called &quot;displays&quot;, each of them in two flavors:</span>
+<span class="gi">+</span>
+<span class="gi">+* either the container contents are listed explicitly, or</span>
+<span class="gi">+</span>
+<span class="gi">+* they are computed via a set of looping and filtering instructions, called a</span>
+<span class="gi">+  :dfn:`comprehension`.</span>
+<span class="gi">+</span>
+<span class="gi">+Common syntax elements for comprehensions are:</span>
+<span class="gi">+</span>
+<span class="gi">+.. productionlist::</span>
+<span class="gi">+   comprehension: `expression` `comp_for`</span>
+<span class="gi">+   comp_for: &quot;for&quot; `target_list` &quot;in&quot; `or_test` [`comp_iter`]</span>
+<span class="gi">+   comp_iter: `comp_for` | `comp_if`</span>
+<span class="gi">+   comp_if: &quot;if&quot; `expression_nocond` [`comp_iter`]</span>
+<span class="gi">+</span>
+<span class="gi">+The comprehension consists of a single expression followed by at least one</span>
+<span class="gi">+:keyword:`for` clause and zero or more :keyword:`for` or :keyword:`if` clauses.</span>
+<span class="gi">+In this case, the elements of the new container are those that would be produced</span>
+<span class="gi">+by considering each of the :keyword:`for` or :keyword:`if` clauses a block,</span>
+<span class="gi">+nesting from left to right, and evaluating the expression to produce an element</span>
+<span class="gi">+each time the innermost block is reached.</span>
+<span class="gi">+</span>
+<span class="gi">+Note that the comprehension is executed in a separate scope, so names assigned</span>
+<span class="gi">+to in the target list don&#39;t &quot;leak&quot; in the enclosing scope.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ .. _genexpr:
+ 
+ Generator expressions
+ ---------------------
+ 
+ .. index:: pair: generator; expression
+<span class="gi">+           object: generator</span>
+ 
+ A generator expression is a compact generator notation in parentheses:
+ 
+ .. productionlist::
+<span class="gd">-   generator_expression: &quot;(&quot; `expression` `genexpr_for` &quot;)&quot;</span>
+<span class="gd">-   genexpr_for: &quot;for&quot; `target_list` &quot;in&quot; `or_test` [`genexpr_iter`]</span>
+<span class="gd">-   genexpr_iter: `genexpr_for` | `genexpr_if`</span>
+<span class="gd">-   genexpr_if: &quot;if&quot; `old_expression` [`genexpr_iter`]</span>
+<span class="gi">+   generator_expression: &quot;(&quot; `expression` `comp_for` &quot;)&quot;</span>
+ 
+<span class="gd">-.. index:: object: generator</span>
+<span class="gi">+A generator expression yields a new generator object.  Its syntax is the same as</span>
+<span class="gi">+for comprehensions, except that it is enclosed in parentheses instead of</span>
+<span class="gi">+brackets or curly braces.</span>
+ 
+<span class="gd">-A generator expression yields a new generator object.  It consists of a single</span>
+<span class="gd">-expression followed by at least one :keyword:`for` clause and zero or more</span>
+<span class="gd">-:keyword:`for` or :keyword:`if` clauses.  The iterating values of the new</span>
+<span class="gd">-generator are those that would be produced by considering each of the</span>
+<span class="gd">-:keyword:`for` or :keyword:`if` clauses a block, nesting from left to right, and</span>
+<span class="gd">-evaluating the expression to yield a value that is reached the innermost block</span>
+<span class="gd">-for each iteration.</span>
+<span class="gi">+Variables used in the generator expression are evaluated lazily when the</span>
+<span class="gi">+:meth:`__next__` method is called for generator object (in the same fashion as</span>
+<span class="gi">+normal generators).  However, the leftmost :keyword:`for` clause is immediately</span>
+<span class="gi">+evaluated, so that an error produced by it can be seen before any other possible</span>
+<span class="gi">+error in the code that handles the generator expression.  Subsequent</span>
+<span class="gi">+:keyword:`for` clauses cannot be evaluated immediately since they may depend on</span>
+<span class="gi">+the previous :keyword:`for` loop. For example: ``(x*y for x in range(10) for y</span>
+<span class="gi">+in bar(x))``.</span>
+ 
+<span class="gd">-Variables used in the generator expression are evaluated lazily in a separate</span>
+<span class="gd">-scope when the :meth:`next` method is called for the generator object (in the</span>
+<span class="gd">-same fashion as for normal generators).  However, the :keyword:`in` expression</span>
+<span class="gd">-of the leftmost :keyword:`for` clause is immediately evaluated in the current</span>
+<span class="gd">-scope so that an error produced by it can be seen before any other possible</span>
+<span class="gd">-error in the code that handles the generator expression.  Subsequent</span>
+<span class="gd">-:keyword:`for` and :keyword:`if` clauses cannot be evaluated immediately since</span>
+<span class="gd">-they may depend on the previous :keyword:`for` loop.  For example:</span>
+<span class="gd">-``(x*y for x in range(10) for y in bar(x))``.</span>
+<span class="gd">-</span>
+<span class="gd">-The parentheses can be omitted on calls with only one argument. See section</span>
+<span class="gi">+The parentheses can be omitted on calls with only one argument.  See section</span>
+ :ref:`calls` for the detail.
+ 
+<span class="gd">-</span>
+ .. _dict:
+ 
+ Dictionary displays
+ -------------------
+ 
+ .. index:: pair: dictionary; display
+<span class="gd">-</span>
+<span class="gd">-.. index::</span>
+<span class="gd">-   single: key</span>
+<span class="gd">-   single: datum</span>
+<span class="gd">-   single: key/datum pair</span>
+<span class="gi">+           key, datum, key/datum pair</span>
+<span class="gi">+           object: dictionary</span>
+ 
+ A dictionary display is a possibly empty series of key/datum pairs enclosed in
+ curly braces:
+ 
+ .. productionlist::
+<span class="gd">-   dict_display: &quot;{&quot; [`key_datum_list`] &quot;}&quot;</span>
+<span class="gi">+   dict_display: &quot;{&quot; [`key_datum_list` | `dict_comprehension`] &quot;}&quot;</span>
+    key_datum_list: `key_datum` (&quot;,&quot; `key_datum`)* [&quot;,&quot;]
+    key_datum: `expression` &quot;:&quot; `expression`
+<span class="gd">-</span>
+<span class="gd">-.. index:: object: dictionary</span>
+<span class="gi">+   dict_comprehension: `expression` &quot;:&quot; `expression` `comp_for`</span>
+ 
+ A dictionary display yields a new dictionary object.
+ 
+<span class="gd">-The key/datum pairs are evaluated from left to right to define the entries of</span>
+<span class="gd">-the dictionary: each key object is used as a key into the dictionary to store</span>
+<span class="gd">-the corresponding datum.</span>
+<span class="gi">+If a comma-separated sequence of key/datum pairs is given, they are evaluated</span>
+<span class="gi">+from left to right to define the entries of the dictionary: each key object is</span>
+<span class="gi">+used as a key into the dictionary to store the corresponding datum.  This means</span>
+<span class="gi">+that you can specify the same key multiple times in the key/datum list, and the</span>
+<span class="gi">+final dictionary&#39;s value for that key will be the last one given.</span>
+<span class="gi">+</span>
+<span class="gi">+A dict comprehension, in contrast to list and set comprehensions, needs two</span>
+<span class="gi">+expressions separated with a colon followed by the usual &quot;for&quot; and &quot;if&quot; clauses.</span>
+<span class="gi">+When the comprehension is run, the resulting key and value elements are inserted</span>
+<span class="gi">+in the new dictionary in the order they are produced.</span>
+ 
+ .. index:: pair: immutable; object
+<span class="gi">+           hashable</span>
+ 
+ Restrictions on the types of the key values are listed earlier in section
+ :ref:`types`.  (To summarize, the key type should be :term:`hashable`, which excludes
+ all mutable objects.)  Clashes between duplicate keys are not detected; the last
+ datum (textually rightmost in the display) stored for a given key value
+ prevails.
+ 
+ 
+<span class="gi">+.. _set:</span>
+<span class="gi">+</span>
+<span class="gi">+Set displays</span>
+<span class="gi">+------------</span>
+<span class="gi">+</span>
+<span class="gi">+.. index:: pair: set; display</span>
+<span class="gi">+           object: set</span>
+<span class="gi">+</span>
+<span class="gi">+A set display is denoted by curly braces and distinguishable from dictionary</span>
+<span class="gi">+displays by the lack of colons separating keys and values:</span>
+<span class="gi">+</span>
+<span class="gi">+.. productionlist::</span>
+<span class="gi">+   set_display: &quot;{&quot; (`expression_list` | `comprehension`) &quot;}&quot;</span>
+<span class="gi">+</span>
+<span class="gi">+A set display yields a new mutable set object, the contents being specified by</span>
+<span class="gi">+either a sequence of expressions or a comprehension.  When a comma-separated</span>
+<span class="gi">+list of expressions is supplied, its elements are evaluated from left to right</span>
+<span class="gi">+and added to the set object.  When a comprehension is supplied, the set is</span>
+<span class="gi">+constructed from the elements resulting from the comprehension.</span>
+<span class="gi">+</span>
+<span class="gi">+An empty set cannot be constructed with ``{}``; this literal constructs an empty</span>
+<span class="gi">+dictionary.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ .. _string-conversions:
+ 
+ String conversions
+ ------------------
+ 
+ .. index::
+    pair: string; conversion
+    pair: reverse; quotes
+    pair: backward; quotes
+    single: back-quotes
+ 
+ A string conversion is an expression list enclosed in reverse (a.k.a. backward)
+<span class="gu">@@ -358,25 +408,25 @@</span>
+ the internal evaluation stack.  When the execution is resumed by calling one of
+ the generator&#39;s methods, the function can proceed exactly as if the
+ :keyword:`yield` expression was just another external call. The value of the
+ :keyword:`yield` expression after resuming depends on the method which resumed
+ the execution.
+ 
+ .. index:: single: coroutine
+ 
+ All of this makes generator functions quite similar to coroutines; they yield
+ multiple times, they have more than one entry point and their execution can be
+ suspended.  The only difference is that a generator function cannot control
+ where should the execution continue after it yields; the control is always
+<span class="gd">-transfered to the generator&#39;s caller.</span>
+<span class="gi">+transferred to the generator&#39;s caller.</span>
+ 
+ .. index:: object: generator
+ 
+ The following generator&#39;s methods can be used to control the execution of a
+ generator function:
+ 
+ .. index:: exception: StopIteration
+ 
+ 
+ .. method:: generator.next()
+ 
+    Starts the execution of a generator function or resumes it at the last executed
+<span class="gu">@@ -941,24 +991,29 @@</span>
+    shift_expr: `a_expr` | `shift_expr` ( &quot;&lt;&lt;&quot; | &quot;&gt;&gt;&quot; ) `a_expr`
+ 
+ These operators accept plain or long integers as arguments.  The arguments are
+ converted to a common type.  They shift the first argument to the left or right
+ by the number of bits given by the second argument.
+ 
+ .. index:: exception: ValueError
+ 
+ A right shift by *n* bits is defined as division by ``pow(2, n)``.  A left shift
+ by *n* bits is defined as multiplication with ``pow(2, n)``.  Negative shift
+ counts raise a :exc:`ValueError` exception.
+ 
+<span class="gi">+.. note::</span>
+<span class="gi">+</span>
+<span class="gi">+   In the current implementation, the right-hand operand is required</span>
+<span class="gi">+   to be at most :attr:`sys.maxsize`.  If the right-hand operand is larger than</span>
+<span class="gi">+   :attr:`sys.maxsize` an :exc:`OverflowError` exception is raised.</span>
+ 
+ .. _bitwise:
+ 
+ Binary bitwise operations
+ =========================
+ 
+ .. index:: triple: binary; bitwise; operation
+ 
+ Each of the three bitwise operations has a different priority level:
+ 
+ .. productionlist::
+    and_expr: `shift_expr` | `and_expr` &quot;&amp;&quot; `shift_expr`
+<span class="gu">@@ -1303,50 +1358,51 @@</span>
+ +-----------------------------------------------+-------------------------------------+
+ | ``|``                                         | Bitwise OR                          |
+ +-----------------------------------------------+-------------------------------------+
+ | ``^``                                         | Bitwise XOR                         |
+ +-----------------------------------------------+-------------------------------------+
+ | ``&amp;``                                         | Bitwise AND                         |
+ +-----------------------------------------------+-------------------------------------+
+ | ``&lt;&lt;``, ``&gt;&gt;``                                | Shifts                              |
+ +-----------------------------------------------+-------------------------------------+
+ | ``+``, ``-``                                  | Addition and subtraction            |
+ +-----------------------------------------------+-------------------------------------+
+ | ``*``, ``/``, ``//``, ``%``                   | Multiplication, division, remainder |
+<span class="gi">+|                                               | [#]_                                |</span>
+ +-----------------------------------------------+-------------------------------------+
+ | ``+x``, ``-x``, ``~x``                        | Positive, negative, bitwise NOT     |
+ +-----------------------------------------------+-------------------------------------+
+ | ``**``                                        | Exponentiation [#]_                 |
+ +-----------------------------------------------+-------------------------------------+
+ | ``x[index]``, ``x[index:index]``,             | Subscription, slicing,              |
+ | ``x(arguments...)``, ``x.attribute``          | call, attribute reference           |
+ +-----------------------------------------------+-------------------------------------+
+ | ``(expressions...)``,                         | Binding or tuple display,           |
+ | ``[expressions...]``,                         | list display,                       |
+ | ``{key:datum...}``,                           | dictionary display,                 |
+ | ```expressions...```                          | string conversion                   |
+ +-----------------------------------------------+-------------------------------------+
+ 
+ .. rubric:: Footnotes
+ 
+ .. [#] In Python 2.3 and later releases, a list comprehension &quot;leaks&quot; the control
+    variables of each ``for`` it contains into the containing scope.  However, this
+    behavior is deprecated, and relying on it will not work in Python 3.0
+ 
+ .. [#] While ``abs(x%y) &lt; abs(y)`` is true mathematically, for floats it may not be
+    true numerically due to roundoff.  For example, and assuming a platform on which
+    a Python float is an IEEE 754 double-precision number, in order that ``-1e-100 %
+    1e100`` have the same sign as ``1e100``, the computed result is ``-1e-100 +
+<span class="gd">-   1e100``, which is numerically exactly equal to ``1e100``.  Function :func:`fmod`</span>
+<span class="gd">-   in the :mod:`math` module returns a result whose sign matches the sign of the</span>
+<span class="gi">+   1e100``, which is numerically exactly equal to ``1e100``.  The function</span>
+<span class="gi">+   :func:`math.fmod` returns a result whose sign matches the sign of the</span>
+    first argument instead, and so returns ``-1e-100`` in this case. Which approach
+    is more appropriate depends on the application.
+ 
+ .. [#] If x is very close to an exact integer multiple of y, it&#39;s possible for
+    ``floor(x/y)`` to be one larger than ``(x-x%y)/y`` due to rounding.  In such
+    cases, Python returns the latter result, in order to preserve that
+    ``divmod(x,y)[0] * y + x % y`` be very close to ``x``.
+ 
+ .. [#] While comparisons between unicode strings make sense at the byte
+    level, they may be counter-intuitive to users. For example, the
+    strings ``u&quot;\u00C7&quot;`` and ``u&quot;\u0043\u0327&quot;`` compare differently,
+    even though they both represent the same unicode character (LATIN
+<span class="gu">@@ -1358,14 +1414,17 @@</span>
+ 
+ .. [#] Earlier versions of Python used lexicographic comparison of the sorted (key,
+    value) lists, but this was very expensive for the common case of comparing for
+    equality.  An even earlier version of Python compared dictionaries by identity
+    only, but this caused surprises because people expected to be able to test a
+    dictionary for emptiness by comparing it to ``{}``.
+ 
+ .. [#] Due to automatic garbage-collection, free lists, and the dynamic nature of
+    descriptors, you may notice seemingly unusual behaviour in certain uses of
+    the :keyword:`is` operator, like those involving comparisons between instance
+    methods, or constants.  Check their documentation for more info.
+ 
+<span class="gi">+.. [#] The ``%`` operator is also used for string formatting; the same</span>
+<span class="gi">+   precedence applies.</span>
+<span class="gi">+</span>
+ .. [#] The power operator ``**`` binds less tightly than an arithmetic or
+    bitwise unary operator on its right, that is, ``2**-1`` is ``0.5``.
+</pre></div>
+
+</body>
+</html>

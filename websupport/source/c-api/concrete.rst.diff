@@ -1,0 +1,20 @@
+@@ -91,17 +91,19 @@
+ 
+ .. toctree::
+ 
+    class.rst
+    function.rst
+    method.rst
+    file.rst
+    module.rst
+    iterator.rst
+    descriptor.rst
+    slice.rst
+    weakref.rst
++   capsule.rst
+    cobject.rst
+    cell.rst
+    gen.rst
+    datetime.rst
+    set.rst
++   code.rst

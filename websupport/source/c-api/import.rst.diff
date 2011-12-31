@@ -1,0 +1,27 @@
+@@ -232,25 +232,25 @@
+           int size;
+       };
+ 
+ 
+ .. cvar:: struct _frozen* PyImport_FrozenModules
+ 
+    This pointer is initialized to point to an array of :ctype:`struct _frozen`
+    records, terminated by one whose members are all *NULL* or zero.  When a frozen
+    module is imported, it is searched in this table.  Third-party code could play
+    tricks with this to provide a dynamically created collection of frozen modules.
+ 
+ 
+-.. cfunction:: int PyImport_AppendInittab(char *name, void (*initfunc)(void))
++.. cfunction:: int PyImport_AppendInittab(const char *name, void (*initfunc)(void))
+ 
+    Add a single module to the existing table of built-in modules.  This is a
+    convenience wrapper around :cfunc:`PyImport_ExtendInittab`, returning ``-1`` if
+    the table could not be extended.  The new module can be imported by the name
+    *name*, and uses the function *initfunc* as the initialization function called
+    on the first attempted import.  This should be called before
+    :cfunc:`Py_Initialize`.
+ 
+ 
+ .. ctype:: struct _inittab
+ 
+    Structure describing a single entry in the list of built-in modules.  Each of

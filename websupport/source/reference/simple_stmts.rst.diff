@@ -1,0 +1,65 @@
+@@ -112,27 +112,24 @@
+ unacceptable.  The rules observed by various types and the exceptions raised are
+ given with the definition of the object types (see section :ref:`types`).
+ 
+ .. index:: triple: target; list; assignment
+ 
+ Assignment of an object to a target list is recursively defined as follows.
+ 
+ * If the target list is a single target: The object is assigned to that target.
+ 
+ * If the target list is a comma-separated list of targets: The object must be an
+   iterable with the same number of items as there are targets in the target list,
+   and the items are assigned, from left to right, to the corresponding targets.
+-  (This rule is relaxed as of Python 1.5; in earlier versions, the object had to
+-  be a tuple.  Since strings are sequences, an assignment like ``a, b = "xy"`` is
+-  now legal as long as the string has the right length.)
+ 
+ Assignment of an object to a single target is recursively defined as follows.
+ 
+ * If the target is an identifier (name):
+ 
+     .. index:: statement: global
+ 
+   * If the name does not occur in a :keyword:`global` statement in the current
+     code block: the name is bound to the object in the current local namespace.
+ 
+   * Otherwise: the name is bound to the object in the current global namespace.
+ 
+@@ -827,33 +824,29 @@
+     single: relative; import
+ 
+ When specifying what module to import you do not have to specify the absolute
+ name of the module. When a module or package is contained within another
+ package it is possible to make a relative import within the same top package
+ without having to mention the package name. By using leading dots in the
+ specified module or package after :keyword:`from` you can specify how high to
+ traverse up the current package hierarchy without specifying exact names. One
+ leading dot means the current package where the module making the import
+ exists. Two dots means up one package level. Three dots is up two levels, etc.
+ So if you execute ``from . import mod`` from a module in the ``pkg`` package
+ then you will end up importing ``pkg.mod``. If you execute ``from ..subpkg2
+-imprt mod`` from within ``pkg.subpkg1`` you will import ``pkg.subpkg2.mod``.
++import mod`` from within ``pkg.subpkg1`` you will import ``pkg.subpkg2.mod``.
+ The specification for relative imports is contained within :pep:`328`.
+ 
+-
+-.. index:: builtin: __import__
+-
+-The built-in function :func:`__import__` is provided to support applications
+-that determine which modules need to be loaded dynamically; refer to
+-:ref:`built-in-funcs` for additional information.
++:func:`importlib.import_module` is provided to support applications that
++determine which modules need to be loaded dynamically.
+ 
+ 
+ .. _future:
+ 
+ Future statements
+ -----------------
+ 
+ .. index:: pair: future; statement
+ 
+ A :dfn:`future statement` is a directive to the compiler that a particular
+ module should be compiled using syntax or semantics that will be available in a
+ specified future release of Python.  The future statement is intended to ease

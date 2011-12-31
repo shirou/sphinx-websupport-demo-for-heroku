@@ -1,0 +1,58 @@
+@@ -19,25 +19,25 @@
+    z++;
+ 
+ Only the ``x++`` statement is executed if the condition is true, but the
+ indentation leads you to believe otherwise.  Even experienced C programmers will
+ sometimes stare at it a long time wondering why ``y`` is being decremented even
+ for ``x > y``.
+ 
+ Because there are no begin/end brackets, Python is much less prone to
+ coding-style conflicts.  In C there are many different ways to place the braces.
+ If you're used to reading and writing code that uses one style, you will feel at
+ least slightly uneasy when reading (or being required to write) another style.
+ 
+-Many coding styles place begin/end brackets on a line by themself.  This makes
++Many coding styles place begin/end brackets on a line by themselves.  This makes
+ programs considerably longer and wastes valuable screen space, making it harder
+ to get a good overview of a program.  Ideally, a function should fit on one
+ screen (say, 20-30 lines).  20 lines of Python can do a lot more work than 20
+ lines of C.  This is not solely due to the lack of begin/end brackets -- the
+ lack of declarations and the high-level data types are also responsible -- but
+ the indentation-based syntax certainly helps.
+ 
+ 
+ Why am I getting strange results with simple arithmetic operations?
+ -------------------------------------------------------------------
+ 
+ See the next question.
+@@ -66,27 +66,27 @@
+ In base 2, 1/2 = 0.1, 1/4 = 0.01, 1/8 = 0.001, etc.  .2 equals 2/10 equals 1/5,
+ resulting in the binary fractional number 0.001100110011001...
+ 
+ Floating point numbers only have 32 or 64 bits of precision, so the digits are
+ cut off at some point, and the resulting number is 0.199999999999999996 in
+ decimal, not 0.2.
+ 
+ A floating point number's ``repr()`` function prints as many digits are
+ necessary to make ``eval(repr(f)) == f`` true for any float f.  The ``str()``
+ function prints fewer digits and this often results in the more sensible number
+ that was probably intended::
+ 
+-   >>> 0.2
+-   0.20000000000000001
+-   >>> print 0.2
++   >>> 1.1 - 0.9
++   0.20000000000000007
++   >>> print 1.1 - 0.9
+    0.2
+ 
+ One of the consequences of this is that it is error-prone to compare the result
+ of some computation to a float with ``==``. Tiny inaccuracies may mean that
+ ``==`` fails.  Instead, you have to check that the difference between the two
+ numbers is less than a certain threshold::
+ 
+    epsilon = 0.0000000000001  # Tiny allowed error
+    expected_result = 0.4
+ 
+    if expected_result-epsilon <= computation() <= expected_result+epsilon:
+        ...

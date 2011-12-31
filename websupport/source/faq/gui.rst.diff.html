@@ -1,0 +1,193 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>faq/gui.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -1,95 +1,97 @@</span>
+ :tocdepth: 2
+ 
+ ==========================
+ Graphic User Interface FAQ
+ ==========================
+ 
+ .. contents::
+ 
+<span class="gd">-General GUI Questions</span>
+<span class="gd">-=====================</span>
+<span class="gd">-</span>
+ What platform-independent GUI toolkits exist for Python?
+<span class="gd">---------------------------------------------------------</span>
+<span class="gi">+========================================================</span>
+ 
+ Depending on what platform(s) you are aiming at, there are several.
+ 
+ .. XXX check links
+ 
+ Tkinter
+<span class="gd">-&#39;&#39;&#39;&#39;&#39;&#39;&#39;</span>
+<span class="gi">+-------</span>
+ 
+ Standard builds of Python include an object-oriented interface to the Tcl/Tk
+ widget set, called Tkinter.  This is probably the easiest to install and use.
+ For more info about Tk, including pointers to the source, see the Tcl/Tk home
+ page at http://www.tcl.tk.  Tcl/Tk is fully portable to the MacOS, Windows, and
+ Unix platforms.
+ 
+ wxWidgets
+<span class="gd">-&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;</span>
+<span class="gi">+---------</span>
+ 
+<span class="gd">-wxWidgets is a GUI class library written in C++ that&#39;s a portable</span>
+<span class="gd">-interface to various platform-specific libraries, and that has a</span>
+<span class="gd">-Python interface called `wxPython &lt;http://www.wxpython.org&gt;`__.</span>
+<span class="gi">+wxWidgets (http://www.wxwidgets.org) is a free, portable GUI class</span>
+<span class="gi">+library written in C++ that provides a native look and feel on a</span>
+<span class="gi">+number of platforms, with Windows, MacOS X, GTK, X11, all listed as</span>
+<span class="gi">+current stable targets.  Language bindings are available for a number</span>
+<span class="gi">+of languages including Python, Perl, Ruby, etc.</span>
+ 
+<span class="gd">-wxWidgets preserves the look and feel of the</span>
+<span class="gd">-underlying graphics toolkit, and has a large set of widgets and</span>
+<span class="gd">-collection of GDI classes.  See `the wxWidgets page</span>
+<span class="gd">-&lt;http://www.wxwidgets.org&gt;`_ for more details.</span>
+<span class="gi">+wxPython (http://www.wxpython.org) is the Python binding for</span>
+<span class="gi">+wxwidgets.  While it often lags slightly behind the official wxWidgets</span>
+<span class="gi">+releases, it also offers a number of features via pure Python</span>
+<span class="gi">+extensions that are not available in other language bindings.  There</span>
+<span class="gi">+is an active wxPython user and developer community.</span>
+ 
+<span class="gd">-wxWidgets supports Windows and MacOS; on Unix variants,</span>
+<span class="gd">-it supports both GTk+ and Motif toolkits.</span>
+<span class="gi">+Both wxWidgets and wxPython are free, open source, software with</span>
+<span class="gi">+permissive licences that allow their use in commercial products as</span>
+<span class="gi">+well as in freeware or shareware.</span>
+<span class="gi">+</span>
+ 
+ Qt
+<span class="gd">-&#39;&#39;&#39;</span>
+<span class="gi">+---</span>
+ 
+ There are bindings available for the Qt toolkit (`PyQt
+ &lt;http://www.riverbankcomputing.co.uk/software/pyqt/&gt;`_) and for KDE (`PyKDE &lt;http://www.riverbankcomputing.co.uk/software/pykde/intro&gt;`__).  If
+ you&#39;re writing open source software, you don&#39;t need to pay for PyQt, but if you
+ want to write proprietary applications, you must buy a PyQt license from
+ `Riverbank Computing &lt;http://www.riverbankcomputing.co.uk&gt;`_ and (up to Qt 4.4;
+ Qt 4.5 upwards is licensed under the LGPL license) a Qt license from `Trolltech
+ &lt;http://www.trolltech.com&gt;`_.
+ 
+ Gtk+
+<span class="gd">-&#39;&#39;&#39;&#39;</span>
+<span class="gi">+----</span>
+ 
+ PyGtk bindings for the `Gtk+ toolkit &lt;http://www.gtk.org&gt;`_ have been
+ implemented by James Henstridge; see &lt;http://www.pygtk.org&gt;.
+ 
+ FLTK
+<span class="gd">-&#39;&#39;&#39;&#39;</span>
+<span class="gi">+----</span>
+ 
+ Python bindings for `the FLTK toolkit &lt;http://www.fltk.org&gt;`_, a simple yet
+ powerful and mature cross-platform windowing system, are available from `the
+ PyFLTK project &lt;http://pyfltk.sourceforge.net&gt;`_.
+ 
+ 
+ FOX
+<span class="gd">-&#39;&#39;&#39;</span>
+<span class="gi">+----</span>
+ 
+ A wrapper for `the FOX toolkit &lt;http://www.fox-toolkit.org/&gt;`_ called `FXpy
+ &lt;http://fxpy.sourceforge.net/&gt;`_ is available.  FOX supports both Unix variants
+ and Windows.
+ 
+ 
+ OpenGL
+<span class="gd">-&#39;&#39;&#39;&#39;&#39;&#39;</span>
+<span class="gi">+------</span>
+ 
+ For OpenGL bindings, see `PyOpenGL &lt;http://pyopengl.sourceforge.net&gt;`_.
+ 
+ 
+ What platform-specific GUI toolkits exist for Python?
+<span class="gd">------------------------------------------------------</span>
+<span class="gi">+========================================================</span>
+ 
+ `The Mac port &lt;http://python.org/download/mac&gt;`_ by Jack Jansen has a rich and
+ ever-growing set of modules that support the native Mac toolbox calls.  The port
+ supports MacOS X&#39;s Carbon libraries.
+ 
+ By installing the `PyObjc Objective-C bridge
+ &lt;http://pyobjc.sourceforge.net&gt;`_, Python programs can use MacOS X&#39;s
+ Cocoa libraries. See the documentation that comes with the Mac port.
+ 
+ :ref:`Pythonwin &lt;windows-faq&gt;` by Mark Hammond includes an interface to the
+ Microsoft Foundation Classes and a Python programming environment
+ that&#39;s written mostly in Python using the MFC classes.
+</pre></div>
+
+</body>
+</html>

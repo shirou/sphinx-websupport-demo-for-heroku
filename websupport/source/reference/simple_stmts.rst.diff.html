@@ -1,0 +1,139 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>reference/simple_stmts.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -112,27 +112,24 @@</span>
+ unacceptable.  The rules observed by various types and the exceptions raised are
+ given with the definition of the object types (see section :ref:`types`).
+ 
+ .. index:: triple: target; list; assignment
+ 
+ Assignment of an object to a target list is recursively defined as follows.
+ 
+ * If the target list is a single target: The object is assigned to that target.
+ 
+ * If the target list is a comma-separated list of targets: The object must be an
+   iterable with the same number of items as there are targets in the target list,
+   and the items are assigned, from left to right, to the corresponding targets.
+<span class="gd">-  (This rule is relaxed as of Python 1.5; in earlier versions, the object had to</span>
+<span class="gd">-  be a tuple.  Since strings are sequences, an assignment like ``a, b = &quot;xy&quot;`` is</span>
+<span class="gd">-  now legal as long as the string has the right length.)</span>
+ 
+ Assignment of an object to a single target is recursively defined as follows.
+ 
+ * If the target is an identifier (name):
+ 
+     .. index:: statement: global
+ 
+   * If the name does not occur in a :keyword:`global` statement in the current
+     code block: the name is bound to the object in the current local namespace.
+ 
+   * Otherwise: the name is bound to the object in the current global namespace.
+ 
+<span class="gu">@@ -827,33 +824,29 @@</span>
+     single: relative; import
+ 
+ When specifying what module to import you do not have to specify the absolute
+ name of the module. When a module or package is contained within another
+ package it is possible to make a relative import within the same top package
+ without having to mention the package name. By using leading dots in the
+ specified module or package after :keyword:`from` you can specify how high to
+ traverse up the current package hierarchy without specifying exact names. One
+ leading dot means the current package where the module making the import
+ exists. Two dots means up one package level. Three dots is up two levels, etc.
+ So if you execute ``from . import mod`` from a module in the ``pkg`` package
+ then you will end up importing ``pkg.mod``. If you execute ``from ..subpkg2
+<span class="gd">-imprt mod`` from within ``pkg.subpkg1`` you will import ``pkg.subpkg2.mod``.</span>
+<span class="gi">+import mod`` from within ``pkg.subpkg1`` you will import ``pkg.subpkg2.mod``.</span>
+ The specification for relative imports is contained within :pep:`328`.
+ 
+<span class="gd">-</span>
+<span class="gd">-.. index:: builtin: __import__</span>
+<span class="gd">-</span>
+<span class="gd">-The built-in function :func:`__import__` is provided to support applications</span>
+<span class="gd">-that determine which modules need to be loaded dynamically; refer to</span>
+<span class="gd">-:ref:`built-in-funcs` for additional information.</span>
+<span class="gi">+:func:`importlib.import_module` is provided to support applications that</span>
+<span class="gi">+determine which modules need to be loaded dynamically.</span>
+ 
+ 
+ .. _future:
+ 
+ Future statements
+ -----------------
+ 
+ .. index:: pair: future; statement
+ 
+ A :dfn:`future statement` is a directive to the compiler that a particular
+ module should be compiled using syntax or semantics that will be available in a
+ specified future release of Python.  The future statement is intended to ease
+</pre></div>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>documenting/style.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -1,22 +1,22 @@</span>
+ .. highlightlang:: rest
+ 
+ Style Guide
+ ===========
+ 
+ The Python documentation should follow the `Apple Publications Style Guide`_
+ wherever possible. This particular style guide was selected mostly because it
+ seems reasonable and is easy to get online.
+ 
+<span class="gd">-Topics which are not covered in the Apple&#39;s style guide will be discussed in</span>
+<span class="gi">+Topics which are not covered in Apple&#39;s style guide will be discussed in</span>
+ this document.
+ 
+ All reST files use an indentation of 3 spaces.  The maximum line length is 80
+ characters for normal text, but tables, deeply indented code samples and long
+ links may extend beyond that.
+ 
+ Make generous use of blank lines where applicable; they help grouping things
+ together.
+ 
+ A sentence-ending period may be followed by one or two spaces; while reST
+ ignores the second space, it is customarily put in by some users, for example
+ to aid Emacs&#39; auto-fill mode.
+<span class="gu">@@ -56,15 +56,119 @@</span>
+ 
+ Python
+     The name of our favorite programming language is always capitalized.
+ 
+ Unicode
+     The name of a character set and matching encoding. This is always written
+     capitalized.
+ 
+ Unix
+     The name of the operating system developed at AT&amp;T Bell Labs in the early
+     1970s.
+ 
+<span class="gi">+Affirmative Tone</span>
+<span class="gi">+----------------</span>
+<span class="gi">+</span>
+<span class="gi">+The documentation focuses on affirmatively stating what the language does and</span>
+<span class="gi">+how to use it effectively.</span>
+<span class="gi">+</span>
+<span class="gi">+Except for certain security risks or segfault risks, the docs should avoid</span>
+<span class="gi">+wording along the lines of &quot;feature x is dangerous&quot; or &quot;experts only&quot;.  These</span>
+<span class="gi">+kinds of value judgments belong in external blogs and wikis, not in the core</span>
+<span class="gi">+documentation.</span>
+<span class="gi">+</span>
+<span class="gi">+Bad example (creating worry in the mind of a reader):</span>
+<span class="gi">+</span>
+<span class="gi">+    Warning: failing to explicitly close a file could result in lost data or</span>
+<span class="gi">+    excessive resource consumption.  Never rely on reference counting to</span>
+<span class="gi">+    automatically close a file.</span>
+<span class="gi">+</span>
+<span class="gi">+Good example (establishing confident knowledge in the effective use of the language):</span>
+<span class="gi">+</span>
+<span class="gi">+    A best practice for using files is use a try/finally pair to explicitly</span>
+<span class="gi">+    close a file after it is used.  Alternatively, using a with-statement can</span>
+<span class="gi">+    achieve the same effect.  This assures that files are flushed and file</span>
+<span class="gi">+    descriptor resources are released in a timely manner.</span>
+<span class="gi">+</span>
+<span class="gi">+Economy of Expression</span>
+<span class="gi">+---------------------</span>
+<span class="gi">+</span>
+<span class="gi">+More documentation is not necessarily better documentation.  Err on the side</span>
+<span class="gi">+of being succinct.</span>
+<span class="gi">+</span>
+<span class="gi">+It is an unfortunate fact that making documentation longer can be an impediment</span>
+<span class="gi">+to understanding and can result in even more ways to misread or misinterpret the</span>
+<span class="gi">+text.  Long descriptions full of corner cases and caveats can create the</span>
+<span class="gi">+impression that a function is more complex or harder to use than it actually is.</span>
+<span class="gi">+</span>
+<span class="gi">+The documentation for :func:`super` is an example of where a good deal of</span>
+<span class="gi">+information was condensed into a few short paragraphs.  Discussion of</span>
+<span class="gi">+:func:`super` could have filled a chapter in a book, but it is often easier to</span>
+<span class="gi">+grasp a terse description than a lengthy narrative.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+Code Examples</span>
+<span class="gi">+-------------</span>
+<span class="gi">+</span>
+<span class="gi">+Short code examples can be a useful adjunct to understanding.  Readers can often</span>
+<span class="gi">+grasp a simple example more quickly than they can digest a formal description in</span>
+<span class="gi">+prose.</span>
+<span class="gi">+</span>
+<span class="gi">+People learn faster with concrete, motivating examples that match the context of</span>
+<span class="gi">+a typical use case.  For instance, the :func:`str.rpartition` method is better</span>
+<span class="gi">+demonstrated with an example splitting the domain from a URL than it would be</span>
+<span class="gi">+with an example of removing the last word from a line of Monty Python dialog.</span>
+<span class="gi">+</span>
+<span class="gi">+The ellipsis for the :attr:`sys.ps2` secondary interpreter prompt should only be</span>
+<span class="gi">+used sparingly, where it is necessary to clearly differentiate between input</span>
+<span class="gi">+lines and output lines.  Besides contributing visual clutter, it makes it</span>
+<span class="gi">+difficult for readers to cut-and-paste examples so they can experiment with</span>
+<span class="gi">+variations.</span>
+<span class="gi">+</span>
+<span class="gi">+Code Equivalents</span>
+<span class="gi">+----------------</span>
+<span class="gi">+</span>
+<span class="gi">+Giving pure Python code equivalents (or approximate equivalents) can be a useful</span>
+<span class="gi">+adjunct to a prose description.  A documenter should carefully weigh whether the</span>
+<span class="gi">+code equivalent adds value.</span>
+<span class="gi">+</span>
+<span class="gi">+A good example is the code equivalent for :func:`all`.  The short 4-line code</span>
+<span class="gi">+equivalent is easily digested; it re-emphasizes the early-out behavior; and it</span>
+<span class="gi">+clarifies the handling of the corner-case where the iterable is empty.  In</span>
+<span class="gi">+addition, it serves as a model for people wanting to implement a commonly</span>
+<span class="gi">+requested alternative where :func:`all` would return the specific object</span>
+<span class="gi">+evaluating to False whenever the function terminates early.</span>
+<span class="gi">+</span>
+<span class="gi">+A more questionable example is the code for :func:`itertools.groupby`.  Its code</span>
+<span class="gi">+equivalent borders on being too complex to be a quick aid to understanding.</span>
+<span class="gi">+Despite its complexity, the code equivalent was kept because it serves as a</span>
+<span class="gi">+model to alternative implementations and because the operation of the &quot;grouper&quot;</span>
+<span class="gi">+is more easily shown in code than in English prose.</span>
+<span class="gi">+</span>
+<span class="gi">+An example of when not to use a code equivalent is for the :func:`oct` function.</span>
+<span class="gi">+The exact steps in converting a number to octal doesn&#39;t add value for a user</span>
+<span class="gi">+trying to learn what the function does.</span>
+<span class="gi">+</span>
+<span class="gi">+Audience</span>
+<span class="gi">+--------</span>
+<span class="gi">+</span>
+<span class="gi">+The tone of the tutorial (and all the docs) needs to be respectful of the</span>
+<span class="gi">+reader&#39;s intelligence.  Don&#39;t presume that the readers are stupid.  Lay out the</span>
+<span class="gi">+relevant information, show motivating use cases, provide glossary links, and do</span>
+<span class="gi">+your best to connect the dots, but don&#39;t talk down to them or waste their time.</span>
+<span class="gi">+</span>
+<span class="gi">+The tutorial is meant for newcomers, many of whom will be using the tutorial to</span>
+<span class="gi">+evaluate the language as a whole.  The experience needs to be positive and not</span>
+<span class="gi">+leave the reader with worries that something bad will happen if they make a</span>
+<span class="gi">+misstep.  The tutorial serves as guide for intelligent and curious readers,</span>
+<span class="gi">+saving details for the how-to guides and other sources.</span>
+<span class="gi">+</span>
+<span class="gi">+Be careful accepting requests for documentation changes from the rare but vocal</span>
+<span class="gi">+category of reader who is looking for vindication for one of their programming</span>
+<span class="gi">+errors (&quot;I made a mistake, therefore the docs must be wrong ...&quot;).  Typically,</span>
+<span class="gi">+the documentation wasn&#39;t consulted until after the error was made.  It is</span>
+<span class="gi">+unfortunate, but typically no documentation edit would have saved the user from</span>
+<span class="gi">+making false assumptions about the language (&quot;I was surprised by ...&quot;).</span>
+<span class="gi">+</span>
+ 
+ .. _Apple Publications Style Guide: http://developer.apple.com/mac/library/documentation/UserExperience/Conceptual/APStyleGuide/APSG_2009.pdf
+ 
+</pre></div>
+
+</body>
+</html>

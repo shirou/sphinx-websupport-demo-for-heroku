@@ -1,0 +1,855 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>distutils/setupscript.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -10,60 +10,60 @@</span>
+ commands that operate on your modules do the right thing.  As we saw in section
+ :ref:`distutils-simple-example` above, the setup script consists mainly of a call to
+ :func:`setup`, and most information supplied to the Distutils by the module
+ developer is supplied as keyword arguments to :func:`setup`.
+ 
+ Here&#39;s a slightly more involved example, which we&#39;ll follow for the next couple
+ of sections: the Distutils&#39; own setup script.  (Keep in mind that although the
+ Distutils are included with Python 1.6 and later, they also have an independent
+ existence so that Python 1.5.2 users can use them to install other module
+ distributions.  The Distutils&#39; own setup script, shown here, is used to install
+ the package into Python 1.5.2.) ::
+ 
+<span class="gd">-   #!/usr/bin/env python</span>
+<span class="gi">+    #!/usr/bin/env python</span>
+ 
+<span class="gd">-   from distutils.core import setup</span>
+<span class="gi">+    from distutils.core import setup</span>
+ 
+<span class="gd">-   setup(name=&#39;Distutils&#39;,</span>
+<span class="gd">-         version=&#39;1.0&#39;,</span>
+<span class="gd">-         description=&#39;Python Distribution Utilities&#39;,</span>
+<span class="gd">-         author=&#39;Greg Ward&#39;,</span>
+<span class="gd">-         author_email=&#39;gward@python.net&#39;,</span>
+<span class="gd">-         url=&#39;http://www.python.org/sigs/distutils-sig/&#39;,</span>
+<span class="gd">-         packages=[&#39;distutils&#39;, &#39;distutils.command&#39;],</span>
+<span class="gd">-        )</span>
+<span class="gi">+    setup(name=&#39;Distutils&#39;,</span>
+<span class="gi">+          version=&#39;1.0&#39;,</span>
+<span class="gi">+          description=&#39;Python Distribution Utilities&#39;,</span>
+<span class="gi">+          author=&#39;Greg Ward&#39;,</span>
+<span class="gi">+          author_email=&#39;gward@python.net&#39;,</span>
+<span class="gi">+          url=&#39;http://www.python.org/sigs/distutils-sig/&#39;,</span>
+<span class="gi">+          packages=[&#39;distutils&#39;, &#39;distutils.command&#39;],</span>
+<span class="gi">+         )</span>
+ 
+ There are only two differences between this and the trivial one-file
+ distribution presented in section :ref:`distutils-simple-example`: more metadata, and the
+ specification of pure Python modules by package, rather than by module.  This is
+ important since the Distutils consist of a couple of dozen modules split into
+ (so far) two packages; an explicit list of every module would be tedious to
+ generate and difficult to maintain.  For more information on the additional
+ meta-data, see section :ref:`meta-data`.
+ 
+ Note that any pathnames (files or directories) supplied in the setup script
+ should be written using the Unix convention, i.e. slash-separated.  The
+ Distutils will take care of converting this platform-neutral representation into
+ whatever is appropriate on your current platform before actually using the
+ pathname.  This makes your setup script portable across operating systems, which
+ of course is one of the major goals of the Distutils.  In this spirit, all
+ pathnames in this document are slash-separated.
+ 
+ This, of course, only applies to pathnames given to Distutils functions.  If
+ you, for example, use standard Python functions such as :func:`glob.glob` or
+ :func:`os.listdir` to specify files, you should be careful to write portable
+ code instead of hardcoding path separators::
+ 
+<span class="gd">-   glob.glob(os.path.join(&#39;mydir&#39;, &#39;subdir&#39;, &#39;*.html&#39;))</span>
+<span class="gd">-   os.listdir(os.path.join(&#39;mydir&#39;, &#39;subdir&#39;))</span>
+<span class="gi">+    glob.glob(os.path.join(&#39;mydir&#39;, &#39;subdir&#39;, &#39;*.html&#39;))</span>
+<span class="gi">+    os.listdir(os.path.join(&#39;mydir&#39;, &#39;subdir&#39;))</span>
+ 
+ 
+ .. _listing-packages:
+ 
+ Listing whole packages
+ ======================
+ 
+ The :option:`packages` option tells the Distutils to process (build, distribute,
+ install, etc.) all pure Python modules found in each package mentioned in the
+ :option:`packages` list.  In order to do this, of course, there has to be a
+ correspondence between package names and directories in the filesystem.  The
+ default correspondence is the most obvious one, i.e. package :mod:`distutils` is
+<span class="gu">@@ -72,58 +72,58 @@</span>
+ promising that the Distutils will find a file :file:`foo/__init__.py` (which
+ might be spelled differently on your system, but you get the idea) relative to
+ the directory where your setup script lives.  If you break this promise, the
+ Distutils will issue a warning but still process the broken package anyways.
+ 
+ If you use a different convention to lay out your source directory, that&#39;s no
+ problem: you just have to supply the :option:`package_dir` option to tell the
+ Distutils about your convention.  For example, say you keep all Python source
+ under :file:`lib`, so that modules in the &quot;root package&quot; (i.e., not in any
+ package at all) are in :file:`lib`, modules in the :mod:`foo` package are in
+ :file:`lib/foo`, and so forth.  Then you would put ::
+ 
+<span class="gd">-   package_dir = {&#39;&#39;: &#39;lib&#39;}</span>
+<span class="gi">+    package_dir = {&#39;&#39;: &#39;lib&#39;}</span>
+ 
+ in your setup script.  The keys to this dictionary are package names, and an
+ empty package name stands for the root package.  The values are directory names
+ relative to your distribution root.  In this case, when you say ``packages =
+ [&#39;foo&#39;]``, you are promising that the file :file:`lib/foo/__init__.py` exists.
+ 
+ Another possible convention is to put the :mod:`foo` package right in
+ :file:`lib`, the :mod:`foo.bar` package in :file:`lib/bar`, etc.  This would be
+ written in the setup script as ::
+ 
+<span class="gd">-   package_dir = {&#39;foo&#39;: &#39;lib&#39;}</span>
+<span class="gi">+    package_dir = {&#39;foo&#39;: &#39;lib&#39;}</span>
+ 
+ A ``package: dir`` entry in the :option:`package_dir` dictionary implicitly
+ applies to all packages below *package*, so the :mod:`foo.bar` case is
+ automatically handled here.  In this example, having ``packages = [&#39;foo&#39;,
+ &#39;foo.bar&#39;]`` tells the Distutils to look for :file:`lib/__init__.py` and
+ :file:`lib/bar/__init__.py`.  (Keep in mind that although :option:`package_dir`
+ applies recursively, you must explicitly list all packages in
+ :option:`packages`: the Distutils will *not* recursively scan your source tree
+ looking for any directory with an :file:`__init__.py` file.)
+ 
+ 
+ .. _listing-modules:
+ 
+ Listing individual modules
+ ==========================
+ 
+ For a small module distribution, you might prefer to list all modules rather
+ than listing packages---especially the case of a single module that goes in the
+ &quot;root package&quot; (i.e., no package at all).  This simplest case was shown in
+ section :ref:`distutils-simple-example`; here is a slightly more involved example::
+ 
+<span class="gd">-   py_modules = [&#39;mod1&#39;, &#39;pkg.mod2&#39;]</span>
+<span class="gi">+    py_modules = [&#39;mod1&#39;, &#39;pkg.mod2&#39;]</span>
+ 
+ This describes two modules, one of them in the &quot;root&quot; package, the other in the
+ :mod:`pkg` package.  Again, the default package/directory layout implies that
+ these two modules can be found in :file:`mod1.py` and :file:`pkg/mod2.py`, and
+ that :file:`pkg/__init__.py` exists as well. And again, you can override the
+ package/directory correspondence using the :option:`package_dir` option.
+ 
+ 
+ .. _describing-extensions:
+ 
+ Describing extension modules
+ ============================
+<span class="gu">@@ -135,227 +135,235 @@</span>
+ extension name, source file(s), and any compile/link requirements (include
+ directories, libraries to link with, etc.).
+ 
+ .. XXX read over this section
+ 
+ All of this is done through another keyword argument to :func:`setup`, the
+ :option:`ext_modules` option.  :option:`ext_modules` is just a list of
+ :class:`Extension` instances, each of which describes a single extension module.
+ Suppose your distribution includes a single extension, called :mod:`foo` and
+ implemented by :file:`foo.c`.  If no additional instructions to the
+ compiler/linker are needed, describing this extension is quite simple::
+ 
+<span class="gd">-   Extension(&#39;foo&#39;, [&#39;foo.c&#39;])</span>
+<span class="gi">+    Extension(&#39;foo&#39;, [&#39;foo.c&#39;])</span>
+ 
+ The :class:`Extension` class can be imported from :mod:`distutils.core` along
+ with :func:`setup`.  Thus, the setup script for a module distribution that
+ contains only this one extension and nothing else might be::
+ 
+<span class="gd">-   from distutils.core import setup, Extension</span>
+<span class="gd">-   setup(name=&#39;foo&#39;,</span>
+<span class="gd">-         version=&#39;1.0&#39;,</span>
+<span class="gd">-         ext_modules=[Extension(&#39;foo&#39;, [&#39;foo.c&#39;])],</span>
+<span class="gd">-         )</span>
+<span class="gi">+    from distutils.core import setup, Extension</span>
+<span class="gi">+    setup(name=&#39;foo&#39;,</span>
+<span class="gi">+          version=&#39;1.0&#39;,</span>
+<span class="gi">+          ext_modules=[Extension(&#39;foo&#39;, [&#39;foo.c&#39;])],</span>
+<span class="gi">+          )</span>
+ 
+ The :class:`Extension` class (actually, the underlying extension-building
+ machinery implemented by the :command:`build_ext` command) supports a great deal
+ of flexibility in describing Python extensions, which is explained in the
+ following sections.
+ 
+ 
+ Extension names and packages
+ ----------------------------
+ 
+ The first argument to the :class:`Extension` constructor is always the name of
+ the extension, including any package names.  For example, ::
+ 
+<span class="gd">-   Extension(&#39;foo&#39;, [&#39;src/foo1.c&#39;, &#39;src/foo2.c&#39;])</span>
+<span class="gi">+    Extension(&#39;foo&#39;, [&#39;src/foo1.c&#39;, &#39;src/foo2.c&#39;])</span>
+ 
+ describes an extension that lives in the root package, while ::
+ 
+<span class="gd">-   Extension(&#39;pkg.foo&#39;, [&#39;src/foo1.c&#39;, &#39;src/foo2.c&#39;])</span>
+<span class="gi">+    Extension(&#39;pkg.foo&#39;, [&#39;src/foo1.c&#39;, &#39;src/foo2.c&#39;])</span>
+ 
+ describes the same extension in the :mod:`pkg` package.  The source files and
+ resulting object code are identical in both cases; the only difference is where
+ in the filesystem (and therefore where in Python&#39;s namespace hierarchy) the
+ resulting extension lives.
+ 
+ If you have a number of extensions all in the same package (or all under the
+ same base package), use the :option:`ext_package` keyword argument to
+ :func:`setup`.  For example, ::
+ 
+<span class="gd">-   setup(...,</span>
+<span class="gd">-         ext_package=&#39;pkg&#39;,</span>
+<span class="gd">-         ext_modules=[Extension(&#39;foo&#39;, [&#39;foo.c&#39;]),</span>
+<span class="gd">-                      Extension(&#39;subpkg.bar&#39;, [&#39;bar.c&#39;])],</span>
+<span class="gd">-        )</span>
+<span class="gi">+    setup(...,</span>
+<span class="gi">+          ext_package=&#39;pkg&#39;,</span>
+<span class="gi">+          ext_modules=[Extension(&#39;foo&#39;, [&#39;foo.c&#39;]),</span>
+<span class="gi">+                       Extension(&#39;subpkg.bar&#39;, [&#39;bar.c&#39;])],</span>
+<span class="gi">+         )</span>
+ 
+ will compile :file:`foo.c` to the extension :mod:`pkg.foo`, and :file:`bar.c` to
+ :mod:`pkg.subpkg.bar`.
+ 
+ 
+ Extension source files
+ ----------------------
+ 
+ The second argument to the :class:`Extension` constructor is a list of source
+ files.  Since the Distutils currently only support C, C++, and Objective-C
+ extensions, these are normally C/C++/Objective-C source files.  (Be sure to use
+ appropriate extensions to distinguish C++\ source files: :file:`.cc` and
+ :file:`.cpp` seem to be recognized by both Unix and Windows compilers.)
+ 
+ However, you can also include SWIG interface (:file:`.i`) files in the list; the
+ :command:`build_ext` command knows how to deal with SWIG extensions: it will run
+ SWIG on the interface file and compile the resulting C/C++ file into your
+ extension.
+ 
+ .. XXX SWIG support is rough around the edges and largely untested!
+ 
+ This warning notwithstanding, options to SWIG can be currently passed like
+ this::
+ 
+<span class="gd">-   setup(...,</span>
+<span class="gd">-         ext_modules=[Extension(&#39;_foo&#39;, [&#39;foo.i&#39;],</span>
+<span class="gd">-                                swig_opts=[&#39;-modern&#39;, &#39;-I../include&#39;])],</span>
+<span class="gd">-         py_modules=[&#39;foo&#39;],</span>
+<span class="gd">-        )</span>
+<span class="gi">+    setup(...,</span>
+<span class="gi">+          ext_modules=[Extension(&#39;_foo&#39;, [&#39;foo.i&#39;],</span>
+<span class="gi">+                                 swig_opts=[&#39;-modern&#39;, &#39;-I../include&#39;])],</span>
+<span class="gi">+          py_modules=[&#39;foo&#39;],</span>
+<span class="gi">+         )</span>
+ 
+ Or on the commandline like this::
+ 
+<span class="gd">-   &gt; python setup.py build_ext --swig-opts=&quot;-modern -I../include&quot;</span>
+<span class="gi">+    &gt; python setup.py build_ext --swig-opts=&quot;-modern -I../include&quot;</span>
+ 
+ On some platforms, you can include non-source files that are processed by the
+ compiler and included in your extension.  Currently, this just means Windows
+ message text (:file:`.mc`) files and resource definition (:file:`.rc`) files for
+ Visual C++. These will be compiled to binary resource (:file:`.res`) files and
+ linked into the executable.
+ 
+ 
+ Preprocessor options
+ --------------------
+ 
+ Three optional arguments to :class:`Extension` will help if you need to specify
+ include directories to search or preprocessor macros to define/undefine:
+ ``include_dirs``, ``define_macros``, and ``undef_macros``.
+ 
+ For example, if your extension requires header files in the :file:`include`
+ directory under your distribution root, use the ``include_dirs`` option::
+ 
+<span class="gd">-   Extension(&#39;foo&#39;, [&#39;foo.c&#39;], include_dirs=[&#39;include&#39;])</span>
+<span class="gi">+    Extension(&#39;foo&#39;, [&#39;foo.c&#39;], include_dirs=[&#39;include&#39;])</span>
+ 
+ You can specify absolute directories there; if you know that your extension will
+ only be built on Unix systems with X11R6 installed to :file:`/usr`, you can get
+ away with ::
+ 
+<span class="gd">-   Extension(&#39;foo&#39;, [&#39;foo.c&#39;], include_dirs=[&#39;/usr/include/X11&#39;])</span>
+<span class="gi">+    Extension(&#39;foo&#39;, [&#39;foo.c&#39;], include_dirs=[&#39;/usr/include/X11&#39;])</span>
+ 
+ You should avoid this sort of non-portable usage if you plan to distribute your
+ code: it&#39;s probably better to write C code like  ::
+ 
+<span class="gd">-   #include &lt;X11/Xlib.h&gt;</span>
+<span class="gi">+    #include &lt;X11/Xlib.h&gt;</span>
+ 
+ If you need to include header files from some other Python extension, you can
+ take advantage of the fact that header files are installed in a consistent way
+ by the Distutils :command:`install_header` command.  For example, the Numerical
+ Python header files are installed (on a standard Unix installation) to
+ :file:`/usr/local/include/python1.5/Numerical`. (The exact location will differ
+ according to your platform and Python installation.)  Since the Python include
+ directory---\ :file:`/usr/local/include/python1.5` in this case---is always
+ included in the search path when building Python extensions, the best approach
+ is to write C code like  ::
+ 
+<span class="gd">-   #include &lt;Numerical/arrayobject.h&gt;</span>
+<span class="gi">+    #include &lt;Numerical/arrayobject.h&gt;</span>
+ 
+ If you must put the :file:`Numerical` include directory right into your header
+ search path, though, you can find that directory using the Distutils
+ :mod:`distutils.sysconfig` module::
+ 
+<span class="gd">-   from distutils.sysconfig import get_python_inc</span>
+<span class="gd">-   incdir = os.path.join(get_python_inc(plat_specific=1), &#39;Numerical&#39;)</span>
+<span class="gd">-   setup(...,</span>
+<span class="gd">-         Extension(..., include_dirs=[incdir]),</span>
+<span class="gd">-         )</span>
+<span class="gi">+    from distutils.sysconfig import get_python_inc</span>
+<span class="gi">+    incdir = os.path.join(get_python_inc(plat_specific=1), &#39;Numerical&#39;)</span>
+<span class="gi">+    setup(...,</span>
+<span class="gi">+          Extension(..., include_dirs=[incdir]),</span>
+<span class="gi">+          )</span>
+ 
+ Even though this is quite portable---it will work on any Python installation,
+ regardless of platform---it&#39;s probably easier to just write your C code in the
+ sensible way.
+ 
+ You can define and undefine pre-processor macros with the ``define_macros`` and
+ ``undef_macros`` options. ``define_macros`` takes a list of ``(name, value)``
+ tuples, where ``name`` is the name of the macro to define (a string) and
+ ``value`` is its value: either a string or ``None``.  (Defining a macro ``FOO``
+ to ``None`` is the equivalent of a bare ``#define FOO`` in your C source: with
+ most compilers, this sets ``FOO`` to the string ``1``.)  ``undef_macros`` is
+ just a list of macros to undefine.
+ 
+ For example::
+ 
+<span class="gd">-   Extension(...,</span>
+<span class="gd">-             define_macros=[(&#39;NDEBUG&#39;, &#39;1&#39;),</span>
+<span class="gd">-                            (&#39;HAVE_STRFTIME&#39;, None)],</span>
+<span class="gd">-             undef_macros=[&#39;HAVE_FOO&#39;, &#39;HAVE_BAR&#39;])</span>
+<span class="gi">+    Extension(...,</span>
+<span class="gi">+              define_macros=[(&#39;NDEBUG&#39;, &#39;1&#39;),</span>
+<span class="gi">+                             (&#39;HAVE_STRFTIME&#39;, None)],</span>
+<span class="gi">+              undef_macros=[&#39;HAVE_FOO&#39;, &#39;HAVE_BAR&#39;])</span>
+ 
+ is the equivalent of having this at the top of every C source file::
+ 
+<span class="gd">-   #define NDEBUG 1</span>
+<span class="gd">-   #define HAVE_STRFTIME</span>
+<span class="gd">-   #undef HAVE_FOO</span>
+<span class="gd">-   #undef HAVE_BAR</span>
+<span class="gi">+    #define NDEBUG 1</span>
+<span class="gi">+    #define HAVE_STRFTIME</span>
+<span class="gi">+    #undef HAVE_FOO</span>
+<span class="gi">+    #undef HAVE_BAR</span>
+ 
+ 
+ Library options
+ ---------------
+ 
+ You can also specify the libraries to link against when building your extension,
+ and the directories to search for those libraries.  The ``libraries`` option is
+ a list of libraries to link against, ``library_dirs`` is a list of directories
+ to search for libraries at  link-time, and ``runtime_library_dirs`` is a list of
+ directories to  search for shared (dynamically loaded) libraries at run-time.
+ 
+ For example, if you need to link against libraries known to be in the standard
+ library search path on target systems ::
+ 
+<span class="gd">-   Extension(...,</span>
+<span class="gd">-             libraries=[&#39;gdbm&#39;, &#39;readline&#39;])</span>
+<span class="gi">+    Extension(...,</span>
+<span class="gi">+              libraries=[&#39;gdbm&#39;, &#39;readline&#39;])</span>
+ 
+ If you need to link with libraries in a non-standard location, you&#39;ll have to
+ include the location in ``library_dirs``::
+ 
+<span class="gd">-   Extension(...,</span>
+<span class="gd">-             library_dirs=[&#39;/usr/X11R6/lib&#39;],</span>
+<span class="gd">-             libraries=[&#39;X11&#39;, &#39;Xt&#39;])</span>
+<span class="gi">+    Extension(...,</span>
+<span class="gi">+              library_dirs=[&#39;/usr/X11R6/lib&#39;],</span>
+<span class="gi">+              libraries=[&#39;X11&#39;, &#39;Xt&#39;])</span>
+ 
+ (Again, this sort of non-portable construct should be avoided if you intend to
+ distribute your code.)
+ 
+ .. XXX Should mention clib libraries here or somewhere else!
+ 
+ 
+ Other options
+ -------------
+ 
+ There are still some other options which can be used to handle special cases.
+ 
+<span class="gi">+The :option:`optional` option is a boolean; if it is true,</span>
+<span class="gi">+a build failure in the extension will not abort the build process, but</span>
+<span class="gi">+instead simply not install the failing extension.</span>
+<span class="gi">+</span>
+ The :option:`extra_objects` option is a list of object files to be passed to the
+ linker. These files must not have extensions, as the default extension for the
+ compiler is used.
+ 
+ :option:`extra_compile_args` and :option:`extra_link_args` can be used to
+ specify additional command line options for the respective compiler and linker
+ command lines.
+ 
+ :option:`export_symbols` is only useful on Windows.  It can contain a list of
+ symbols (functions or variables) to be exported. This option is not needed when
+ building compiled extensions: Distutils  will automatically add ``initmodule``
+ to the list of exported symbols.
+ 
+<span class="gi">+The :option:`depends` option is a list of files that the extension depends on</span>
+<span class="gi">+(for example header files). The build command will call the compiler on the</span>
+<span class="gi">+sources to rebuild extension if any on this files has been modified since the</span>
+<span class="gi">+previous build.</span>
+ 
+ Relationships between Distributions and Packages
+ ================================================
+ 
+ A distribution may relate to packages in three specific ways:
+ 
+ #. It can require packages or modules.
+ 
+ #. It can provide packages or modules.
+ 
+ #. It can obsolete packages or modules.
+ 
+<span class="gu">@@ -366,26 +374,26 @@</span>
+ the *requires* keyword argument to :func:`setup`. The value must be a list of
+ strings.  Each string specifies a package that is required, and optionally what
+ versions are sufficient.
+ 
+ To specify that any version of a module or package is required, the string
+ should consist entirely of the module or package name. Examples include
+ ``&#39;mymodule&#39;`` and ``&#39;xml.parsers.expat&#39;``.
+ 
+ If specific versions are required, a sequence of qualifiers can be supplied in
+ parentheses.  Each qualifier may consist of a comparison operator and a version
+ number.  The accepted comparison operators are::
+ 
+<span class="gd">-   &lt;    &gt;    ==</span>
+<span class="gd">-   &lt;=   &gt;=   !=</span>
+<span class="gi">+    &lt;    &gt;    ==</span>
+<span class="gi">+    &lt;=   &gt;=   !=</span>
+ 
+ These can be combined by using multiple qualifiers separated by commas (and
+ optional whitespace).  In this case, all of the qualifiers must be matched; a
+ logical AND is used to combine the evaluations.
+ 
+ Let&#39;s look at a bunch of examples:
+ 
+ +-------------------------+----------------------------------------------+
+ | Requires Expression     | Explanation                                  |
+ +=========================+==============================================+
+ | ``==1.0``               | Only version ``1.0`` is compatible           |
+ +-------------------------+----------------------------------------------+
+<span class="gu">@@ -414,124 +422,141 @@</span>
+ 
+ A package can declare that it obsoletes other packages using the *obsoletes*
+ keyword argument.  The value for this is similar to that of the *requires*
+ keyword: a list of strings giving module or package specifiers.  Each specifier
+ consists of a module or package name optionally followed by one or more version
+ qualifiers.  Version qualifiers are given in parentheses after the module or
+ package name.
+ 
+ The versions identified by the qualifiers are those that are obsoleted by the
+ distribution being described.  If no qualifiers are given, all versions of the
+ named module or package are understood to be obsoleted.
+ 
+<span class="gi">+.. _distutils-installing-scripts:</span>
+ 
+ Installing Scripts
+ ==================
+ 
+ So far we have been dealing with pure and non-pure Python modules, which are
+ usually not run by themselves but imported by scripts.
+ 
+ Scripts are files containing Python source code, intended to be started from the
+ command line.  Scripts don&#39;t require Distutils to do anything very complicated.
+ The only clever feature is that if the first line of the script starts with
+ ``#!`` and contains the word &quot;python&quot;, the Distutils will adjust the first line
+ to refer to the current interpreter location. By default, it is replaced with
+ the current interpreter location.  The :option:`--executable` (or :option:`-e`)
+ option will allow the interpreter path to be explicitly overridden.
+ 
+ The :option:`scripts` option simply is a list of files to be handled in this
+ way.  From the PyXML setup script::
+ 
+<span class="gd">-   setup(...,</span>
+<span class="gd">-         scripts=[&#39;scripts/xmlproc_parse&#39;, &#39;scripts/xmlproc_val&#39;]</span>
+<span class="gd">-         )</span>
+<span class="gi">+    setup(...,</span>
+<span class="gi">+          scripts=[&#39;scripts/xmlproc_parse&#39;, &#39;scripts/xmlproc_val&#39;]</span>
+<span class="gi">+          )</span>
+ 
+<span class="gi">+.. versionchanged:: 2.7</span>
+<span class="gi">+    All the scripts will also be added to the ``MANIFEST``</span>
+<span class="gi">+    file if no template is provided. See :ref:`manifest`.</span>
+<span class="gi">+</span>
+<span class="gi">+.. _distutils-installing-package-data:</span>
+ 
+ Installing Package Data
+ =======================
+ 
+ Often, additional files need to be installed into a package.  These files are
+ often data that&#39;s closely related to the package&#39;s implementation, or text files
+ containing documentation that might be of interest to programmers using the
+ package.  These files are called :dfn:`package data`.
+ 
+ Package data can be added to packages using the ``package_data`` keyword
+ argument to the :func:`setup` function.  The value must be a mapping from
+ package name to a list of relative path names that should be copied into the
+ package.  The paths are interpreted as relative to the directory containing the
+ package (information from the ``package_dir`` mapping is used if appropriate);
+ that is, the files are expected to be part of the package in the source
+ directories. They may contain glob patterns as well.
+ 
+ The path names may contain directory portions; any necessary directories will be
+ created in the installation.
+ 
+ For example, if a package should contain a subdirectory with several data files,
+ the files can be arranged like this in the source tree::
+ 
+<span class="gd">-   setup.py</span>
+<span class="gd">-   src/</span>
+<span class="gd">-       mypkg/</span>
+<span class="gd">-           __init__.py</span>
+<span class="gd">-           module.py</span>
+<span class="gd">-           data/</span>
+<span class="gd">-               tables.dat</span>
+<span class="gd">-               spoons.dat</span>
+<span class="gd">-               forks.dat</span>
+<span class="gi">+    setup.py</span>
+<span class="gi">+    src/</span>
+<span class="gi">+        mypkg/</span>
+<span class="gi">+            __init__.py</span>
+<span class="gi">+            module.py</span>
+<span class="gi">+            data/</span>
+<span class="gi">+                tables.dat</span>
+<span class="gi">+                spoons.dat</span>
+<span class="gi">+                forks.dat</span>
+ 
+ The corresponding call to :func:`setup` might be::
+ 
+<span class="gd">-   setup(...,</span>
+<span class="gd">-         packages=[&#39;mypkg&#39;],</span>
+<span class="gd">-         package_dir={&#39;mypkg&#39;: &#39;src/mypkg&#39;},</span>
+<span class="gd">-         package_data={&#39;mypkg&#39;: [&#39;data/*.dat&#39;]},</span>
+<span class="gd">-         )</span>
+<span class="gi">+    setup(...,</span>
+<span class="gi">+          packages=[&#39;mypkg&#39;],</span>
+<span class="gi">+          package_dir={&#39;mypkg&#39;: &#39;src/mypkg&#39;},</span>
+<span class="gi">+          package_data={&#39;mypkg&#39;: [&#39;data/*.dat&#39;]},</span>
+<span class="gi">+          )</span>
+ 
+ .. versionadded:: 2.4
+ 
+<span class="gi">+.. versionchanged:: 2.7</span>
+<span class="gi">+    All the files that match ``package_data`` will be added to the ``MANIFEST``</span>
+<span class="gi">+    file if no template is provided. See :ref:`manifest`.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. _distutils-additional-files:</span>
+ 
+ Installing Additional Files
+ ===========================
+ 
+ The :option:`data_files` option can be used to specify additional files needed
+ by the module distribution: configuration files, message catalogs, data files,
+ anything which doesn&#39;t fit in the previous categories.
+ 
+ :option:`data_files` specifies a sequence of (*directory*, *files*) pairs in the
+ following way::
+ 
+<span class="gd">-   setup(...,</span>
+<span class="gd">-         data_files=[(&#39;bitmaps&#39;, [&#39;bm/b1.gif&#39;, &#39;bm/b2.gif&#39;]),</span>
+<span class="gd">-                     (&#39;config&#39;, [&#39;cfg/data.cfg&#39;]),</span>
+<span class="gd">-                     (&#39;/etc/init.d&#39;, [&#39;init-script&#39;])]</span>
+<span class="gd">-        )</span>
+<span class="gi">+    setup(...,</span>
+<span class="gi">+          data_files=[(&#39;bitmaps&#39;, [&#39;bm/b1.gif&#39;, &#39;bm/b2.gif&#39;]),</span>
+<span class="gi">+                      (&#39;config&#39;, [&#39;cfg/data.cfg&#39;]),</span>
+<span class="gi">+                      (&#39;/etc/init.d&#39;, [&#39;init-script&#39;])]</span>
+<span class="gi">+         )</span>
+ 
+ Note that you can specify the directory names where the data files will be
+ installed, but you cannot rename the data files themselves.
+ 
+ Each (*directory*, *files*) pair in the sequence specifies the installation
+ directory and the files to install there.  If *directory* is a relative path, it
+ is interpreted relative to the installation prefix (Python&#39;s ``sys.prefix`` for
+ pure-Python packages, ``sys.exec_prefix`` for packages that contain extension
+ modules).  Each file name in *files* is interpreted relative to the
+ :file:`setup.py` script at the top of the package source distribution.  No
+ directory information from *files* is used to determine the final location of
+ the installed file; only the name of the file is used.
+ 
+ You can specify the :option:`data_files` options as a simple sequence of files
+ without specifying a target directory, but this is not recommended, and the
+ :command:`install` command will print a warning in this case. To install data
+ files directly in the target directory, an empty string should be given as the
+ directory.
+ 
+<span class="gi">+.. versionchanged:: 2.7</span>
+<span class="gi">+    All the files that match ``data_files`` will be added to the ``MANIFEST``</span>
+<span class="gi">+    file if no template is provided. See :ref:`manifest`.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ 
+ .. _meta-data:
+ 
+ Additional meta-data
+ ====================
+ 
+ The setup script may include additional meta-data beyond the name and version.
+ This information includes:
+ 
+ +----------------------+---------------------------+-----------------+--------+
+ | Meta-Data            | Description               | Value           | Notes  |
+ +======================+===========================+=================+========+
+<span class="gu">@@ -546,133 +571,135 @@</span>
+ +----------------------+---------------------------+-----------------+--------+
+ | ``maintainer``       | package maintainer&#39;s name | short string    | \(3)   |
+ +----------------------+---------------------------+-----------------+--------+
+ | ``maintainer_email`` | email address of the      | email address   | \(3)   |
+ |                      | package maintainer        |                 |        |
+ +----------------------+---------------------------+-----------------+--------+
+ | ``url``              | home page for the package | URL             | \(1)   |
+ +----------------------+---------------------------+-----------------+--------+
+ | ``description``      | short, summary            | short string    |        |
+ |                      | description of the        |                 |        |
+ |                      | package                   |                 |        |
+ +----------------------+---------------------------+-----------------+--------+
+<span class="gd">-| ``long_description`` | longer description of the | long string     |        |</span>
+<span class="gi">+| ``long_description`` | longer description of the | long string     | \(5)   |</span>
+ |                      | package                   |                 |        |
+ +----------------------+---------------------------+-----------------+--------+
+ | ``download_url``     | location where the        | URL             | \(4)   |
+ |                      | package may be downloaded |                 |        |
+ +----------------------+---------------------------+-----------------+--------+
+ | ``classifiers``      | a list of classifiers     | list of strings | \(4)   |
+ +----------------------+---------------------------+-----------------+--------+
+ | ``platforms``        | a list of platforms       | list of strings |        |
+ +----------------------+---------------------------+-----------------+--------+
+ | ``license``          | license for the package   | short string    | \(6)   |
+ +----------------------+---------------------------+-----------------+--------+
+ 
+ Notes:
+ 
+ (1)
+<span class="gd">-   These fields are required.</span>
+<span class="gi">+    These fields are required.</span>
+ 
+ (2)
+<span class="gd">-   It is recommended that versions take the form *major.minor[.patch[.sub]]*.</span>
+<span class="gi">+    It is recommended that versions take the form *major.minor[.patch[.sub]]*.</span>
+ 
+ (3)
+<span class="gd">-   Either the author or the maintainer must be identified.</span>
+<span class="gi">+    Either the author or the maintainer must be identified.</span>
+ 
+ (4)
+<span class="gd">-   These fields should not be used if your package is to be compatible with Python</span>
+<span class="gd">-   versions prior to 2.2.3 or 2.3.  The list is available from the `PyPI website</span>
+<span class="gd">-   &lt;http://pypi.python.org/pypi&gt;`_.</span>
+<span class="gi">+    These fields should not be used if your package is to be compatible with Python</span>
+<span class="gi">+    versions prior to 2.2.3 or 2.3.  The list is available from the `PyPI website</span>
+<span class="gi">+    &lt;http://pypi.python.org/pypi&gt;`_.</span>
+<span class="gi">+</span>
+<span class="gi">+(5)</span>
+<span class="gi">+    The ``long_description`` field is used by PyPI when you are registering a</span>
+<span class="gi">+    package, to build its home page.</span>
+ 
+ (6)
+     The ``license`` field is a text indicating the license covering the
+     package where the license is not a selection from the &quot;License&quot; Trove
+     classifiers. See the ``Classifier`` field. Notice that
+     there&#39;s a ``licence`` distribution option which is deprecated but still
+     acts as an alias for ``license``.
+ 
+ &#39;short string&#39;
+<span class="gd">-   A single line of text, not more than 200 characters.</span>
+<span class="gi">+    A single line of text, not more than 200 characters.</span>
+ 
+ &#39;long string&#39;
+<span class="gd">-   Multiple lines of plain text in reStructuredText format (see</span>
+<span class="gd">-   http://docutils.sf.net/).</span>
+<span class="gi">+    Multiple lines of plain text in reStructuredText format (see</span>
+<span class="gi">+    http://docutils.sf.net/).</span>
+ 
+ &#39;list of strings&#39;
+<span class="gd">-   See below.</span>
+<span class="gi">+    See below.</span>
+ 
+ None of the string values may be Unicode.
+ 
+ Encoding the version information is an art in itself. Python packages generally
+ adhere to the version format *major.minor[.patch][sub]*. The major number is 0
+ for initial, experimental releases of software. It is incremented for releases
+ that represent major milestones in a package. The minor number is incremented
+ when important new features are added to the package. The patch number
+ increments when bug-fix releases are made. Additional trailing version
+ information is sometimes used to indicate sub-releases.  These are
+ &quot;a1,a2,...,aN&quot; (for alpha releases, where functionality and API may change),
+ &quot;b1,b2,...,bN&quot; (for beta releases, which only fix bugs) and &quot;pr1,pr2,...,prN&quot;
+ (for final pre-release release testing). Some examples:
+ 
+ 0.1.0
+<span class="gd">-   the first, experimental release of a package</span>
+<span class="gi">+    the first, experimental release of a package</span>
+ 
+ 1.0.1a2
+<span class="gd">-   the second alpha release of the first patch version of 1.0</span>
+<span class="gi">+    the second alpha release of the first patch version of 1.0</span>
+ 
+ :option:`classifiers` are specified in a Python list::
+ 
+<span class="gd">-   setup(...,</span>
+<span class="gd">-         classifiers=[</span>
+<span class="gd">-             &#39;Development Status :: 4 - Beta&#39;,</span>
+<span class="gd">-             &#39;Environment :: Console&#39;,</span>
+<span class="gd">-             &#39;Environment :: Web Environment&#39;,</span>
+<span class="gd">-             &#39;Intended Audience :: End Users/Desktop&#39;,</span>
+<span class="gd">-             &#39;Intended Audience :: Developers&#39;,</span>
+<span class="gd">-             &#39;Intended Audience :: System Administrators&#39;,</span>
+<span class="gd">-             &#39;License :: OSI Approved :: Python Software Foundation License&#39;,</span>
+<span class="gd">-             &#39;Operating System :: MacOS :: MacOS X&#39;,</span>
+<span class="gd">-             &#39;Operating System :: Microsoft :: Windows&#39;,</span>
+<span class="gd">-             &#39;Operating System :: POSIX&#39;,</span>
+<span class="gd">-             &#39;Programming Language :: Python&#39;,</span>
+<span class="gd">-             &#39;Topic :: Communications :: Email&#39;,</span>
+<span class="gd">-             &#39;Topic :: Office/Business&#39;,</span>
+<span class="gd">-             &#39;Topic :: Software Development :: Bug Tracking&#39;,</span>
+<span class="gd">-             ],</span>
+<span class="gd">-         )</span>
+<span class="gi">+    setup(...,</span>
+<span class="gi">+          classifiers=[</span>
+<span class="gi">+              &#39;Development Status :: 4 - Beta&#39;,</span>
+<span class="gi">+              &#39;Environment :: Console&#39;,</span>
+<span class="gi">+              &#39;Environment :: Web Environment&#39;,</span>
+<span class="gi">+              &#39;Intended Audience :: End Users/Desktop&#39;,</span>
+<span class="gi">+              &#39;Intended Audience :: Developers&#39;,</span>
+<span class="gi">+              &#39;Intended Audience :: System Administrators&#39;,</span>
+<span class="gi">+              &#39;License :: OSI Approved :: Python Software Foundation License&#39;,</span>
+<span class="gi">+              &#39;Operating System :: MacOS :: MacOS X&#39;,</span>
+<span class="gi">+              &#39;Operating System :: Microsoft :: Windows&#39;,</span>
+<span class="gi">+              &#39;Operating System :: POSIX&#39;,</span>
+<span class="gi">+              &#39;Programming Language :: Python&#39;,</span>
+<span class="gi">+              &#39;Topic :: Communications :: Email&#39;,</span>
+<span class="gi">+              &#39;Topic :: Office/Business&#39;,</span>
+<span class="gi">+              &#39;Topic :: Software Development :: Bug Tracking&#39;,</span>
+<span class="gi">+              ],</span>
+<span class="gi">+          )</span>
+ 
+ If you wish to include classifiers in your :file:`setup.py` file and also wish
+ to remain backwards-compatible with Python releases prior to 2.2.3, then you can
+ include the following code fragment in your :file:`setup.py` before the
+ :func:`setup` call. ::
+ 
+<span class="gd">-   # patch distutils if it can&#39;t cope with the &quot;classifiers&quot; or</span>
+<span class="gd">-   # &quot;download_url&quot; keywords</span>
+<span class="gd">-   from sys import version</span>
+<span class="gd">-   if version &lt; &#39;2.2.3&#39;:</span>
+<span class="gd">-       from distutils.dist import DistributionMetadata</span>
+<span class="gd">-       DistributionMetadata.classifiers = None</span>
+<span class="gd">-       DistributionMetadata.download_url = None</span>
+<span class="gi">+    # patch distutils if it can&#39;t cope with the &quot;classifiers&quot; or</span>
+<span class="gi">+    # &quot;download_url&quot; keywords</span>
+<span class="gi">+    from sys import version</span>
+<span class="gi">+    if version &lt; &#39;2.2.3&#39;:</span>
+<span class="gi">+        from distutils.dist import DistributionMetadata</span>
+<span class="gi">+        DistributionMetadata.classifiers = None</span>
+<span class="gi">+        DistributionMetadata.download_url = None</span>
+ 
+ 
+ Debugging the setup script
+ ==========================
+ 
+ Sometimes things go wrong, and the setup script doesn&#39;t do what the developer
+ wants.
+ 
+ Distutils catches any exceptions when running the setup script, and print a
+ simple error message before the script is terminated.  The motivation for this
+ behaviour is to not confuse administrators who don&#39;t know much about Python and
+ are trying to install a package.  If they get a big long traceback from deep
+ inside the guts of Distutils, they may think the package or the Python
+ installation is broken because they don&#39;t read all the way down to the bottom
+ and see that it&#39;s a permission problem.
+ 
+ On the other hand, this doesn&#39;t help the developer to find the cause of the
+ failure. For this purpose, the DISTUTILS_DEBUG environment variable can be set
+ to anything except an empty string, and distutils will now print detailed
+ information what it is doing, and prints the full traceback in case an exception
+ occurs.
+<span class="gd">-</span>
+<span class="gd">-</span>
+</pre></div>
+
+</body>
+</html>

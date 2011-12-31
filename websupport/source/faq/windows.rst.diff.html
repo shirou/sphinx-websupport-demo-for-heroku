@@ -1,0 +1,200 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>faq/windows.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -277,46 +277,46 @@</span>
+ required.  Of course, foo.pyd is required if you want to say ``import foo``.  In
+ a DLL, linkage is declared in the source code with ``__declspec(dllexport)``.
+ In a .pyd, linkage is defined in a list of available functions.
+ 
+ 
+ How can I embed Python into a Windows application?
+ --------------------------------------------------
+ 
+ Embedding the Python interpreter in a Windows app can be summarized as follows:
+ 
+ 1. Do _not_ build Python into your .exe file directly.  On Windows, Python must
+    be a DLL to handle importing modules that are themselves DLL&#39;s.  (This is the
+<span class="gd">-   first key undocumented fact.) Instead, link to :file:`python{NN}.dll`; it is</span>
+<span class="gd">-   typically installed in ``C:\Windows\System``.  NN is the Python version, a</span>
+<span class="gi">+   first key undocumented fact.)  Instead, link to :file:`python{NN}.dll`; it is</span>
+<span class="gi">+   typically installed in ``C:\Windows\System``.  *NN* is the Python version, a</span>
+    number such as &quot;23&quot; for Python 2.3.
+ 
+<span class="gd">-   You can link to Python statically or dynamically.  Linking statically means</span>
+<span class="gd">-   linking against :file:`python{NN}.lib`, while dynamically linking means</span>
+<span class="gd">-   linking against :file:`python{NN}.dll`.  The drawback to dynamic linking is</span>
+<span class="gd">-   that your app won&#39;t run if :file:`python{NN}.dll` does not exist on your</span>
+<span class="gd">-   system.  (General note: :file:`python{NN}.lib` is the so-called &quot;import lib&quot;</span>
+<span class="gd">-   corresponding to :file:`python.dll`.  It merely defines symbols for the</span>
+<span class="gd">-   linker.)</span>
+<span class="gi">+   You can link to Python in two different ways.  Load-time linking means</span>
+<span class="gi">+   linking against :file:`python{NN}.lib`, while run-time linking means linking</span>
+<span class="gi">+   against :file:`python{NN}.dll`.  (General note: :file:`python{NN}.lib` is the</span>
+<span class="gi">+   so-called &quot;import lib&quot; corresponding to :file:`python{NN}.dll`.  It merely</span>
+<span class="gi">+   defines symbols for the linker.)</span>
+ 
+<span class="gd">-   Linking dynamically greatly simplifies link options; everything happens at</span>
+<span class="gd">-   run time.  Your code must load :file:`python{NN}.dll` using the Windows</span>
+<span class="gi">+   Run-time linking greatly simplifies link options; everything happens at run</span>
+<span class="gi">+   time.  Your code must load :file:`python{NN}.dll` using the Windows</span>
+    ``LoadLibraryEx()`` routine.  The code must also use access routines and data
+    in :file:`python{NN}.dll` (that is, Python&#39;s C API&#39;s) using pointers obtained
+    by the Windows ``GetProcAddress()`` routine.  Macros can make using these
+    pointers transparent to any C code that calls routines in Python&#39;s C API.
+ 
+    Borland note: convert :file:`python{NN}.lib` to OMF format using Coff2Omf.exe
+    first.
+ 
+<span class="gi">+   .. XXX what about static linking?</span>
+<span class="gi">+</span>
+ 2. If you use SWIG, it is easy to create a Python &quot;extension module&quot; that will
+    make the app&#39;s data and methods available to Python.  SWIG will handle just
+    about all the grungy details for you.  The result is C code that you link
+    *into* your .exe file (!)  You do _not_ have to create a DLL file, and this
+    also simplifies linking.
+ 
+ 3. SWIG will create an init function (a C function) whose name depends on the
+    name of the extension module.  For example, if the name of the module is leo,
+    the init function will be called initleo().  If you use SWIG shadow classes,
+    as you should, the init function will be called initleoc().  This initializes
+    a mostly hidden helper class used by the shadow class.
+ 
+<span class="gu">@@ -432,34 +432,39 @@</span>
+ 
+ How do I check for a keypress without blocking?
+ -----------------------------------------------
+ 
+ Use the msvcrt module.  This is a standard Windows-specific extension module.
+ It defines a function ``kbhit()`` which checks whether a keyboard hit is
+ present, and ``getch()`` which gets one character without echoing it.
+ 
+ 
+ How do I emulate os.kill() in Windows?
+ --------------------------------------
+ 
+<span class="gd">-To terminate a process, you can use ctypes::</span>
+<span class="gi">+Prior to Python 2.7 and 3.2, to terminate a process, you can use :mod:`ctypes`::</span>
+ 
+    import ctypes
+ 
+    def kill(pid):
+        &quot;&quot;&quot;kill function for Win32&quot;&quot;&quot;
+        kernel32 = ctypes.windll.kernel32
+        handle = kernel32.OpenProcess(1, 0, pid)
+        return (0 != kernel32.TerminateProcess(handle, 0))
+ 
+<span class="gi">+In 2.7 and 3.2, :func:`os.kill` is implemented similar to the above function,</span>
+<span class="gi">+with the additional feature of being able to send CTRL+C and CTRL+BREAK</span>
+<span class="gi">+to console subprocesses which are designed to handle those signals. See</span>
+<span class="gi">+:func:`os.kill` for further details.</span>
+<span class="gi">+</span>
+ 
+ Why does os.path.isdir() fail on NT shared directories?
+ -------------------------------------------------------
+ 
+ The solution appears to be always append the &quot;\\&quot; on the end of shared
+ drives.
+ 
+    &gt;&gt;&gt; import os
+    &gt;&gt;&gt; os.path.isdir( &#39;\\\\rorschach\\public&#39;)
+    0
+    &gt;&gt;&gt; os.path.isdir( &#39;\\\\rorschach\\public\\&#39;)
+    1
+<span class="gu">@@ -580,25 +585,25 @@</span>
+ cw3215.dll is missing.
+ 
+ Cause: you have an old Tcl/Tk DLL built with cygwin in your path (probably
+ ``C:\Windows``).  You must use the Tcl/Tk DLLs from the standard Tcl/Tk
+ installation (Python 1.5.2 comes with one).
+ 
+ 
+ Warning about CTL3D32 version from installer
+ --------------------------------------------
+ 
+ The Python installer issues a warning like this::
+ 
+<span class="gd">-   This version uses ``CTL3D32.DLL`` which is not the correct version.</span>
+<span class="gi">+   This version uses CTL3D32.DLL which is not the correct version.</span>
+    This version is used for windows NT applications only.
+ 
+ Tim Peters:
+ 
+    This is a Microsoft DLL, and a notorious source of problems.  The message
+    means what it says: you have the wrong version of this DLL for your operating
+    system.  The Python installation did not cause this -- something else you
+    installed previous to this overwrote the DLL that came with your OS (probably
+    older shareware of some sort, but there&#39;s no way to tell now).  If you search
+    for &quot;CTL3D32&quot; using any search engine (AltaVista, for example), you&#39;ll find
+    hundreds and hundreds of web pages complaining about the same problem with
+    all sorts of installation programs.  They&#39;ll point you to ways to get the
+</pre></div>
+
+</body>
+</html>

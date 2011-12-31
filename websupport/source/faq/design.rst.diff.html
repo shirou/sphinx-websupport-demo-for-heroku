@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>faq/design.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -19,25 +19,25 @@</span>
+    z++;
+ 
+ Only the ``x++`` statement is executed if the condition is true, but the
+ indentation leads you to believe otherwise.  Even experienced C programmers will
+ sometimes stare at it a long time wondering why ``y`` is being decremented even
+ for ``x &gt; y``.
+ 
+ Because there are no begin/end brackets, Python is much less prone to
+ coding-style conflicts.  In C there are many different ways to place the braces.
+ If you&#39;re used to reading and writing code that uses one style, you will feel at
+ least slightly uneasy when reading (or being required to write) another style.
+ 
+<span class="gd">-Many coding styles place begin/end brackets on a line by themself.  This makes</span>
+<span class="gi">+Many coding styles place begin/end brackets on a line by themselves.  This makes</span>
+ programs considerably longer and wastes valuable screen space, making it harder
+ to get a good overview of a program.  Ideally, a function should fit on one
+ screen (say, 20-30 lines).  20 lines of Python can do a lot more work than 20
+ lines of C.  This is not solely due to the lack of begin/end brackets -- the
+ lack of declarations and the high-level data types are also responsible -- but
+ the indentation-based syntax certainly helps.
+ 
+ 
+ Why am I getting strange results with simple arithmetic operations?
+ -------------------------------------------------------------------
+ 
+ See the next question.
+<span class="gu">@@ -66,27 +66,27 @@</span>
+ In base 2, 1/2 = 0.1, 1/4 = 0.01, 1/8 = 0.001, etc.  .2 equals 2/10 equals 1/5,
+ resulting in the binary fractional number 0.001100110011001...
+ 
+ Floating point numbers only have 32 or 64 bits of precision, so the digits are
+ cut off at some point, and the resulting number is 0.199999999999999996 in
+ decimal, not 0.2.
+ 
+ A floating point number&#39;s ``repr()`` function prints as many digits are
+ necessary to make ``eval(repr(f)) == f`` true for any float f.  The ``str()``
+ function prints fewer digits and this often results in the more sensible number
+ that was probably intended::
+ 
+<span class="gd">-   &gt;&gt;&gt; 0.2</span>
+<span class="gd">-   0.20000000000000001</span>
+<span class="gd">-   &gt;&gt;&gt; print 0.2</span>
+<span class="gi">+   &gt;&gt;&gt; 1.1 - 0.9</span>
+<span class="gi">+   0.20000000000000007</span>
+<span class="gi">+   &gt;&gt;&gt; print 1.1 - 0.9</span>
+    0.2
+ 
+ One of the consequences of this is that it is error-prone to compare the result
+ of some computation to a float with ``==``. Tiny inaccuracies may mean that
+ ``==`` fails.  Instead, you have to check that the difference between the two
+ numbers is less than a certain threshold::
+ 
+    epsilon = 0.0000000000001  # Tiny allowed error
+    expected_result = 0.4
+ 
+    if expected_result-epsilon &lt;= computation() &lt;= expected_result+epsilon:
+        ...
+</pre></div>
+
+</body>
+</html>

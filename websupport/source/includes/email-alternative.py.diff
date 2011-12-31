@@ -1,0 +1,15 @@
+@@ -1,13 +1,13 @@
+-#! /usr/bin/python
++#!/usr/bin/env python
+ 
+ import smtplib
+ 
+ from email.mime.multipart import MIMEMultipart
+ from email.mime.text import MIMEText
+ 
+ # me == my email address
+ # you == recipient's email address
+ me = "my@email.com"
+ you = "your@email.com"
+ 
+ # Create message container - the correct MIME type is multipart/alternative.

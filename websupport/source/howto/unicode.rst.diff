@@ -1,0 +1,208 @@
+@@ -1,20 +1,22 @@
+ *****************
+   Unicode HOWTO
+ *****************
+ 
+-:Release: 1.02
++:Release: 1.03
+ 
+-This HOWTO discusses Python's support for Unicode, and explains various problems
+-that people commonly encounter when trying to work with Unicode.
++This HOWTO discusses Python 2.x's support for Unicode, and explains
++various problems that people commonly encounter when trying to work
++with Unicode.  (This HOWTO has not yet been updated to cover the 3.x
++versions of Python.)
+ 
+ Introduction to Unicode
+ =======================
+ 
+ History of Character Codes
+ --------------------------
+ 
+ In 1968, the American Standard Code for Information Interchange, better known by
+ its acronym ASCII, was standardized.  ASCII defined numeric codes for various
+ characters, with the numeric values running from 0 to
+ 127.  For example, the lowercase letter 'a' is assigned 97 as its code
+ value.
+@@ -135,26 +137,27 @@
+    bytes.  The above string takes 24 bytes compared to the 6 bytes needed for an
+    ASCII representation.  Increased RAM usage doesn't matter too much (desktop
+    computers have megabytes of RAM, and strings aren't usually that large), but
+    expanding our usage of disk and network bandwidth by a factor of 4 is
+    intolerable.
+ 
+ 3. It's not compatible with existing C functions such as ``strlen()``, so a new
+    family of wide string functions would need to be used.
+ 
+ 4. Many Internet standards are defined in terms of textual data, and can't
+    handle content with embedded zero bytes.
+ 
+-Generally people don't use this encoding, instead choosing other encodings that
+-are more efficient and convenient.
++Generally people don't use this encoding, instead choosing other
++encodings that are more efficient and convenient.  UTF-8 is probably
++the most commonly supported encoding; it will be discussed below.
+ 
+ Encodings don't have to handle every possible Unicode character, and most
+ encodings don't.  For example, Python's default encoding is the 'ascii'
+ encoding.  The rules for converting a Unicode string into the ASCII encoding are
+ simple; for each code point:
+ 
+ 1. If the code point is < 128, each byte is the same as the value of the code
+    point.
+ 
+ 2. If the code point is 128 or greater, the Unicode string can't be represented
+    in this encoding.  (Python raises a :exc:`UnicodeEncodeError` exception in this
+    case.)
+@@ -213,26 +216,26 @@
+ Another good introductory article was written by Joel Spolsky
+ <http://www.joelonsoftware.com/articles/Unicode.html>.
+ If this introduction didn't make things clear to you, you should try reading this
+ alternate article before continuing.
+ 
+ .. Jason Orendorff XXX http://www.jorendorff.com/articles/unicode/ is broken
+ 
+ Wikipedia entries are often helpful; see the entries for "character encoding"
+ <http://en.wikipedia.org/wiki/Character_encoding> and UTF-8
+ <http://en.wikipedia.org/wiki/UTF-8>, for example.
+ 
+ 
+-Python's Unicode Support
+-========================
++Python 2.x's Unicode Support
++============================
+ 
+ Now that you've learned the rudiments of Unicode, we can look at Python's
+ Unicode features.
+ 
+ 
+ The Unicode Type
+ ----------------
+ 
+ Unicode strings are expressed as instances of the :class:`unicode` type, one of
+ Python's repertoire of built-in types.  It derives from an abstract type called
+ :class:`basestring`, which is also an ancestor of the :class:`str` type; you can
+ therefore check if a value is a string type with ``isinstance(value,
+@@ -263,25 +266,25 @@
+ Unicode result).  The following examples show the differences::
+ 
+     >>> unicode('\x80abc', errors='strict')
+     Traceback (most recent call last):
+       File "<stdin>", line 1, in ?
+     UnicodeDecodeError: 'ascii' codec can't decode byte 0x80 in position 0:
+                         ordinal not in range(128)
+     >>> unicode('\x80abc', errors='replace')
+     u'\ufffdabc'
+     >>> unicode('\x80abc', errors='ignore')
+     u'abc'
+ 
+-Encodings are specified as strings containing the encoding's name.  Python 2.4
++Encodings are specified as strings containing the encoding's name.  Python 2.7
+ comes with roughly 100 different encodings; see the Python Library Reference at
+ :ref:`standard-encodings` for a list.  Some encodings
+ have multiple names; for example, 'latin-1', 'iso_8859_1' and '8859' are all
+ synonyms for the same encoding.
+ 
+ One-character Unicode strings can also be created with the :func:`unichr`
+ built-in function, which takes integers and returns a Unicode string of length 1
+ that contains the corresponding code point.  The reverse operation is the
+ built-in :func:`ord` function that takes a one-character Unicode string and
+ returns the code point value::
+ 
+     >>> unichr(40960)
+@@ -418,29 +421,37 @@
+ If you don't include such a comment, the default encoding used will be ASCII.
+ Versions of Python before 2.4 were Euro-centric and assumed Latin-1 as a default
+ encoding for string literals; in Python 2.4, characters greater than 127 still
+ work but result in a warning.  For example, the following program has no
+ encoding declaration::
+ 
+     #!/usr/bin/env python
+     u = u'abcdé'
+     print ord(u[-1])
+ 
+ When you run it with Python 2.4, it will output the following warning::
+ 
+-    amk:~$ python p263.py
++    amk:~$ python2.4 p263.py
+     sys:1: DeprecationWarning: Non-ASCII character '\xe9'
+          in file p263.py on line 2, but no encoding declared;
+          see http://www.python.org/peps/pep-0263.html for details
+ 
++Python 2.5 and higher are stricter and will produce a syntax error::
++
++    amk:~$ python2.5 p263.py
++    File "/tmp/p263.py", line 2
++    SyntaxError: Non-ASCII character '\xc3' in file /tmp/p263.py
++      on line 2, but no encoding declared; see
++      http://www.python.org/peps/pep-0263.html for details
++
+ 
+ Unicode Properties
+ ------------------
+ 
+ The Unicode specification includes a database of information about code points.
+ For each code point that's defined, the information includes the character's
+ name, its category, the numeric value if applicable (Unicode has characters
+ representing the Roman numerals and fractions such as one-third and
+ four-fifths).  There are also properties related to the code point's use in
+ bidirectional text and other display-related properties.
+ 
+ The following program displays some information about several characters, and
+@@ -463,25 +474,25 @@
+     1 0bf2 No TAMIL NUMBER ONE THOUSAND
+     2 0f84 Mn TIBETAN MARK HALANTA
+     3 1770 Lo TAGBANWA LETTER SA
+     4 33af So SQUARE RAD OVER S SQUARED
+     1000.0
+ 
+ The category codes are abbreviations describing the nature of the character.
+ These are grouped into categories such as "Letter", "Number", "Punctuation", or
+ "Symbol", which in turn are broken up into subcategories.  To take the codes
+ from the above output, ``'Ll'`` means 'Letter, lowercase', ``'No'`` means
+ "Number, other", ``'Mn'`` is "Mark, nonspacing", and ``'So'`` is "Symbol,
+ other".  See
+-<http://unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values> for a
++<http://www.unicode.org/reports/tr44/#General_Category_Values> for a
+ list of category codes.
+ 
+ References
+ ----------
+ 
+ The Unicode and 8-bit string types are described in the Python library reference
+ at :ref:`typesseq`.
+ 
+ The documentation for the :mod:`unicodedata` module.
+ 
+ The documentation for the :mod:`codecs` module.
+ 
+@@ -684,25 +695,29 @@
+ 
+ Thanks to the following people who have noted errors or offered suggestions on
+ this article: Nicholas Bastin, Marius Gedminas, Kent Johnson, Ken Krugler,
+ Marc-André Lemburg, Martin von Löwis, Chad Whitacre.
+ 
+ Version 1.0: posted August 5 2005.
+ 
+ Version 1.01: posted August 7 2005.  Corrects factual and markup errors; adds
+ several links.
+ 
+ Version 1.02: posted August 16 2005.  Corrects factual errors.
+ 
++Version 1.03: posted June 20 2010.  Notes that Python 3.x is not covered,
++and that the HOWTO only covers 2.x.
+ 
++
++.. comment Describe Python 3.x support (new section? new document?)
+ .. comment Additional topic: building Python w/ UCS2 or UCS4 support
+ .. comment Describe obscure -U switch somewhere?
+ .. comment Describe use of codecs.StreamRecoder and StreamReaderWriter
+ 
+ .. comment
+    Original outline:
+ 
+    - [ ] Unicode introduction
+        - [ ] ASCII
+        - [ ] Terms
+            - [ ] Character
+            - [ ] Code point

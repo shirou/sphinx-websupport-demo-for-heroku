@@ -1,0 +1,257 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>using/cmdline.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -1,14 +1,17 @@</span>
+ .. highlightlang:: none
+ 
+<span class="gi">+.. ATTENTION: You probably should update Misc/python.man, too, if you modify</span>
+<span class="gi">+.. this file.</span>
+<span class="gi">+</span>
+ .. _using-on-general:
+ 
+ Command line and environment
+ ============================
+ 
+ The CPython interpreter scans the command line and the environment for various
+ settings.
+ 
+ .. impl-detail::
+ 
+    Other implementations&#39; command line schemes may differ.  See
+    :ref:`implementations` for further resources.
+<span class="gu">@@ -69,52 +72,63 @@</span>
+ 
+ 
+ .. cmdoption:: -m &lt;module-name&gt;
+ 
+    Search :data:`sys.path` for the named module and execute its contents as
+    the :mod:`__main__` module.
+ 
+    Since the argument is a *module* name, you must not give a file extension
+    (``.py``).  The ``module-name`` should be a valid Python module name, but
+    the implementation may not always enforce this (e.g. it may allow you to
+    use a name that includes a hyphen).
+ 
+<span class="gi">+   Package names are also permitted. When a package name is supplied instead</span>
+<span class="gi">+   of a normal module, the interpreter will execute ``&lt;pkg&gt;.__main__`` as</span>
+<span class="gi">+   the main module. This behaviour is deliberately similar to the handling</span>
+<span class="gi">+   of directories and zipfiles that are passed to the interpreter as the</span>
+<span class="gi">+   script argument.</span>
+<span class="gi">+</span>
+    .. note::
+ 
+       This option cannot be used with built-in modules and extension modules
+       written in C, since they do not have Python module files. However, it
+       can still be used for precompiled modules, even if the original source
+       file is not available.
+ 
+    If this option is given, the first element of :data:`sys.argv` will be the
+    full path to the module file. As with the :option:`-c` option, the current
+    directory will be added to the start of :data:`sys.path`.
+ 
+    Many standard library modules contain code that is invoked on their execution
+    as a script.  An example is the :mod:`timeit` module::
+ 
+        python -mtimeit -s &#39;setup here&#39; &#39;benchmarked code here&#39;
+        python -mtimeit -h # for details
+ 
+    .. seealso::
+       :func:`runpy.run_module`
+<span class="gd">-         The actual implementation of this feature.</span>
+<span class="gi">+         Equivalent functionality directly available to Python code</span>
+ 
+       :pep:`338` -- Executing modules as scripts
+ 
+    .. versionadded:: 2.4
+ 
+    .. versionchanged:: 2.5
+       The named module can now be located inside a package.
+ 
+<span class="gi">+   .. versionchanged:: 2.7</span>
+<span class="gi">+      Supply the package name to run a ``__main__`` submodule.</span>
+<span class="gi">+      sys.argv[0] is now set to ``&quot;-m&quot;`` while searching for the module</span>
+<span class="gi">+      (it was previously incorrectly set to ``&quot;-c&quot;``)</span>
+<span class="gi">+</span>
+ 
+ .. describe:: -
+ 
+    Read commands from standard input (:data:`sys.stdin`).  If standard input is
+    a terminal, :option:`-i` is implied.
+ 
+    If this option is given, the first element of :data:`sys.argv` will be
+    ``&quot;-&quot;`` and the current directory will be added to the start of
+    :data:`sys.path`.
+ 
+ 
+ .. describe:: &lt;script&gt;
+<span class="gu">@@ -292,24 +306,28 @@</span>
+    form::
+ 
+        file:line: category: message
+ 
+    By default, each warning is printed once for each source line where it
+    occurs.  This option controls how often warnings are printed.
+ 
+    Multiple :option:`-W` options may be given; when a warning matches more than
+    one option, the action for the last matching option is performed.  Invalid
+    :option:`-W` options are ignored (though, a warning message is printed about
+    invalid options when the first warning is issued).
+ 
+<span class="gi">+   Starting from Python 2.7, :exc:`DeprecationWarning` and its descendants</span>
+<span class="gi">+   are ignored by default.  The :option:`-Wd` option can be used to re-enable</span>
+<span class="gi">+   them.</span>
+<span class="gi">+</span>
+    Warnings can also be controlled from within a Python program using the
+    :mod:`warnings` module.
+ 
+    The simplest form of argument is one of the following action strings (or a
+    unique abbreviation) by themselves:
+ 
+    ``ignore``
+       Ignore all warnings.
+    ``default``
+       Explicitly request the default behavior (printing each warning once per
+       source line).
+    ``all``
+<span class="gu">@@ -322,36 +340,38 @@</span>
+       Print each warning only the first time it occurs in the program.
+    ``error``
+       Raise an exception instead of printing a warning message.
+ 
+    The full form of argument is::
+ 
+        action:message:category:module:line
+ 
+    Here, *action* is as explained above but only applies to messages that match
+    the remaining fields.  Empty fields match all values; trailing empty fields
+    may be omitted.  The *message* field matches the start of the warning message
+    printed; this match is case-insensitive.  The *category* field matches the
+<span class="gd">-   warning category.  This must be a class name; the match test whether the</span>
+<span class="gi">+   warning category.  This must be a class name; the match tests whether the</span>
+    actual warning category of the message is a subclass of the specified warning
+    category.  The full class name must be given.  The *module* field matches the
+    (fully-qualified) module name; this match is case-sensitive.  The *line*
+    field matches the line number, where zero matches all line numbers and is
+    thus equivalent to an omitted line number.
+ 
+    .. seealso::
+       :mod:`warnings` -- the warnings module
+ 
+       :pep:`230` -- Warning framework
+ 
+<span class="gi">+      :envvar:`PYTHONWARNINGS`</span>
+<span class="gi">+</span>
+ 
+ .. cmdoption:: -x
+ 
+    Skip the first line of the source, allowing use of non-Unix forms of
+    ``#!cmd``.  This is intended for a DOS specific hack only.
+ 
+    .. note:: The line numbers in error messages will be off by one.
+ 
+ .. cmdoption:: -3
+ 
+    Warn about Python 3.x incompatibilities which cannot be fixed trivially by
+    :ref:`2to3 &lt;2to3-reference&gt;`. Among these are:
+<span class="gu">@@ -529,24 +549,30 @@</span>
+ 
+    .. seealso::
+ 
+       :pep:`370` -- Per user site-packages directory
+ 
+ 
+ .. envvar:: PYTHONEXECUTABLE
+ 
+    If this environment variable is set, ``sys.argv[0]`` will be set to its
+    value instead of the value got through the C runtime.  Only works on
+    Mac OS X.
+ 
+<span class="gi">+.. envvar:: PYTHONWARNINGS</span>
+<span class="gi">+</span>
+<span class="gi">+   This is equivalent to the :option:`-W` option. If set to a comma</span>
+<span class="gi">+   separated string, it is equivalent to specifying :option:`-W` multiple</span>
+<span class="gi">+   times.</span>
+<span class="gi">+</span>
+ 
+ Debug-mode variables
+ ~~~~~~~~~~~~~~~~~~~~
+ 
+ Setting these variables only has an effect in a debug build of Python, that is,
+ if Python was configured with the :option:`--with-pydebug` build option.
+ 
+ .. envvar:: PYTHONTHREADDEBUG
+ 
+    If set, Python will print threading debug info.
+ 
+    .. versionchanged:: 2.6
+</pre></div>
+
+</body>
+</html>

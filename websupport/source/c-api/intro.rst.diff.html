@@ -1,0 +1,182 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>c-api/intro.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -32,26 +32,26 @@</span>
+ 
+ .. _api-includes:
+ 
+ Include Files
+ =============
+ 
+ All function, type and macro definitions needed to use the Python/C API are
+ included in your code by the following line::
+ 
+    #include &quot;Python.h&quot;
+ 
+ This implies inclusion of the following standard headers: ``&lt;stdio.h&gt;``,
+<span class="gd">-``&lt;string.h&gt;``, ``&lt;errno.h&gt;``, ``&lt;limits.h&gt;``, and ``&lt;stdlib.h&gt;`` (if</span>
+<span class="gd">-available).</span>
+<span class="gi">+``&lt;string.h&gt;``, ``&lt;errno.h&gt;``, ``&lt;limits.h&gt;``, ``&lt;assert.h&gt;`` and ``&lt;stdlib.h&gt;``</span>
+<span class="gi">+(if available).</span>
+ 
+ .. note::
+ 
+    Since Python may define some pre-processor definitions which affect the standard
+    headers on some systems, you *must* include :file:`Python.h` before any standard
+    headers are included.
+ 
+ All user visible names defined by Python.h (except those defined by the included
+ standard headers) have one of the prefixes ``Py`` or ``_Py``.  Names beginning
+ with ``_Py`` are for internal use by the Python implementation and should not be
+ used by extension writers. Structure member names do not have a reserved prefix.
+ 
+<span class="gu">@@ -352,33 +352,34 @@</span>
+ 
+ Exceptions
+ ==========
+ 
+ The Python programmer only needs to deal with exceptions if specific  error
+ handling is required; unhandled exceptions are automatically  propagated to the
+ caller, then to the caller&#39;s caller, and so on, until they reach the top-level
+ interpreter, where they are reported to the  user accompanied by a stack
+ traceback.
+ 
+ .. index:: single: PyErr_Occurred()
+ 
+<span class="gd">-For C programmers, however, error checking always has to be explicit.   All</span>
+<span class="gd">-functions in the Python/C API can raise exceptions, unless an  explicit claim is</span>
+<span class="gd">-made otherwise in a function&#39;s documentation.  In  general, when a function</span>
+<span class="gd">-encounters an error, it sets an exception,  discards any object references that</span>
+<span class="gd">-it owns, and returns an  error indicator --- usually *NULL* or ``-1``.  A few</span>
+<span class="gd">-functions  return a Boolean true/false result, with false indicating an error.</span>
+<span class="gd">-Very few functions return no explicit error indicator or have an  ambiguous</span>
+<span class="gd">-return value, and require explicit testing for errors with</span>
+<span class="gd">-:cfunc:`PyErr_Occurred`.</span>
+<span class="gi">+For C programmers, however, error checking always has to be explicit.  All</span>
+<span class="gi">+functions in the Python/C API can raise exceptions, unless an explicit claim is</span>
+<span class="gi">+made otherwise in a function&#39;s documentation.  In general, when a function</span>
+<span class="gi">+encounters an error, it sets an exception, discards any object references that</span>
+<span class="gi">+it owns, and returns an error indicator.  If not documented otherwise, this</span>
+<span class="gi">+indicator is either *NULL* or ``-1``, depending on the function&#39;s return type.</span>
+<span class="gi">+A few functions return a Boolean true/false result, with false indicating an</span>
+<span class="gi">+error.  Very few functions return no explicit error indicator or have an</span>
+<span class="gi">+ambiguous return value, and require explicit testing for errors with</span>
+<span class="gi">+:cfunc:`PyErr_Occurred`.  These exceptions are always explicitly documented.</span>
+ 
+ .. index::
+    single: PyErr_SetString()
+    single: PyErr_Clear()
+ 
+ Exception state is maintained in per-thread storage (this is  equivalent to
+ using global storage in an unthreaded application).  A  thread can be in one of
+ two states: an exception has occurred, or not. The function
+ :cfunc:`PyErr_Occurred` can be used to check for this: it returns a borrowed
+ reference to the exception type object when an exception has occurred, and
+ *NULL* otherwise.  There are a number of functions to set the exception state:
+ :cfunc:`PyErr_SetString` is the most common (though not the most general)
+<span class="gu">@@ -515,30 +516,30 @@</span>
+    module: __builtin__
+    module: __main__
+    module: sys
+    module: exceptions
+    triple: module; search; path
+    single: path (in module sys)
+ 
+ The basic initialization function is :cfunc:`Py_Initialize`. This initializes
+ the table of loaded modules, and creates the fundamental modules
+ :mod:`__builtin__`, :mod:`__main__`, :mod:`sys`, and :mod:`exceptions`.  It also
+ initializes the module search path (``sys.path``).
+ 
+<span class="gd">-.. index:: single: PySys_SetArgv()</span>
+<span class="gi">+.. index:: single: PySys_SetArgvEx()</span>
+ 
+ :cfunc:`Py_Initialize` does not set the &quot;script argument list&quot;  (``sys.argv``).
+<span class="gd">-If this variable is needed by Python code that  will be executed later, it must</span>
+<span class="gd">-be set explicitly with a call to  ``PySys_SetArgv(argc, argv)`` subsequent to</span>
+<span class="gd">-the call to :cfunc:`Py_Initialize`.</span>
+<span class="gi">+If this variable is needed by Python code that will be executed later, it must</span>
+<span class="gi">+be set explicitly with a call to  ``PySys_SetArgvEx(argc, argv, updatepath)``</span>
+<span class="gi">+after the call to :cfunc:`Py_Initialize`.</span>
+ 
+ On most systems (in particular, on Unix and Windows, although the details are
+ slightly different), :cfunc:`Py_Initialize` calculates the module search path
+ based upon its best guess for the location of the standard Python interpreter
+ executable, assuming that the Python library is found in a fixed location
+ relative to the Python interpreter executable.  In particular, it looks for a
+ directory named :file:`lib/python{X.Y}` relative to the parent directory
+ where the executable named :file:`python` is found on the shell command search
+ path (the environment variable :envvar:`PATH`).
+ 
+ For instance, if the Python executable is found in
+ :file:`/usr/local/bin/python`, it will assume that the libraries are in
+</pre></div>
+
+</body>
+</html>

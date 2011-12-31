@@ -1,0 +1,282 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>howto/unicode.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -1,20 +1,22 @@</span>
+ *****************
+   Unicode HOWTO
+ *****************
+ 
+<span class="gd">-:Release: 1.02</span>
+<span class="gi">+:Release: 1.03</span>
+ 
+<span class="gd">-This HOWTO discusses Python&#39;s support for Unicode, and explains various problems</span>
+<span class="gd">-that people commonly encounter when trying to work with Unicode.</span>
+<span class="gi">+This HOWTO discusses Python 2.x&#39;s support for Unicode, and explains</span>
+<span class="gi">+various problems that people commonly encounter when trying to work</span>
+<span class="gi">+with Unicode.  (This HOWTO has not yet been updated to cover the 3.x</span>
+<span class="gi">+versions of Python.)</span>
+ 
+ Introduction to Unicode
+ =======================
+ 
+ History of Character Codes
+ --------------------------
+ 
+ In 1968, the American Standard Code for Information Interchange, better known by
+ its acronym ASCII, was standardized.  ASCII defined numeric codes for various
+ characters, with the numeric values running from 0 to
+ 127.  For example, the lowercase letter &#39;a&#39; is assigned 97 as its code
+ value.
+<span class="gu">@@ -135,26 +137,27 @@</span>
+    bytes.  The above string takes 24 bytes compared to the 6 bytes needed for an
+    ASCII representation.  Increased RAM usage doesn&#39;t matter too much (desktop
+    computers have megabytes of RAM, and strings aren&#39;t usually that large), but
+    expanding our usage of disk and network bandwidth by a factor of 4 is
+    intolerable.
+ 
+ 3. It&#39;s not compatible with existing C functions such as ``strlen()``, so a new
+    family of wide string functions would need to be used.
+ 
+ 4. Many Internet standards are defined in terms of textual data, and can&#39;t
+    handle content with embedded zero bytes.
+ 
+<span class="gd">-Generally people don&#39;t use this encoding, instead choosing other encodings that</span>
+<span class="gd">-are more efficient and convenient.</span>
+<span class="gi">+Generally people don&#39;t use this encoding, instead choosing other</span>
+<span class="gi">+encodings that are more efficient and convenient.  UTF-8 is probably</span>
+<span class="gi">+the most commonly supported encoding; it will be discussed below.</span>
+ 
+ Encodings don&#39;t have to handle every possible Unicode character, and most
+ encodings don&#39;t.  For example, Python&#39;s default encoding is the &#39;ascii&#39;
+ encoding.  The rules for converting a Unicode string into the ASCII encoding are
+ simple; for each code point:
+ 
+ 1. If the code point is &lt; 128, each byte is the same as the value of the code
+    point.
+ 
+ 2. If the code point is 128 or greater, the Unicode string can&#39;t be represented
+    in this encoding.  (Python raises a :exc:`UnicodeEncodeError` exception in this
+    case.)
+<span class="gu">@@ -213,26 +216,26 @@</span>
+ Another good introductory article was written by Joel Spolsky
+ &lt;http://www.joelonsoftware.com/articles/Unicode.html&gt;.
+ If this introduction didn&#39;t make things clear to you, you should try reading this
+ alternate article before continuing.
+ 
+ .. Jason Orendorff XXX http://www.jorendorff.com/articles/unicode/ is broken
+ 
+ Wikipedia entries are often helpful; see the entries for &quot;character encoding&quot;
+ &lt;http://en.wikipedia.org/wiki/Character_encoding&gt; and UTF-8
+ &lt;http://en.wikipedia.org/wiki/UTF-8&gt;, for example.
+ 
+ 
+<span class="gd">-Python&#39;s Unicode Support</span>
+<span class="gd">-========================</span>
+<span class="gi">+Python 2.x&#39;s Unicode Support</span>
+<span class="gi">+============================</span>
+ 
+ Now that you&#39;ve learned the rudiments of Unicode, we can look at Python&#39;s
+ Unicode features.
+ 
+ 
+ The Unicode Type
+ ----------------
+ 
+ Unicode strings are expressed as instances of the :class:`unicode` type, one of
+ Python&#39;s repertoire of built-in types.  It derives from an abstract type called
+ :class:`basestring`, which is also an ancestor of the :class:`str` type; you can
+ therefore check if a value is a string type with ``isinstance(value,
+<span class="gu">@@ -263,25 +266,25 @@</span>
+ Unicode result).  The following examples show the differences::
+ 
+     &gt;&gt;&gt; unicode(&#39;\x80abc&#39;, errors=&#39;strict&#39;)
+     Traceback (most recent call last):
+       File &quot;&lt;stdin&gt;&quot;, line 1, in ?
+     UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0x80 in position 0:
+                         ordinal not in range(128)
+     &gt;&gt;&gt; unicode(&#39;\x80abc&#39;, errors=&#39;replace&#39;)
+     u&#39;\ufffdabc&#39;
+     &gt;&gt;&gt; unicode(&#39;\x80abc&#39;, errors=&#39;ignore&#39;)
+     u&#39;abc&#39;
+ 
+<span class="gd">-Encodings are specified as strings containing the encoding&#39;s name.  Python 2.4</span>
+<span class="gi">+Encodings are specified as strings containing the encoding&#39;s name.  Python 2.7</span>
+ comes with roughly 100 different encodings; see the Python Library Reference at
+ :ref:`standard-encodings` for a list.  Some encodings
+ have multiple names; for example, &#39;latin-1&#39;, &#39;iso_8859_1&#39; and &#39;8859&#39; are all
+ synonyms for the same encoding.
+ 
+ One-character Unicode strings can also be created with the :func:`unichr`
+ built-in function, which takes integers and returns a Unicode string of length 1
+ that contains the corresponding code point.  The reverse operation is the
+ built-in :func:`ord` function that takes a one-character Unicode string and
+ returns the code point value::
+ 
+     &gt;&gt;&gt; unichr(40960)
+<span class="gu">@@ -418,29 +421,37 @@</span>
+ If you don&#39;t include such a comment, the default encoding used will be ASCII.
+ Versions of Python before 2.4 were Euro-centric and assumed Latin-1 as a default
+ encoding for string literals; in Python 2.4, characters greater than 127 still
+ work but result in a warning.  For example, the following program has no
+ encoding declaration::
+ 
+     #!/usr/bin/env python
+     u = u&#39;abcdé&#39;
+     print ord(u[-1])
+ 
+ When you run it with Python 2.4, it will output the following warning::
+ 
+<span class="gd">-    amk:~$ python p263.py</span>
+<span class="gi">+    amk:~$ python2.4 p263.py</span>
+     sys:1: DeprecationWarning: Non-ASCII character &#39;\xe9&#39;
+          in file p263.py on line 2, but no encoding declared;
+          see http://www.python.org/peps/pep-0263.html for details
+ 
+<span class="gi">+Python 2.5 and higher are stricter and will produce a syntax error::</span>
+<span class="gi">+</span>
+<span class="gi">+    amk:~$ python2.5 p263.py</span>
+<span class="gi">+    File &quot;/tmp/p263.py&quot;, line 2</span>
+<span class="gi">+    SyntaxError: Non-ASCII character &#39;\xc3&#39; in file /tmp/p263.py</span>
+<span class="gi">+      on line 2, but no encoding declared; see</span>
+<span class="gi">+      http://www.python.org/peps/pep-0263.html for details</span>
+<span class="gi">+</span>
+ 
+ Unicode Properties
+ ------------------
+ 
+ The Unicode specification includes a database of information about code points.
+ For each code point that&#39;s defined, the information includes the character&#39;s
+ name, its category, the numeric value if applicable (Unicode has characters
+ representing the Roman numerals and fractions such as one-third and
+ four-fifths).  There are also properties related to the code point&#39;s use in
+ bidirectional text and other display-related properties.
+ 
+ The following program displays some information about several characters, and
+<span class="gu">@@ -463,25 +474,25 @@</span>
+     1 0bf2 No TAMIL NUMBER ONE THOUSAND
+     2 0f84 Mn TIBETAN MARK HALANTA
+     3 1770 Lo TAGBANWA LETTER SA
+     4 33af So SQUARE RAD OVER S SQUARED
+     1000.0
+ 
+ The category codes are abbreviations describing the nature of the character.
+ These are grouped into categories such as &quot;Letter&quot;, &quot;Number&quot;, &quot;Punctuation&quot;, or
+ &quot;Symbol&quot;, which in turn are broken up into subcategories.  To take the codes
+ from the above output, ``&#39;Ll&#39;`` means &#39;Letter, lowercase&#39;, ``&#39;No&#39;`` means
+ &quot;Number, other&quot;, ``&#39;Mn&#39;`` is &quot;Mark, nonspacing&quot;, and ``&#39;So&#39;`` is &quot;Symbol,
+ other&quot;.  See
+<span class="gd">-&lt;http://unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values&gt; for a</span>
+<span class="gi">+&lt;http://www.unicode.org/reports/tr44/#General_Category_Values&gt; for a</span>
+ list of category codes.
+ 
+ References
+ ----------
+ 
+ The Unicode and 8-bit string types are described in the Python library reference
+ at :ref:`typesseq`.
+ 
+ The documentation for the :mod:`unicodedata` module.
+ 
+ The documentation for the :mod:`codecs` module.
+ 
+<span class="gu">@@ -684,25 +695,29 @@</span>
+ 
+ Thanks to the following people who have noted errors or offered suggestions on
+ this article: Nicholas Bastin, Marius Gedminas, Kent Johnson, Ken Krugler,
+ Marc-André Lemburg, Martin von Löwis, Chad Whitacre.
+ 
+ Version 1.0: posted August 5 2005.
+ 
+ Version 1.01: posted August 7 2005.  Corrects factual and markup errors; adds
+ several links.
+ 
+ Version 1.02: posted August 16 2005.  Corrects factual errors.
+ 
+<span class="gi">+Version 1.03: posted June 20 2010.  Notes that Python 3.x is not covered,</span>
+<span class="gi">+and that the HOWTO only covers 2.x.</span>
+ 
+<span class="gi">+</span>
+<span class="gi">+.. comment Describe Python 3.x support (new section? new document?)</span>
+ .. comment Additional topic: building Python w/ UCS2 or UCS4 support
+ .. comment Describe obscure -U switch somewhere?
+ .. comment Describe use of codecs.StreamRecoder and StreamReaderWriter
+ 
+ .. comment
+    Original outline:
+ 
+    - [ ] Unicode introduction
+        - [ ] ASCII
+        - [ ] Terms
+            - [ ] Character
+            - [ ] Code point
+</pre></div>
+
+</body>
+</html>

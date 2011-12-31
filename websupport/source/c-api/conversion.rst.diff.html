@@ -1,0 +1,220 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>c-api/conversion.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -42,62 +42,140 @@</span>
+ 
+ * When ``rv &gt;= size``, the output conversion was truncated and a buffer with
+   ``rv + 1`` bytes would have been needed to succeed. *str*[*size*-1] is ``&#39;\0&#39;``
+   in this case.
+ 
+ * When ``rv &lt; 0``, &quot;something bad happened.&quot; *str*[*size*-1] is ``&#39;\0&#39;`` in
+   this case too, but the rest of *str* is undefined. The exact cause of the error
+   depends on the underlying platform.
+ 
+ The following functions provide locale-independent string to number conversions.
+ 
+ 
+<span class="gi">+.. cfunction:: double PyOS_string_to_double(const char *s, char **endptr, PyObject *overflow_exception)</span>
+<span class="gi">+</span>
+<span class="gi">+   Convert a string ``s`` to a :ctype:`double`, raising a Python</span>
+<span class="gi">+   exception on failure.  The set of accepted strings corresponds to</span>
+<span class="gi">+   the set of strings accepted by Python&#39;s :func:`float` constructor,</span>
+<span class="gi">+   except that ``s`` must not have leading or trailing whitespace.</span>
+<span class="gi">+   The conversion is independent of the current locale.</span>
+<span class="gi">+</span>
+<span class="gi">+   If ``endptr`` is ``NULL``, convert the whole string.  Raise</span>
+<span class="gi">+   ValueError and return ``-1.0`` if the string is not a valid</span>
+<span class="gi">+   representation of a floating-point number.</span>
+<span class="gi">+</span>
+<span class="gi">+   If endptr is not ``NULL``, convert as much of the string as</span>
+<span class="gi">+   possible and set ``*endptr`` to point to the first unconverted</span>
+<span class="gi">+   character.  If no initial segment of the string is the valid</span>
+<span class="gi">+   representation of a floating-point number, set ``*endptr`` to point</span>
+<span class="gi">+   to the beginning of the string, raise ValueError, and return</span>
+<span class="gi">+   ``-1.0``.</span>
+<span class="gi">+</span>
+<span class="gi">+   If ``s`` represents a value that is too large to store in a float</span>
+<span class="gi">+   (for example, ``&quot;1e500&quot;`` is such a string on many platforms) then</span>
+<span class="gi">+   if ``overflow_exception`` is ``NULL`` return ``Py_HUGE_VAL`` (with</span>
+<span class="gi">+   an appropriate sign) and don&#39;t set any exception.  Otherwise,</span>
+<span class="gi">+   ``overflow_exception`` must point to a Python exception object;</span>
+<span class="gi">+   raise that exception and return ``-1.0``.  In both cases, set</span>
+<span class="gi">+   ``*endptr`` to point to the first character after the converted value.</span>
+<span class="gi">+</span>
+<span class="gi">+   If any other error occurs during the conversion (for example an</span>
+<span class="gi">+   out-of-memory error), set the appropriate Python exception and</span>
+<span class="gi">+   return ``-1.0``.</span>
+<span class="gi">+</span>
+<span class="gi">+   .. versionadded:: 2.7</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ .. cfunction:: double PyOS_ascii_strtod(const char *nptr, char **endptr)
+ 
+    Convert a string to a :ctype:`double`. This function behaves like the Standard C
+    function :cfunc:`strtod` does in the C locale. It does this without changing the
+    current locale, since that would not be thread-safe.
+ 
+    :cfunc:`PyOS_ascii_strtod` should typically be used for reading configuration
+    files or other non-user input that should be locale independent.
+ 
+<span class="gi">+   See the Unix man page :manpage:`strtod(2)` for details.</span>
+<span class="gi">+</span>
+    .. versionadded:: 2.4
+ 
+<span class="gd">-   See the Unix man page :manpage:`strtod(2)` for details.</span>
+<span class="gi">+   .. deprecated:: 2.7</span>
+<span class="gi">+      Use :cfunc:`PyOS_string_to_double` instead.</span>
+ 
+ 
+<span class="gd">-.. cfunction:: char * PyOS_ascii_formatd(char *buffer, size_t buf_len, const char *format, double d)</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: char* PyOS_ascii_formatd(char *buffer, size_t buf_len, const char *format, double d)</span>
+ 
+    Convert a :ctype:`double` to a string using the ``&#39;.&#39;`` as the decimal
+    separator. *format* is a :cfunc:`printf`\ -style format string specifying the
+    number format. Allowed conversion characters are ``&#39;e&#39;``, ``&#39;E&#39;``, ``&#39;f&#39;``,
+    ``&#39;F&#39;``, ``&#39;g&#39;`` and ``&#39;G&#39;``.
+ 
+    The return value is a pointer to *buffer* with the converted string or NULL if
+    the conversion failed.
+ 
+    .. versionadded:: 2.4
+<span class="gi">+   .. deprecated:: 2.7</span>
+<span class="gi">+      This function is removed in Python 2.7 and 3.1.  Use :func:`PyOS_double_to_string`</span>
+<span class="gi">+      instead.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: char* PyOS_double_to_string(double val, char format_code, int precision, int flags, int *ptype)</span>
+<span class="gi">+</span>
+<span class="gi">+   Convert a :ctype:`double` *val* to a string using supplied</span>
+<span class="gi">+   *format_code*, *precision*, and *flags*.</span>
+<span class="gi">+</span>
+<span class="gi">+   *format_code* must be one of ``&#39;e&#39;``, ``&#39;E&#39;``, ``&#39;f&#39;``, ``&#39;F&#39;``,</span>
+<span class="gi">+   ``&#39;g&#39;``, ``&#39;G&#39;`` or ``&#39;r&#39;``.  For ``&#39;r&#39;``, the supplied *precision*</span>
+<span class="gi">+   must be 0 and is ignored.  The ``&#39;r&#39;`` format code specifies the</span>
+<span class="gi">+   standard :func:`repr` format.</span>
+<span class="gi">+</span>
+<span class="gi">+   *flags* can be zero or more of the values *Py_DTSF_SIGN*,</span>
+<span class="gi">+   *Py_DTSF_ADD_DOT_0*, or *Py_DTSF_ALT*, or-ed together:</span>
+<span class="gi">+</span>
+<span class="gi">+   * *Py_DTSF_SIGN* means to always precede the returned string with a sign</span>
+<span class="gi">+     character, even if *val* is non-negative.</span>
+<span class="gi">+</span>
+<span class="gi">+   * *Py_DTSF_ADD_DOT_0* means to ensure that the returned string will not look</span>
+<span class="gi">+     like an integer.</span>
+<span class="gi">+</span>
+<span class="gi">+   * *Py_DTSF_ALT* means to apply &quot;alternate&quot; formatting rules.  See the</span>
+<span class="gi">+     documentation for the :cfunc:`PyOS_snprintf` ``&#39;#&#39;`` specifier for</span>
+<span class="gi">+     details.</span>
+<span class="gi">+</span>
+<span class="gi">+   If *ptype* is non-NULL, then the value it points to will be set to one of</span>
+<span class="gi">+   *Py_DTST_FINITE*, *Py_DTST_INFINITE*, or *Py_DTST_NAN*, signifying that</span>
+<span class="gi">+   *val* is a finite number, an infinite number, or not a number, respectively.</span>
+<span class="gi">+</span>
+<span class="gi">+   The return value is a pointer to *buffer* with the converted string or</span>
+<span class="gi">+   *NULL* if the conversion failed. The caller is responsible for freeing the</span>
+<span class="gi">+   returned string by calling :cfunc:`PyMem_Free`.</span>
+<span class="gi">+</span>
+<span class="gi">+   .. versionadded:: 2.7</span>
+ 
+ 
+ .. cfunction:: double PyOS_ascii_atof(const char *nptr)
+ 
+    Convert a string to a :ctype:`double` in a locale-independent way.
+ 
+<span class="gi">+   See the Unix man page :manpage:`atof(2)` for details.</span>
+<span class="gi">+</span>
+    .. versionadded:: 2.4
+ 
+<span class="gd">-   See the Unix man page :manpage:`atof(2)` for details.</span>
+<span class="gi">+   .. deprecated:: 3.1</span>
+<span class="gi">+      Use :cfunc:`PyOS_string_to_double` instead.</span>
+ 
+ 
+<span class="gd">-.. cfunction:: char * PyOS_stricmp(char *s1, char *s2)</span>
+<span class="gi">+.. cfunction:: char* PyOS_stricmp(char *s1, char *s2)</span>
+ 
+    Case insensitive comparison of strings. The function works almost
+    identically to :cfunc:`strcmp` except that it ignores the case.
+ 
+    .. versionadded:: 2.6
+ 
+ 
+<span class="gd">-.. cfunction:: char * PyOS_strnicmp(char *s1, char *s2, Py_ssize_t  size)</span>
+<span class="gi">+.. cfunction:: char* PyOS_strnicmp(char *s1, char *s2, Py_ssize_t  size)</span>
+ 
+    Case insensitive comparison of strings. The function works almost
+    identically to :cfunc:`strncmp` except that it ignores the case.
+ 
+    .. versionadded:: 2.6
+</pre></div>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>using/windows.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -149,41 +149,66 @@</span>
+ see :ref:`using-on-cmdline` documentation.
+ 
+ 
+ Finding modules
+ ---------------
+ 
+ Python usually stores its library (and thereby your site-packages folder) in the
+ installation directory.  So, if you had installed Python to
+ :file:`C:\\Python\\`, the default library would reside in
+ :file:`C:\\Python\\Lib\\` and third-party modules should be stored in
+ :file:`C:\\Python\\Lib\\site-packages\\`.
+ 
+<span class="gd">-.. `` this fixes syntax highlighting errors in some editors due to the \\ hackery</span>
+<span class="gi">+This is how :data:`sys.path` is populated on Windows:</span>
+ 
+<span class="gd">-You can add folders to your search path to make Python&#39;s import mechanism search</span>
+<span class="gd">-in these directories as well.  Use :envvar:`PYTHONPATH`, as described in</span>
+<span class="gd">-:ref:`using-on-envvars`, to modify :data:`sys.path`.  On Windows, paths are</span>
+<span class="gd">-separated by semicolons, though, to distinguish them from drive identifiers</span>
+<span class="gd">-(:file:`C:\\` etc.).</span>
+<span class="gi">+* An empty entry is added at the start, which corresponds to the current</span>
+<span class="gi">+  directory.</span>
+ 
+<span class="gd">-.. ``</span>
+<span class="gi">+* If the environment variable :envvar:`PYTHONPATH` exists, as described in</span>
+<span class="gi">+  :ref:`using-on-envvars`, its entries are added next.  Note that on Windows,</span>
+<span class="gi">+  paths in this variable must be separated by semicolons, to distinguish them</span>
+<span class="gi">+  from the colon used in drive identifiers (``C:\`` etc.).</span>
+ 
+<span class="gd">-Modifying the module search path can also be done through the Windows registry</span>
+<span class="gd">-under the key :file:`HKLM\\SOFTWARE\\Python\\PythonCore\\{version}\\PythonPath`.</span>
+<span class="gd">-Subkeys which have semicolon-delimited path strings as their default value will</span>
+<span class="gd">-cause each path to be searched.  Multiple subkeys can be created and are</span>
+<span class="gd">-appended to the path in alphabetical order.  A convenient registry editor is</span>
+<span class="gd">-:program:`regedit` (start it by typing &quot;regedit&quot; into :menuselection:`Start --&gt;</span>
+<span class="gd">-Run`).</span>
+<span class="gi">+* Additional &quot;application paths&quot; can be added in the registry as subkeys of</span>
+<span class="gi">+  :samp:`\\SOFTWARE\\Python\\PythonCore\\{version}\\PythonPath` under both the</span>
+<span class="gi">+  ``HKEY_CURRENT_USER`` and ``HKEY_LOCAL_MACHINE`` hives.  Subkeys which have</span>
+<span class="gi">+  semicolon-delimited path strings as their default value will cause each path</span>
+<span class="gi">+  to be added to :data:`sys.path`.  (Note that all known installers only use</span>
+<span class="gi">+  HKLM, so HKCU is typically empty.)</span>
+<span class="gi">+</span>
+<span class="gi">+* If the environment variable :envvar:`PYTHONHOME` is set, it is assumed as</span>
+<span class="gi">+  &quot;Python Home&quot;.  Otherwise, the path of the main Python executable is used to</span>
+<span class="gi">+  locate a &quot;landmark file&quot; (``Lib\os.py``) to deduce the &quot;Python Home&quot;.  If a</span>
+<span class="gi">+  Python home is found, the relevant sub-directories added to :data:`sys.path`</span>
+<span class="gi">+  (``Lib``, ``plat-win``, etc) are based on that folder.  Otherwise, the core</span>
+<span class="gi">+  Python path is constructed from the PythonPath stored in the registry.</span>
+<span class="gi">+</span>
+<span class="gi">+* If the Python Home cannot be located, no :envvar:`PYTHONPATH` is specified in</span>
+<span class="gi">+  the environment, and no registry entries can be found, a default path with</span>
+<span class="gi">+  relative entries is used (e.g. ``.\Lib;.\plat-win``, etc).</span>
+<span class="gi">+</span>
+<span class="gi">+The end result of all this is:</span>
+<span class="gi">+</span>
+<span class="gi">+* When running :file:`python.exe`, or any other .exe in the main Python</span>
+<span class="gi">+  directory (either an installed version, or directly from the PCbuild</span>
+<span class="gi">+  directory), the core path is deduced, and the core paths in the registry are</span>
+<span class="gi">+  ignored.  Other &quot;application paths&quot; in the registry are always read.</span>
+<span class="gi">+</span>
+<span class="gi">+* When Python is hosted in another .exe (different directory, embedded via COM,</span>
+<span class="gi">+  etc), the &quot;Python Home&quot; will not be deduced, so the core path from the</span>
+<span class="gi">+  registry is used.  Other &quot;application paths&quot; in the registry are always read.</span>
+<span class="gi">+</span>
+<span class="gi">+* If Python can&#39;t find its home and there is no registry (eg, frozen .exe, some</span>
+<span class="gi">+  very strange installation setup) you get a path with some default, but</span>
+<span class="gi">+  relative, paths.</span>
+ 
+ 
+ Executing scripts
+ -----------------
+ 
+ Python scripts (files with the extension ``.py``) will be executed by
+ :program:`python.exe` by default.  This executable opens a terminal, which stays
+ open even if the program uses a GUI.  If you do not want this to happen, use the
+ extension ``.pyw`` which will cause the script to be executed by
+ :program:`pythonw.exe` by default (both executables are located in the top-level
+ of your Python installation directory).  This suppresses the terminal window on
+ startup.
+</pre></div>
+
+</body>
+</html>

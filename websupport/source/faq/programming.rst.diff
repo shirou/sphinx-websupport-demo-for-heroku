@@ -1,0 +1,56 @@
+@@ -935,25 +935,25 @@
+ 
+      f = eval(fname)
+      f()
+ 
+   Note: Using :func:`eval` is slow and dangerous.  If you don't have absolute
+   control over the contents of the string, someone could pass a string that
+   resulted in an arbitrary function being executed.
+ 
+ Is there an equivalent to Perl's chomp() for removing trailing newlines from strings?
+ -------------------------------------------------------------------------------------
+ 
+ Starting with Python 2.2, you can use ``S.rstrip("\r\n")`` to remove all
+-occurences of any line terminator from the end of the string ``S`` without
++occurrences of any line terminator from the end of the string ``S`` without
+ removing other trailing whitespace.  If the string ``S`` represents more than
+ one line, with several empty lines at the end, the line terminators for all the
+ blank lines will be removed::
+ 
+    >>> lines = ("line 1 \r\n"
+    ...          "\r\n"
+    ...          "\r\n")
+    >>> lines.rstrip("\n\r")
+    'line 1 '
+ 
+ Since this is typically only desired when reading text one line at a time, using
+ ``S.rstrip()`` this way works well.
+@@ -970,26 +970,26 @@
+ 
+ Is there a scanf() or sscanf() equivalent?
+ ------------------------------------------
+ 
+ Not as such.
+ 
+ For simple input parsing, the easiest approach is usually to split the line into
+ whitespace-delimited words using the :meth:`~str.split` method of string objects
+ and then convert decimal strings to numeric values using :func:`int` or
+ :func:`float`.  ``split()`` supports an optional "sep" parameter which is useful
+ if the line uses something other than whitespace as a separator.
+ 
+-For more complicated input parsing, regular expressions more powerful than C's
+-:cfunc:`sscanf` and better suited for the task.
++For more complicated input parsing, regular expressions are more powerful
++than C's :cfunc:`sscanf` and better suited for the task.
+ 
+ 
+ What does 'UnicodeError: ASCII [decoding,encoding] error: ordinal not in range(128)' mean?
+ ------------------------------------------------------------------------------------------
+ 
+ This error indicates that your Python installation can handle only 7-bit ASCII
+ strings.  There are a couple ways to fix or work around the problem.
+ 
+ If your programs must handle data in arbitrary character set encodings, the
+ environment the application runs in will generally identify the encoding of the
+ data it is handing you.  You need to convert the input to Unicode data using
+ that encoding.  For example, a program that handles email or web input will

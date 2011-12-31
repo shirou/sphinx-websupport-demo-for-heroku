@@ -1,0 +1,57 @@
+@@ -449,25 +449,25 @@
+ the name of the Unix system call for this function.
+ 
+ To remove a directory, use :func:`os.rmdir`; use :func:`os.mkdir` to create one.
+ ``os.makedirs(path)`` will create any intermediate directories in ``path`` that
+ don't exist. ``os.removedirs(path)`` will remove intermediate directories as
+ long as they're empty; if you want to delete an entire directory tree and its
+ contents, use :func:`shutil.rmtree`.
+ 
+ To rename a file, use ``os.rename(old_path, new_path)``.
+ 
+ To truncate a file, open it using ``f = open(filename, "r+")``, and use
+ ``f.truncate(offset)``; offset defaults to the current seek position.  There's
+-also ```os.ftruncate(fd, offset)`` for files opened with :func:`os.open`, where
++also ``os.ftruncate(fd, offset)`` for files opened with :func:`os.open`, where
+ ``fd`` is the file descriptor (a small integer).
+ 
+ The :mod:`shutil` module also contains a number of functions to work on files
+ including :func:`~shutil.copyfile`, :func:`~shutil.copytree`, and
+ :func:`~shutil.rmtree`.
+ 
+ 
+ How do I copy a file?
+ ---------------------
+ 
+ The :mod:`shutil` module contains a :func:`~shutil.copyfile` function.  Note
+ that on MacOS 9 it doesn't copy the resource fork and Finder info.
+@@ -663,27 +663,26 @@
+    ### now generate the rest of the HTTP headers...
+    httpobj.putheader('Accept', '*/*')
+    httpobj.putheader('Connection', 'Keep-Alive')
+    httpobj.putheader('Content-type', 'application/x-www-form-urlencoded')
+    httpobj.putheader('Content-length', '%d' % len(qs))
+    httpobj.endheaders()
+    httpobj.send(qs)
+    ### find out what the server said in response...
+    reply, msg, hdrs = httpobj.getreply()
+    if reply != 200:
+        sys.stdout.write(httpobj.getfile().read())
+ 
+-Note that in general for URL-encoded POST operations, query strings must be
+-quoted by using :func:`urllib.quote`.  For example to send name="Guy Steele,
+-Jr."::
++Note that in general for percent-encoded POST operations, query strings must be
++quoted using :func:`urllib.quote`.  For example to send name="Guy Steele, Jr."::
+ 
+    >>> from urllib import quote
+    >>> x = quote("Guy Steele, Jr.")
+    >>> x
+    'Guy%20Steele,%20Jr.'
+    >>> query_string = "name="+x
+    >>> query_string
+    'name=Guy%20Steele,%20Jr.'
+ 
+ 
+ What module should I use to help with generating HTML?
+ ------------------------------------------------------

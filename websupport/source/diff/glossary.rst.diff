@@ -1,0 +1,203 @@
+--- r262/glossary.rst	2009-04-06 06:11:43.798160000 +0900
++++ r266/glossary.rst	2010-08-02 07:19:17.150851000 +0900
+@@ -19,29 +19,29 @@
+ 
+    2to3
+       A tool that tries to convert Python 2.x code to Python 3.x code by
+       handling most of the incompatibilites which can be detected by parsing the
+       source and traversing the parse tree.
+ 
+       2to3 is available in the standard library as :mod:`lib2to3`; a standalone
+       entry point is provided as :file:`Tools/scripts/2to3`.  See
+       :ref:`2to3-reference`.
+ 
+    abstract base class
+       Abstract Base Classes (abbreviated ABCs) complement :term:`duck-typing` by
+-      providing a way to define interfaces when other techniques like :func:`hasattr`
+-      would be clumsy. Python comes with many builtin ABCs for data structures
+-      (in the :mod:`collections` module), numbers (in the :mod:`numbers`
+-      module), and streams (in the :mod:`io` module). You can create your own
+-      ABC with the :mod:`abc` module.
++      providing a way to define interfaces when other techniques like
++      :func:`hasattr` would be clumsy. Python comes with many built-in ABCs for
++      data structures (in the :mod:`collections` module), numbers (in the
++      :mod:`numbers` module), and streams (in the :mod:`io` module). You can
++      create your own ABC with the :mod:`abc` module.
+ 
+    argument
+       A value passed to a function or method, assigned to a named local
+       variable in the function body.  A function or method may have both
+       positional arguments and keyword arguments in its definition.
+       Positional and keyword arguments may be variable-length: ``*`` accepts
+       or passes (if in the function definition or call) several positional
+       arguments in a list, while ``**`` does the same for keyword arguments
+       in a dictionary.
+ 
+       Any expression may be used within the argument list, and the evaluated
+       value is passed to the local variable.
+@@ -70,36 +70,36 @@
+ 
+    classic class
+       Any class which does not inherit from :class:`object`.  See
+       :term:`new-style class`.  Classic classes will be removed in Python 3.0.
+ 
+    coercion
+       The implicit conversion of an instance of one type to another during an
+       operation which involves two arguments of the same type.  For example,
+       ``int(3.15)`` converts the floating point number to the integer ``3``, but
+       in ``3+4.5``, each argument is of a different type (one int, one float),
+       and both must be converted to the same type before they can be added or it
+       will raise a ``TypeError``.  Coercion between two operands can be
+-      performed with the ``coerce`` builtin function; thus, ``3+4.5`` is
++      performed with the ``coerce`` built-in function; thus, ``3+4.5`` is
+       equivalent to calling ``operator.add(*coerce(3, 4.5))`` and results in
+       ``operator.add(3.0, 4.5)``.  Without coercion, all arguments of even
+       compatible types would have to be normalized to the same value by the
+       programmer, e.g., ``float(3)+4.5`` rather than just ``3+4.5``.
+ 
+    complex number
+       An extension of the familiar real number system in which all numbers are
+       expressed as a sum of a real part and an imaginary part.  Imaginary
+       numbers are real multiples of the imaginary unit (the square root of
+       ``-1``), often written ``i`` in mathematics or ``j`` in
+-      engineering. Python has builtin support for complex numbers, which are
++      engineering.  Python has built-in support for complex numbers, which are
+       written with this latter notation; the imaginary part is written with a
+       ``j`` suffix, e.g., ``3+1j``.  To get access to complex equivalents of the
+       :mod:`math` module, use :mod:`cmath`.  Use of complex numbers is a fairly
+       advanced mathematical feature.  If you're not aware of a need for them,
+       it's almost certain you can safely ignore them.
+ 
+    context manager
+       An object which controls the environment seen in a :keyword:`with`
+       statement by defining :meth:`__enter__` and :meth:`__exit__` methods.
+       See :pep:`343`.
+ 
+    CPython
+@@ -151,27 +151,27 @@
+       recognized by the compiler and put into the :attr:`__doc__` attribute
+       of the enclosing class, function or module.  Since it is available via
+       introspection, it is the canonical place for documentation of the
+       object.
+ 
+    duck-typing
+       A pythonic programming style which determines an object's type by inspection
+       of its method or attribute signature rather than by explicit relationship
+       to some type object ("If it looks like a duck and quacks like a duck, it
+       must be a duck.")  By emphasizing interfaces rather than specific types,
+       well-designed code improves its flexibility by allowing polymorphic
+       substitution.  Duck-typing avoids tests using :func:`type` or
+-      :func:`isinstance`. (Note, however, that duck-typing can be complemented
+-      with abstract base classes.) Instead, it typically employs :func:`hasattr`
+-      tests or :term:`EAFP` programming.
++      :func:`isinstance`.  (Note, however, that duck-typing can be complemented
++      with :term:`abstract base class`\ es.)  Instead, it typically employs
++      :func:`hasattr` tests or :term:`EAFP` programming.
+ 
+    EAFP
+       Easier to ask for forgiveness than permission.  This common Python coding
+       style assumes the existence of valid keys or attributes and catches
+       exceptions if the assumption proves false.  This clean and fast style is
+       characterized by the presence of many :keyword:`try` and :keyword:`except`
+       statements.  The technique contrasts with the :term:`LBYL` style
+       common to many other languages such as C.
+ 
+    expression
+       A piece of syntax which can be evaluated to some value.  In other words,
+       an expression is an accumulation of expression elements like literals, names,
+@@ -208,38 +208,40 @@
+       new feature was first added to the language and when it will become the
+       default::
+ 
+          >>> import __future__
+          >>> __future__.division
+          _Feature((2, 2, 0, 'alpha', 2), (3, 0, 0, 'alpha', 0), 8192)
+ 
+    garbage collection
+       The process of freeing memory when it is not used anymore.  Python
+       performs garbage collection via reference counting and a cyclic garbage
+       collector that is able to detect and break reference cycles.
+ 
++      .. index:: single: generator
++
+    generator
+       A function which returns an iterator.  It looks like a normal function
+       except that values are returned to the caller using a :keyword:`yield`
+       statement instead of a :keyword:`return` statement.  Generator functions
+       often contain one or more :keyword:`for` or :keyword:`while` loops which
+       :keyword:`yield` elements back to the caller.  The function execution is
+       stopped at the :keyword:`yield` keyword (returning the result) and is
+       resumed there when the next element is requested by calling the
+       :meth:`next` method of the returned iterator.
+ 
+       .. index:: single: generator expression
+ 
+    generator expression
+-      An expression that returns a generator.  It looks like a normal expression
++      An expression that returns an iterator.  It looks like a normal expression
+       followed by a :keyword:`for` expression defining a loop variable, range,
+       and an optional :keyword:`if` expression.  The combined expression
+       generates values for an enclosing function::
+ 
+          >>> sum(i*i for i in range(10))         # sum of squares 0, 1, 4, ... 81
+          285
+ 
+    GIL
+       See :term:`global interpreter lock`.
+ 
+    global interpreter lock
+       The lock used by Python threads to assure that only one thread
+@@ -313,25 +315,25 @@
+       Interpreted languages typically have a shorter development/debug cycle
+       than compiled ones, though their programs generally also run more
+       slowly.  See also :term:`interactive`.
+ 
+    iterable
+       A container object capable of returning its members one at a
+       time. Examples of iterables include all sequence types (such as
+       :class:`list`, :class:`str`, and :class:`tuple`) and some non-sequence
+       types like :class:`dict` and :class:`file` and objects of any classes you
+       define with an :meth:`__iter__` or :meth:`__getitem__` method.  Iterables
+       can be used in a :keyword:`for` loop and in many other places where a
+       sequence is needed (:func:`zip`, :func:`map`, ...).  When an iterable
+-      object is passed as an argument to the builtin function :func:`iter`, it
++      object is passed as an argument to the built-in function :func:`iter`, it
+       returns an iterator for the object.  This iterator is good for one pass
+       over the set of values.  When using iterables, it is usually not necessary
+       to call :func:`iter` or deal with iterator objects yourself.  The ``for``
+       statement does that automatically for you, creating a temporary unnamed
+       variable to hold the iterator for the duration of the loop.  See also
+       :term:`iterator`, :term:`sequence`, and :term:`generator`.
+ 
+    iterator
+       An object representing a stream of data.  Repeated calls to the iterator's
+       :meth:`next` method return successive items in the stream.  When no more
+       data are available a :exc:`StopIteration` exception is raised instead.  At
+       this point, the iterator object is exhausted and any further calls to its
+@@ -415,25 +417,25 @@
+       tuple-like object where the *year* is accessible either with an
+       index such as ``t[0]`` or with a named attribute like ``t.tm_year``).
+ 
+       A named tuple can be a built-in type such as :class:`time.struct_time`,
+       or it can be created with a regular class definition.  A full featured
+       named tuple can also be created with the factory function
+       :func:`collections.namedtuple`.  The latter approach automatically
+       provides extra features such as a self-documenting representation like
+       ``Employee(name='jones', title='programmer')``.
+ 
+    namespace
+       The place where a variable is stored.  Namespaces are implemented as
+-      dictionaries.  There are the local, global and builtin namespaces as well
++      dictionaries.  There are the local, global and built-in namespaces as well
+       as nested namespaces in objects (in methods).  Namespaces support
+       modularity by preventing naming conflicts.  For instance, the functions
+       :func:`__builtin__.open` and :func:`os.open` are distinguished by their
+       namespaces.  Namespaces also aid readability and maintainability by making
+       it clear which module implements a function.  For instance, writing
+       :func:`random.seed` or :func:`itertools.izip` makes it clear that those
+       functions are implemented by the :mod:`random` and :mod:`itertools`
+       modules, respectively.
+ 
+    nested scope
+       The ability to refer to a variable in an enclosing definition.  For
+       instance, a function defined inside another function can refer to

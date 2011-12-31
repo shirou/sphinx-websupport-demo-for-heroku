@@ -1,0 +1,298 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>howto/doanddont.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -135,110 +135,133 @@</span>
+    a = 1
+ 
+    # bar.py
+    import foo
+    if something():
+        foo.a = 2
+ 
+ 
+ except:
+ -------
+ 
+ Python has the ``except:`` clause, which catches all exceptions. Since *every*
+<span class="gd">-error in Python raises an exception, this makes many programming errors look</span>
+<span class="gd">-like runtime problems, and hinders the debugging process.</span>
+<span class="gi">+error in Python raises an exception, using ``except:`` can make many</span>
+<span class="gi">+programming errors look like runtime problems, which hinders the debugging</span>
+<span class="gi">+process.</span>
+ 
+<span class="gd">-The following code shows a great example::</span>
+<span class="gi">+The following code shows a great example of why this is bad::</span>
+ 
+    try:
+        foo = opne(&quot;file&quot;) # misspelled &quot;open&quot;
+    except:
+        sys.exit(&quot;could not open file!&quot;)
+ 
+<span class="gd">-The second line triggers a :exc:`NameError` which is caught by the except</span>
+<span class="gd">-clause. The program will exit, and you will have no idea that this has nothing</span>
+<span class="gd">-to do with the readability of ``&quot;file&quot;``.</span>
+<span class="gi">+The second line triggers a :exc:`NameError`, which is caught by the except</span>
+<span class="gi">+clause. The program will exit, and the error message the program prints will</span>
+<span class="gi">+make you think the problem is the readability of ``&quot;file&quot;`` when in fact</span>
+<span class="gi">+the real error has nothing to do with ``&quot;file&quot;``.</span>
+ 
+<span class="gd">-The example above is better written ::</span>
+<span class="gi">+A better way to write the above is ::</span>
+ 
+    try:
+<span class="gd">-       foo = opne(&quot;file&quot;) # will be changed to &quot;open&quot; as soon as we run it</span>
+<span class="gi">+       foo = opne(&quot;file&quot;)</span>
+    except IOError:
+        sys.exit(&quot;could not open file&quot;)
+ 
+<span class="gd">-There are some situations in which the ``except:`` clause is useful: for</span>
+<span class="gd">-example, in a framework when running callbacks, it is good not to let any</span>
+<span class="gd">-callback disturb the framework.</span>
+<span class="gi">+When this is run, Python will produce a traceback showing the :exc:`NameError`,</span>
+<span class="gi">+and it will be immediately apparent what needs to be fixed.</span>
+<span class="gi">+</span>
+<span class="gi">+.. index:: bare except, except; bare</span>
+<span class="gi">+</span>
+<span class="gi">+Because ``except:`` catches *all* exceptions, including :exc:`SystemExit`,</span>
+<span class="gi">+:exc:`KeyboardInterrupt`, and :exc:`GeneratorExit` (which is not an error and</span>
+<span class="gi">+should not normally be caught by user code), using a bare ``except:`` is almost</span>
+<span class="gi">+never a good idea.  In situations where you need to catch all &quot;normal&quot; errors,</span>
+<span class="gi">+such as in a framework that runs callbacks, you can catch the base class for</span>
+<span class="gi">+all normal exceptions, :exc:`Exception`.  Unfortunately in Python 2.x it is</span>
+<span class="gi">+possible for third-party code to raise exceptions that do not inherit from</span>
+<span class="gi">+:exc:`Exception`, so in Python 2.x there are some cases where you may have to</span>
+<span class="gi">+use a bare ``except:`` and manually re-raise the exceptions you don&#39;t want</span>
+<span class="gi">+to catch.</span>
+ 
+ 
+ Exceptions
+ ==========
+ 
+ Exceptions are a useful feature of Python. You should learn to raise them
+ whenever something unexpected occurs, and catch them only where you can do
+ something about them.
+ 
+ The following is a very popular anti-idiom ::
+ 
+    def get_status(file):
+        if not os.path.exists(file):
+            print &quot;file not found&quot;
+            sys.exit(1)
+        return open(file).readline()
+ 
+<span class="gd">-Consider the case the file gets deleted between the time the call to</span>
+<span class="gd">-:func:`os.path.exists` is made and the time :func:`open` is called. That means</span>
+<span class="gd">-the last line will throw an :exc:`IOError`. The same would happen if *file*</span>
+<span class="gd">-exists but has no read permission. Since testing this on a normal machine on</span>
+<span class="gd">-existing and non-existing files make it seem bugless, that means in testing the</span>
+<span class="gd">-results will seem fine, and the code will get shipped. Then an unhandled</span>
+<span class="gd">-:exc:`IOError` escapes to the user, who has to watch the ugly traceback.</span>
+<span class="gi">+Consider the case where the file gets deleted between the time the call to</span>
+<span class="gi">+:func:`os.path.exists` is made and the time :func:`open` is called. In that</span>
+<span class="gi">+case the last line will raise an :exc:`IOError`.  The same thing would happen</span>
+<span class="gi">+if *file* exists but has no read permission.  Since testing this on a normal</span>
+<span class="gi">+machine on existent and non-existent files makes it seem bugless, the test</span>
+<span class="gi">+results will seem fine, and the code will get shipped.  Later an unhandled</span>
+<span class="gi">+:exc:`IOError` (or perhaps some other :exc:`EnvironmentError`) escapes to the</span>
+<span class="gi">+user, who gets to watch the ugly traceback.</span>
+ 
+<span class="gd">-Here is a better way to do it. ::</span>
+<span class="gi">+Here is a somewhat better way to do it. ::</span>
+ 
+    def get_status(file):
+        try:
+            return open(file).readline()
+<span class="gd">-       except (IOError, OSError):</span>
+<span class="gd">-           print &quot;file not found&quot;</span>
+<span class="gi">+       except EnvironmentError as err:</span>
+<span class="gi">+           print &quot;Unable to open file: {}&quot;.format(err)</span>
+            sys.exit(1)
+ 
+<span class="gd">-In this version, \*either\* the file gets opened and the line is read (so it</span>
+<span class="gd">-works even on flaky NFS or SMB connections), or the message is printed and the</span>
+<span class="gd">-application aborted.</span>
+<span class="gi">+In this version, *either* the file gets opened and the line is read (so it</span>
+<span class="gi">+works even on flaky NFS or SMB connections), or an error message is printed</span>
+<span class="gi">+that provides all the available information on why the open failed, and the</span>
+<span class="gi">+application is aborted.</span>
+ 
+<span class="gd">-Still, :func:`get_status` makes too many assumptions --- that it will only be</span>
+<span class="gd">-used in a short running script, and not, say, in a long running server. Sure,</span>
+<span class="gd">-the caller could do something like ::</span>
+<span class="gi">+However, even this version of :func:`get_status` makes too many assumptions ---</span>
+<span class="gi">+that it will only be used in a short running script, and not, say, in a long</span>
+<span class="gi">+running server. Sure, the caller could do something like ::</span>
+ 
+    try:
+        status = get_status(log)
+    except SystemExit:
+        status = None
+ 
+<span class="gd">-So, try to make as few ``except`` clauses in your code --- those will usually be</span>
+<span class="gd">-a catch-all in the :func:`main`, or inside calls which should always succeed.</span>
+<span class="gi">+But there is a better way.  You should try to use as few ``except`` clauses in</span>
+<span class="gi">+your code as you can --- the ones you do use will usually be inside calls which</span>
+<span class="gi">+should always succeed, or a catch-all in a main function.</span>
+ 
+<span class="gd">-So, the best version is probably ::</span>
+<span class="gi">+So, an even better version of :func:`get_status()` is probably ::</span>
+ 
+    def get_status(file):
+        return open(file).readline()
+ 
+<span class="gd">-The caller can deal with the exception if it wants (for example, if it  tries</span>
+<span class="gi">+The caller can deal with the exception if it wants (for example, if it tries</span>
+ several files in a loop), or just let the exception filter upwards to *its*
+ caller.
+ 
+<span class="gd">-The last version is not very good either --- due to implementation details, the</span>
+<span class="gd">-file would not be closed when an exception is raised until the handler finishes,</span>
+<span class="gd">-and perhaps not at all in non-C implementations (e.g., Jython). ::</span>
+<span class="gi">+But the last version still has a serious problem --- due to implementation</span>
+<span class="gi">+details in CPython, the file would not be closed when an exception is raised</span>
+<span class="gi">+until the exception handler finishes; and, worse, in other implementations</span>
+<span class="gi">+(e.g., Jython) it might not be closed at all regardless of whether or not</span>
+<span class="gi">+an exception is raised.</span>
+<span class="gi">+</span>
+<span class="gi">+The best version of this function uses the ``open()`` call as a context</span>
+<span class="gi">+manager, which will ensure that the file gets closed as soon as the</span>
+<span class="gi">+function returns::</span>
+ 
+    def get_status(file):
+        with open(file) as fp:
+            return fp.readline()
+ 
+ 
+ Using the Batteries
+ ===================
+ 
+ Every so often, people seem to be writing stuff in the Python library again,
+ usually poorly. While the occasional module has a poor interface, it is usually
+ much better to use the rich standard library and data types that come with
+<span class="gu">@@ -249,41 +272,40 @@</span>
+ better than whatever you come up with yourself.
+ 
+ Compare::
+ 
+    # ugh!
+    return dir+&quot;/&quot;+file
+    # better
+    return os.path.join(dir, file)
+ 
+ More useful functions in :mod:`os.path`: :func:`basename`,  :func:`dirname` and
+ :func:`splitext`.
+ 
+<span class="gd">-There are also many useful built-in functions people seem not to be aware of for</span>
+<span class="gd">-some reason: :func:`min` and :func:`max` can find the minimum/maximum of any</span>
+<span class="gd">-sequence with comparable semantics, for example, yet many people write their own</span>
+<span class="gd">-:func:`max`/:func:`min`. Another highly useful function is :func:`reduce`. A</span>
+<span class="gd">-classical use of :func:`reduce` is something like ::</span>
+<span class="gi">+There are also many useful built-in functions people seem not to be aware of</span>
+<span class="gi">+for some reason: :func:`min` and :func:`max` can find the minimum/maximum of</span>
+<span class="gi">+any sequence with comparable semantics, for example, yet many people write</span>
+<span class="gi">+their own :func:`max`/:func:`min`. Another highly useful function is</span>
+<span class="gi">+:func:`reduce` which can be used to repeatly apply a binary operation to a</span>
+<span class="gi">+sequence, reducing it to a single value.  For example, compute a factorial</span>
+<span class="gi">+with a series of multiply operations::</span>
+ 
+<span class="gd">-   import sys, operator</span>
+<span class="gd">-   nums = map(float, sys.argv[1:])</span>
+<span class="gd">-   print reduce(operator.add, nums)/len(nums)</span>
+<span class="gi">+   &gt;&gt;&gt; n = 4</span>
+<span class="gi">+   &gt;&gt;&gt; import operator</span>
+<span class="gi">+   &gt;&gt;&gt; reduce(operator.mul, range(1, n+1))</span>
+<span class="gi">+   24</span>
+ 
+<span class="gd">-This cute little script prints the average of all numbers given on the command</span>
+<span class="gd">-line. The :func:`reduce` adds up all the numbers, and the rest is just some</span>
+<span class="gd">-pre- and postprocessing.</span>
+<span class="gd">-</span>
+<span class="gd">-On the same note, note that :func:`float`, :func:`int` and :func:`long` all</span>
+<span class="gd">-accept arguments of type string, and so are suited to parsing --- assuming you</span>
+<span class="gd">-are ready to deal with the :exc:`ValueError` they raise.</span>
+<span class="gi">+When it comes to parsing numbers, note that :func:`float`, :func:`int` and</span>
+<span class="gi">+:func:`long` all accept string arguments and will reject ill-formed strings</span>
+<span class="gi">+by raising an :exc:`ValueError`.</span>
+ 
+ 
+ Using Backslash to Continue Statements
+ ======================================
+ 
+ Since Python treats a newline as a statement terminator, and since statements
+ are often more than is comfortable to put in one line, many people do::
+ 
+    if foo.bar()[&#39;first&#39;][0] == baz.quux(1, 2)[5:9] and \
+       calculate_number(10, 20) != forbulate(500, 360):
+          pass
+ 
+</pre></div>
+
+</body>
+</html>

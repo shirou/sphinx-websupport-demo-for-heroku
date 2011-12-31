@@ -1,0 +1,126 @@
+@@ -277,46 +277,46 @@
+ required.  Of course, foo.pyd is required if you want to say ``import foo``.  In
+ a DLL, linkage is declared in the source code with ``__declspec(dllexport)``.
+ In a .pyd, linkage is defined in a list of available functions.
+ 
+ 
+ How can I embed Python into a Windows application?
+ --------------------------------------------------
+ 
+ Embedding the Python interpreter in a Windows app can be summarized as follows:
+ 
+ 1. Do _not_ build Python into your .exe file directly.  On Windows, Python must
+    be a DLL to handle importing modules that are themselves DLL's.  (This is the
+-   first key undocumented fact.) Instead, link to :file:`python{NN}.dll`; it is
+-   typically installed in ``C:\Windows\System``.  NN is the Python version, a
++   first key undocumented fact.)  Instead, link to :file:`python{NN}.dll`; it is
++   typically installed in ``C:\Windows\System``.  *NN* is the Python version, a
+    number such as "23" for Python 2.3.
+ 
+-   You can link to Python statically or dynamically.  Linking statically means
+-   linking against :file:`python{NN}.lib`, while dynamically linking means
+-   linking against :file:`python{NN}.dll`.  The drawback to dynamic linking is
+-   that your app won't run if :file:`python{NN}.dll` does not exist on your
+-   system.  (General note: :file:`python{NN}.lib` is the so-called "import lib"
+-   corresponding to :file:`python.dll`.  It merely defines symbols for the
+-   linker.)
++   You can link to Python in two different ways.  Load-time linking means
++   linking against :file:`python{NN}.lib`, while run-time linking means linking
++   against :file:`python{NN}.dll`.  (General note: :file:`python{NN}.lib` is the
++   so-called "import lib" corresponding to :file:`python{NN}.dll`.  It merely
++   defines symbols for the linker.)
+ 
+-   Linking dynamically greatly simplifies link options; everything happens at
+-   run time.  Your code must load :file:`python{NN}.dll` using the Windows
++   Run-time linking greatly simplifies link options; everything happens at run
++   time.  Your code must load :file:`python{NN}.dll` using the Windows
+    ``LoadLibraryEx()`` routine.  The code must also use access routines and data
+    in :file:`python{NN}.dll` (that is, Python's C API's) using pointers obtained
+    by the Windows ``GetProcAddress()`` routine.  Macros can make using these
+    pointers transparent to any C code that calls routines in Python's C API.
+ 
+    Borland note: convert :file:`python{NN}.lib` to OMF format using Coff2Omf.exe
+    first.
+ 
++   .. XXX what about static linking?
++
+ 2. If you use SWIG, it is easy to create a Python "extension module" that will
+    make the app's data and methods available to Python.  SWIG will handle just
+    about all the grungy details for you.  The result is C code that you link
+    *into* your .exe file (!)  You do _not_ have to create a DLL file, and this
+    also simplifies linking.
+ 
+ 3. SWIG will create an init function (a C function) whose name depends on the
+    name of the extension module.  For example, if the name of the module is leo,
+    the init function will be called initleo().  If you use SWIG shadow classes,
+    as you should, the init function will be called initleoc().  This initializes
+    a mostly hidden helper class used by the shadow class.
+ 
+@@ -432,34 +432,39 @@
+ 
+ How do I check for a keypress without blocking?
+ -----------------------------------------------
+ 
+ Use the msvcrt module.  This is a standard Windows-specific extension module.
+ It defines a function ``kbhit()`` which checks whether a keyboard hit is
+ present, and ``getch()`` which gets one character without echoing it.
+ 
+ 
+ How do I emulate os.kill() in Windows?
+ --------------------------------------
+ 
+-To terminate a process, you can use ctypes::
++Prior to Python 2.7 and 3.2, to terminate a process, you can use :mod:`ctypes`::
+ 
+    import ctypes
+ 
+    def kill(pid):
+        """kill function for Win32"""
+        kernel32 = ctypes.windll.kernel32
+        handle = kernel32.OpenProcess(1, 0, pid)
+        return (0 != kernel32.TerminateProcess(handle, 0))
+ 
++In 2.7 and 3.2, :func:`os.kill` is implemented similar to the above function,
++with the additional feature of being able to send CTRL+C and CTRL+BREAK
++to console subprocesses which are designed to handle those signals. See
++:func:`os.kill` for further details.
++
+ 
+ Why does os.path.isdir() fail on NT shared directories?
+ -------------------------------------------------------
+ 
+ The solution appears to be always append the "\\" on the end of shared
+ drives.
+ 
+    >>> import os
+    >>> os.path.isdir( '\\\\rorschach\\public')
+    0
+    >>> os.path.isdir( '\\\\rorschach\\public\\')
+    1
+@@ -580,25 +585,25 @@
+ cw3215.dll is missing.
+ 
+ Cause: you have an old Tcl/Tk DLL built with cygwin in your path (probably
+ ``C:\Windows``).  You must use the Tcl/Tk DLLs from the standard Tcl/Tk
+ installation (Python 1.5.2 comes with one).
+ 
+ 
+ Warning about CTL3D32 version from installer
+ --------------------------------------------
+ 
+ The Python installer issues a warning like this::
+ 
+-   This version uses ``CTL3D32.DLL`` which is not the correct version.
++   This version uses CTL3D32.DLL which is not the correct version.
+    This version is used for windows NT applications only.
+ 
+ Tim Peters:
+ 
+    This is a Microsoft DLL, and a notorious source of problems.  The message
+    means what it says: you have the wrong version of this DLL for your operating
+    system.  The Python installation did not cause this -- something else you
+    installed previous to this overwrote the DLL that came with your OS (probably
+    older shareware of some sort, but there's no way to tell now).  If you search
+    for "CTL3D32" using any search engine (AltaVista, for example), you'll find
+    hundreds and hundreds of web pages complaining about the same problem with
+    all sorts of installation programs.  They'll point you to ways to get the

@@ -1,0 +1,331 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>c-api/exceptions.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -142,82 +142,28 @@</span>
+    e.g. :cdata:`PyExc_RuntimeError`.  You need not increment its reference count.
+    The second argument is an error message; it is converted to a string object.
+ 
+ 
+ .. cfunction:: void PyErr_SetObject(PyObject *type, PyObject *value)
+ 
+    This function is similar to :cfunc:`PyErr_SetString` but lets you specify an
+    arbitrary Python object for the &quot;value&quot; of the exception.
+ 
+ 
+ .. cfunction:: PyObject* PyErr_Format(PyObject *exception, const char *format, ...)
+ 
+<span class="gd">-   This function sets the error indicator and returns *NULL*. *exception* should be</span>
+<span class="gd">-   a Python exception (class, not an instance).  *format* should be a string,</span>
+<span class="gd">-   containing format codes, similar to :cfunc:`printf`. The ``width.precision``</span>
+<span class="gd">-   before a format code is parsed, but the width part is ignored.</span>
+<span class="gd">-</span>
+<span class="gd">-   .. % This should be exactly the same as the table in PyString_FromFormat.</span>
+<span class="gd">-   .. % One should just refer to the other.</span>
+<span class="gd">-   .. % The descriptions for %zd and %zu are wrong, but the truth is complicated</span>
+<span class="gd">-   .. % because not all compilers support the %z width modifier -- we fake it</span>
+<span class="gd">-   .. % when necessary via interpolating PY_FORMAT_SIZE_T.</span>
+<span class="gd">-   .. % %u, %lu, %zu should have &quot;new in Python 2.5&quot; blurbs.</span>
+<span class="gd">-</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | Format Characters | Type          | Comment                        |</span>
+<span class="gd">-   +===================+===============+================================+</span>
+<span class="gd">-   | :attr:`%%`        | *n/a*         | The literal % character.       |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%c`        | int           | A single character,            |</span>
+<span class="gd">-   |                   |               | represented as an C int.       |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%d`        | int           | Exactly equivalent to          |</span>
+<span class="gd">-   |                   |               | ``printf(&quot;%d&quot;)``.              |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%u`        | unsigned int  | Exactly equivalent to          |</span>
+<span class="gd">-   |                   |               | ``printf(&quot;%u&quot;)``.              |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%ld`       | long          | Exactly equivalent to          |</span>
+<span class="gd">-   |                   |               | ``printf(&quot;%ld&quot;)``.             |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%lu`       | unsigned long | Exactly equivalent to          |</span>
+<span class="gd">-   |                   |               | ``printf(&quot;%lu&quot;)``.             |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%zd`       | Py_ssize_t    | Exactly equivalent to          |</span>
+<span class="gd">-   |                   |               | ``printf(&quot;%zd&quot;)``.             |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%zu`       | size_t        | Exactly equivalent to          |</span>
+<span class="gd">-   |                   |               | ``printf(&quot;%zu&quot;)``.             |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%i`        | int           | Exactly equivalent to          |</span>
+<span class="gd">-   |                   |               | ``printf(&quot;%i&quot;)``.              |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%x`        | int           | Exactly equivalent to          |</span>
+<span class="gd">-   |                   |               | ``printf(&quot;%x&quot;)``.              |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%s`        | char\*        | A null-terminated C character  |</span>
+<span class="gd">-   |                   |               | array.                         |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-   | :attr:`%p`        | void\*        | The hex representation of a C  |</span>
+<span class="gd">-   |                   |               | pointer. Mostly equivalent to  |</span>
+<span class="gd">-   |                   |               | ``printf(&quot;%p&quot;)`` except that   |</span>
+<span class="gd">-   |                   |               | it is guaranteed to start with |</span>
+<span class="gd">-   |                   |               | the literal ``0x`` regardless  |</span>
+<span class="gd">-   |                   |               | of what the platform&#39;s         |</span>
+<span class="gd">-   |                   |               | ``printf`` yields.             |</span>
+<span class="gd">-   +-------------------+---------------+--------------------------------+</span>
+<span class="gd">-</span>
+<span class="gd">-   An unrecognized format character causes all the rest of the format string to be</span>
+<span class="gd">-   copied as-is to the result string, and any extra arguments discarded.</span>
+<span class="gi">+   This function sets the error indicator and returns *NULL*.  *exception*</span>
+<span class="gi">+   should be a Python exception class.  The *format* and subsequent</span>
+<span class="gi">+   parameters help format the error message; they have the same meaning and</span>
+<span class="gi">+   values as in :cfunc:`PyString_FromFormat`.</span>
+ 
+ 
+ .. cfunction:: void PyErr_SetNone(PyObject *type)
+ 
+    This is a shorthand for ``PyErr_SetObject(type, Py_None)``.
+ 
+ 
+ .. cfunction:: int PyErr_BadArgument()
+ 
+    This is a shorthand for ``PyErr_SetString(PyExc_TypeError, message)``, where
+    *message* indicates that a built-in operation was invoked with an illegal
+    argument.  It is mostly for internal use.
+<span class="gu">@@ -392,52 +338,140 @@</span>
+    .. % thread.interrupt_main() (used from IDLE), so it&#39;s still needed.
+ 
+ 
+ .. cfunction:: int PySignal_SetWakeupFd(int fd)
+ 
+    This utility function specifies a file descriptor to which a ``&#39;\0&#39;`` byte will
+    be written whenever a signal is received.  It returns the previous such file
+    descriptor.  The value ``-1`` disables the feature; this is the initial state.
+    This is equivalent to :func:`signal.set_wakeup_fd` in Python, but without any
+    error checking.  *fd* should be a valid file descriptor.  The function should
+    only be called from the main thread.
+ 
+<span class="gi">+   .. versionadded:: 2.6</span>
+<span class="gi">+</span>
+ 
+ .. cfunction:: PyObject* PyErr_NewException(char *name, PyObject *base, PyObject *dict)
+ 
+    This utility function creates and returns a new exception object. The *name*
+    argument must be the name of the new exception, a C string of the form
+    ``module.class``.  The *base* and *dict* arguments are normally *NULL*.  This
+    creates a class object derived from :exc:`Exception` (accessible in C as
+    :cdata:`PyExc_Exception`).
+ 
+    The :attr:`__module__` attribute of the new class is set to the first part (up
+    to the last dot) of the *name* argument, and the class name is set to the last
+    part (after the last dot).  The *base* argument can be used to specify alternate
+    base classes; it can either be only one class or a tuple of classes. The *dict*
+    argument can be used to specify a dictionary of class variables and methods.
+ 
+ 
+<span class="gi">+.. cfunction:: PyObject* PyErr_NewExceptionWithDoc(char *name, char *doc, PyObject *base, PyObject *dict)</span>
+<span class="gi">+</span>
+<span class="gi">+   Same as :cfunc:`PyErr_NewException`, except that the new exception class can</span>
+<span class="gi">+   easily be given a docstring: If *doc* is non-*NULL*, it will be used as the</span>
+<span class="gi">+   docstring for the exception class.</span>
+<span class="gi">+</span>
+<span class="gi">+   .. versionadded:: 2.7</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ .. cfunction:: void PyErr_WriteUnraisable(PyObject *obj)
+ 
+    This utility function prints a warning message to ``sys.stderr`` when an
+    exception has been set but it is impossible for the interpreter to actually
+    raise the exception.  It is used, for example, when an exception occurs in an
+    :meth:`__del__` method.
+ 
+    The function is called with a single argument *obj* that identifies the context
+    in which the unraisable exception occurred. The repr of *obj* will be printed in
+    the warning message.
+ 
+ 
+<span class="gi">+.. _unicodeexceptions:</span>
+<span class="gi">+</span>
+<span class="gi">+Unicode Exception Objects</span>
+<span class="gi">+=========================</span>
+<span class="gi">+</span>
+<span class="gi">+The following functions are used to create and modify Unicode exceptions from C.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject* PyUnicodeDecodeError_Create(const char *encoding, const char *object, Py_ssize_t length, Py_ssize_t start, Py_ssize_t end, const char *reason)</span>
+<span class="gi">+</span>
+<span class="gi">+   Create a :class:`UnicodeDecodeError` object with the attributes *encoding*,</span>
+<span class="gi">+   *object*, *length*, *start*, *end* and *reason*.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject* PyUnicodeEncodeError_Create(const char *encoding, const Py_UNICODE *object, Py_ssize_t length, Py_ssize_t start, Py_ssize_t end, const char *reason)</span>
+<span class="gi">+</span>
+<span class="gi">+   Create a :class:`UnicodeEncodeError` object with the attributes *encoding*,</span>
+<span class="gi">+   *object*, *length*, *start*, *end* and *reason*.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject* PyUnicodeTranslateError_Create(const Py_UNICODE *object, Py_ssize_t length, Py_ssize_t start, Py_ssize_t end, const char *reason)</span>
+<span class="gi">+</span>
+<span class="gi">+   Create a :class:`UnicodeTranslateError` object with the attributes *object*,</span>
+<span class="gi">+   *length*, *start*, *end* and *reason*.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject* PyUnicodeDecodeError_GetEncoding(PyObject *exc)</span>
+<span class="gi">+               PyObject* PyUnicodeEncodeError_GetEncoding(PyObject *exc)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return the *encoding* attribute of the given exception object.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject* PyUnicodeDecodeError_GetObject(PyObject *exc)</span>
+<span class="gi">+               PyObject* PyUnicodeEncodeError_GetObject(PyObject *exc)</span>
+<span class="gi">+               PyObject* PyUnicodeTranslateError_GetObject(PyObject *exc)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return the *object* attribute of the given exception object.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: int PyUnicodeDecodeError_GetStart(PyObject *exc, Py_ssize_t *start)</span>
+<span class="gi">+               int PyUnicodeEncodeError_GetStart(PyObject *exc, Py_ssize_t *start)</span>
+<span class="gi">+               int PyUnicodeTranslateError_GetStart(PyObject *exc, Py_ssize_t *start)</span>
+<span class="gi">+</span>
+<span class="gi">+   Get the *start* attribute of the given exception object and place it into</span>
+<span class="gi">+   *\*start*.  *start* must not be *NULL*.  Return ``0`` on success, ``-1`` on</span>
+<span class="gi">+   failure.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: int PyUnicodeDecodeError_SetStart(PyObject *exc, Py_ssize_t start)</span>
+<span class="gi">+               int PyUnicodeEncodeError_SetStart(PyObject *exc, Py_ssize_t start)</span>
+<span class="gi">+               int PyUnicodeTranslateError_SetStart(PyObject *exc, Py_ssize_t start)</span>
+<span class="gi">+</span>
+<span class="gi">+   Set the *start* attribute of the given exception object to *start*.  Return</span>
+<span class="gi">+   ``0`` on success, ``-1`` on failure.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: int PyUnicodeDecodeError_GetEnd(PyObject *exc, Py_ssize_t *end)</span>
+<span class="gi">+               int PyUnicodeEncodeError_GetEnd(PyObject *exc, Py_ssize_t *end)</span>
+<span class="gi">+               int PyUnicodeTranslateError_GetEnd(PyObject *exc, Py_ssize_t *end)</span>
+<span class="gi">+</span>
+<span class="gi">+   Get the *end* attribute of the given exception object and place it into</span>
+<span class="gi">+   *\*end*.  *end* must not be *NULL*.  Return ``0`` on success, ``-1`` on</span>
+<span class="gi">+   failure.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: int PyUnicodeDecodeError_SetEnd(PyObject *exc, Py_ssize_t end)</span>
+<span class="gi">+               int PyUnicodeEncodeError_SetEnd(PyObject *exc, Py_ssize_t end)</span>
+<span class="gi">+               int PyUnicodeTranslateError_SetEnd(PyObject *exc, Py_ssize_t end)</span>
+<span class="gi">+</span>
+<span class="gi">+   Set the *end* attribute of the given exception object to *end*.  Return ``0``</span>
+<span class="gi">+   on success, ``-1`` on failure.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: PyObject* PyUnicodeDecodeError_GetReason(PyObject *exc)</span>
+<span class="gi">+               PyObject* PyUnicodeEncodeError_GetReason(PyObject *exc)</span>
+<span class="gi">+               PyObject* PyUnicodeTranslateError_GetReason(PyObject *exc)</span>
+<span class="gi">+</span>
+<span class="gi">+   Return the *reason* attribute of the given exception object.</span>
+<span class="gi">+</span>
+<span class="gi">+.. cfunction:: int PyUnicodeDecodeError_SetReason(PyObject *exc, const char *reason)</span>
+<span class="gi">+               int PyUnicodeEncodeError_SetReason(PyObject *exc, const char *reason)</span>
+<span class="gi">+               int PyUnicodeTranslateError_SetReason(PyObject *exc, const char *reason)</span>
+<span class="gi">+</span>
+<span class="gi">+   Set the *reason* attribute of the given exception object to *reason*.  Return</span>
+<span class="gi">+   ``0`` on success, ``-1`` on failure.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+ Recursion Control
+ =================
+ 
+ These two functions provide a way to perform safe recursive calls at the C
+ level, both in the core and in extension modules.  They are needed if the
+ recursive code does not necessarily invoke Python code (which tracks its
+ recursion depth automatically).
+ 
+ .. cfunction:: int Py_EnterRecursiveCall(char *where)
+ 
+    Marks a point where a recursive C-level call is about to be performed.
+ 
+<span class="gu">@@ -569,23 +603,19 @@</span>
+ 
+ (2)
+    This is the same as :exc:`weakref.ReferenceError`.
+ 
+ (3)
+    Only defined on Windows; protect code that uses this by testing that the
+    preprocessor macro ``MS_WINDOWS`` is defined.
+ 
+ (4)
+    .. versionadded:: 2.5
+ 
+ 
+<span class="gd">-Deprecation of String Exceptions</span>
+<span class="gd">-================================</span>
+<span class="gi">+String Exceptions</span>
+<span class="gi">+=================</span>
+ 
+<span class="gd">-.. index:: single: BaseException (built-in exception)</span>
+<span class="gi">+.. versionchanged:: 2.6</span>
+<span class="gi">+   All exceptions to be raised or caught must be derived from :exc:`BaseException`.</span>
+<span class="gi">+   Trying to raise a string exception now raises :exc:`TypeError`.</span>
+ 
+<span class="gd">-All exceptions built into Python or provided in the standard library are derived</span>
+<span class="gd">-from :exc:`BaseException`.</span>
+<span class="gd">-</span>
+<span class="gd">-String exceptions are still supported in the interpreter to allow existing code</span>
+<span class="gd">-to run unmodified, but this will also change in a future release.</span>
+<span class="gd">-</span>
+</pre></div>
+
+</body>
+</html>

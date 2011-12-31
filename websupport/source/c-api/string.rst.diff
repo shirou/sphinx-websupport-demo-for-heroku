@@ -1,0 +1,88 @@
+@@ -69,46 +69,54 @@
+ 
+    Take a C :cfunc:`printf`\ -style *format* string and a variable number of
+    arguments, calculate the size of the resulting Python string and return a string
+    with the values formatted into it.  The variable arguments must be C types and
+    must correspond exactly to the format characters in the *format* string.  The
+    following format characters are allowed:
+ 
+    .. % This should be exactly the same as the table in PyErr_Format.
+    .. % One should just refer to the other.
+    .. % The descriptions for %zd and %zu are wrong, but the truth is complicated
+    .. % because not all compilers support the %z width modifier -- we fake it
+    .. % when necessary via interpolating PY_FORMAT_SIZE_T.
++   .. % Similar comments apply to the %ll width modifier and
++   .. % PY_FORMAT_LONG_LONG.
+    .. % %u, %lu, %zu should have "new in Python 2.5" blurbs.
+ 
+    +-------------------+---------------+--------------------------------+
+    | Format Characters | Type          | Comment                        |
+    +===================+===============+================================+
+    | :attr:`%%`        | *n/a*         | The literal % character.       |
+    +-------------------+---------------+--------------------------------+
+    | :attr:`%c`        | int           | A single character,            |
+    |                   |               | represented as an C int.       |
+    +-------------------+---------------+--------------------------------+
+    | :attr:`%d`        | int           | Exactly equivalent to          |
+    |                   |               | ``printf("%d")``.              |
+    +-------------------+---------------+--------------------------------+
+    | :attr:`%u`        | unsigned int  | Exactly equivalent to          |
+    |                   |               | ``printf("%u")``.              |
+    +-------------------+---------------+--------------------------------+
+    | :attr:`%ld`       | long          | Exactly equivalent to          |
+    |                   |               | ``printf("%ld")``.             |
+    +-------------------+---------------+--------------------------------+
+    | :attr:`%lu`       | unsigned long | Exactly equivalent to          |
+    |                   |               | ``printf("%lu")``.             |
+    +-------------------+---------------+--------------------------------+
++   | :attr:`%lld`      | long long     | Exactly equivalent to          |
++   |                   |               | ``printf("%lld")``.            |
++   +-------------------+---------------+--------------------------------+
++   | :attr:`%llu`      | unsigned      | Exactly equivalent to          |
++   |                   | long long     | ``printf("%llu")``.            |
++   +-------------------+---------------+--------------------------------+
+    | :attr:`%zd`       | Py_ssize_t    | Exactly equivalent to          |
+    |                   |               | ``printf("%zd")``.             |
+    +-------------------+---------------+--------------------------------+
+    | :attr:`%zu`       | size_t        | Exactly equivalent to          |
+    |                   |               | ``printf("%zu")``.             |
+    +-------------------+---------------+--------------------------------+
+    | :attr:`%i`        | int           | Exactly equivalent to          |
+    |                   |               | ``printf("%i")``.              |
+    +-------------------+---------------+--------------------------------+
+    | :attr:`%x`        | int           | Exactly equivalent to          |
+    |                   |               | ``printf("%x")``.              |
+    +-------------------+---------------+--------------------------------+
+@@ -118,24 +126,32 @@
+    | :attr:`%p`        | void\*        | The hex representation of a C  |
+    |                   |               | pointer. Mostly equivalent to  |
+    |                   |               | ``printf("%p")`` except that   |
+    |                   |               | it is guaranteed to start with |
+    |                   |               | the literal ``0x`` regardless  |
+    |                   |               | of what the platform's         |
+    |                   |               | ``printf`` yields.             |
+    +-------------------+---------------+--------------------------------+
+ 
+    An unrecognized format character causes all the rest of the format string to be
+    copied as-is to the result string, and any extra arguments discarded.
+ 
++   .. note::
++
++      The `"%lld"` and `"%llu"` format specifiers are only available
++      when :const:`HAVE_LONG_LONG` is defined.
++
++   .. versionchanged:: 2.7
++      Support for `"%lld"` and `"%llu"` added.
++
+ 
+ .. cfunction:: PyObject* PyString_FromFormatV(const char *format, va_list vargs)
+ 
+    Identical to :cfunc:`PyString_FromFormat` except that it takes exactly two
+    arguments.
+ 
+ 
+ .. cfunction:: Py_ssize_t PyString_Size(PyObject *string)
+ 
+    Return the length of the string in string object *string*.
+ 
+    .. versionchanged:: 2.5

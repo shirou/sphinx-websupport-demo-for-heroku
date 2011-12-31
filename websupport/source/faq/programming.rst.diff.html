@@ -1,0 +1,130 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>faq/programming.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -935,25 +935,25 @@</span>
+ 
+      f = eval(fname)
+      f()
+ 
+   Note: Using :func:`eval` is slow and dangerous.  If you don&#39;t have absolute
+   control over the contents of the string, someone could pass a string that
+   resulted in an arbitrary function being executed.
+ 
+ Is there an equivalent to Perl&#39;s chomp() for removing trailing newlines from strings?
+ -------------------------------------------------------------------------------------
+ 
+ Starting with Python 2.2, you can use ``S.rstrip(&quot;\r\n&quot;)`` to remove all
+<span class="gd">-occurences of any line terminator from the end of the string ``S`` without</span>
+<span class="gi">+occurrences of any line terminator from the end of the string ``S`` without</span>
+ removing other trailing whitespace.  If the string ``S`` represents more than
+ one line, with several empty lines at the end, the line terminators for all the
+ blank lines will be removed::
+ 
+    &gt;&gt;&gt; lines = (&quot;line 1 \r\n&quot;
+    ...          &quot;\r\n&quot;
+    ...          &quot;\r\n&quot;)
+    &gt;&gt;&gt; lines.rstrip(&quot;\n\r&quot;)
+    &#39;line 1 &#39;
+ 
+ Since this is typically only desired when reading text one line at a time, using
+ ``S.rstrip()`` this way works well.
+<span class="gu">@@ -970,26 +970,26 @@</span>
+ 
+ Is there a scanf() or sscanf() equivalent?
+ ------------------------------------------
+ 
+ Not as such.
+ 
+ For simple input parsing, the easiest approach is usually to split the line into
+ whitespace-delimited words using the :meth:`~str.split` method of string objects
+ and then convert decimal strings to numeric values using :func:`int` or
+ :func:`float`.  ``split()`` supports an optional &quot;sep&quot; parameter which is useful
+ if the line uses something other than whitespace as a separator.
+ 
+<span class="gd">-For more complicated input parsing, regular expressions more powerful than C&#39;s</span>
+<span class="gd">-:cfunc:`sscanf` and better suited for the task.</span>
+<span class="gi">+For more complicated input parsing, regular expressions are more powerful</span>
+<span class="gi">+than C&#39;s :cfunc:`sscanf` and better suited for the task.</span>
+ 
+ 
+ What does &#39;UnicodeError: ASCII [decoding,encoding] error: ordinal not in range(128)&#39; mean?
+ ------------------------------------------------------------------------------------------
+ 
+ This error indicates that your Python installation can handle only 7-bit ASCII
+ strings.  There are a couple ways to fix or work around the problem.
+ 
+ If your programs must handle data in arbitrary character set encodings, the
+ environment the application runs in will generally identify the encoding of the
+ data it is handing you.  You need to convert the input to Unicode data using
+ that encoding.  For example, a program that handles email or web input will
+</pre></div>
+
+</body>
+</html>

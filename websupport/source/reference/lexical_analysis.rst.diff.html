@@ -1,0 +1,131 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>reference/lexical_analysis.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -417,24 +417,25 @@</span>
+ String literals
+ ---------------
+ 
+ .. index:: single: string literal
+ 
+ String literals are described by the following lexical definitions:
+ 
+ .. index:: single: ASCII@ASCII
+ 
+ .. productionlist::
+    stringliteral: [`stringprefix`](`shortstring` | `longstring`)
+    stringprefix: &quot;r&quot; | &quot;u&quot; | &quot;ur&quot; | &quot;R&quot; | &quot;U&quot; | &quot;UR&quot; | &quot;Ur&quot; | &quot;uR&quot;
+<span class="gi">+               : | &quot;b&quot; | &quot;B&quot; | &quot;br&quot; | &quot;Br&quot; | &quot;bR&quot; | &quot;BR&quot;</span>
+    shortstring: &quot;&#39;&quot; `shortstringitem`* &quot;&#39;&quot; | &#39;&quot;&#39; `shortstringitem`* &#39;&quot;&#39;
+    longstring: &quot;&#39;&#39;&#39;&quot; `longstringitem`* &quot;&#39;&#39;&#39;&quot;
+              : | &#39;&quot;&quot;&quot;&#39; `longstringitem`* &#39;&quot;&quot;&quot;&#39;
+    shortstringitem: `shortstringchar` | `escapeseq`
+    longstringitem: `longstringchar` | `escapeseq`
+    shortstringchar: &lt;any source character except &quot;\&quot; or newline or the quote&gt;
+    longstringchar: &lt;any source character except &quot;\&quot;&gt;
+    escapeseq: &quot;\&quot; &lt;any ASCII character&gt;
+ 
+ One syntactic restriction not indicated by these productions is that whitespace
+ is not allowed between the :token:`stringprefix` and the rest of the string
+ literal. The source character set is defined by the encoding declaration; it is
+<span class="gu">@@ -449,26 +450,28 @@</span>
+ 
+ In plain English: String literals can be enclosed in matching single quotes
+ (``&#39;``) or double quotes (``&quot;``).  They can also be enclosed in matching groups
+ of three single or double quotes (these are generally referred to as
+ *triple-quoted strings*).  The backslash (``\``) character is used to escape
+ characters that otherwise have a special meaning, such as newline, backslash
+ itself, or the quote character.  String literals may optionally be prefixed with
+ a letter ``&#39;r&#39;`` or ``&#39;R&#39;``; such strings are called :dfn:`raw strings` and use
+ different rules for interpreting backslash escape sequences.  A prefix of
+ ``&#39;u&#39;`` or ``&#39;U&#39;`` makes the string a Unicode string.  Unicode strings use the
+ Unicode character set as defined by the Unicode Consortium and ISO 10646.  Some
+ additional escape sequences, described below, are available in Unicode strings.
+<span class="gd">-The two prefix characters may be combined; in this case, ``&#39;u&#39;`` must appear</span>
+<span class="gd">-before ``&#39;r&#39;``.</span>
+<span class="gi">+A prefix of ``&#39;b&#39;`` or ``&#39;B&#39;`` is ignored in Python 2; it indicates that the</span>
+<span class="gi">+literal should become a bytes literal in Python 3 (e.g. when code is</span>
+<span class="gi">+automatically converted with 2to3).  A ``&#39;u&#39;`` or ``&#39;b&#39;`` prefix may be followed</span>
+<span class="gi">+by an ``&#39;r&#39;`` prefix.</span>
+ 
+ In triple-quoted strings, unescaped newlines and quotes are allowed (and are
+ retained), except that three unescaped quotes in a row terminate the string.  (A
+ &quot;quote&quot; is the character used to open the string, i.e. either ``&#39;`` or ``&quot;``.)
+ 
+ .. index::
+    single: physical line
+    single: escape sequence
+    single: Standard C
+    single: C
+ 
+ Unless an ``&#39;r&#39;`` or ``&#39;R&#39;`` prefix is present, escape sequences in strings are
+</pre></div>
+
+</body>
+</html>

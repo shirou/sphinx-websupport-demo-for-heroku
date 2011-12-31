@@ -1,0 +1,322 @@
+@@ -1,20 +1,19 @@
+ .. _regex-howto:
+ 
+ ****************************
+   Regular Expression HOWTO
+ ****************************
+ 
+ :Author: A.M. Kuchling <amk@amk.ca>
+-:Release: 0.05
+ 
+ .. TODO:
+    Document lookbehind assertions
+    Better way of displaying a RE, a string, and what it matches
+    Mention optional argument to match.groups()
+    Unicode (at least a reference)
+ 
+ 
+ .. topic:: Abstract
+ 
+    This document is an introductory tutorial to using regular expressions in Python
+    with the :mod:`re` module.  It provides a gentler introduction than the
+@@ -73,25 +72,25 @@
+ enable a case-insensitive mode that would let this RE match ``Test`` or ``TEST``
+ as well; more about this later.)
+ 
+ There are exceptions to this rule; some characters are special
+ :dfn:`metacharacters`, and don't match themselves.  Instead, they signal that
+ some out-of-the-ordinary thing should be matched, or they affect other portions
+ of the RE by repeating them or changing their meaning.  Much of this document is
+ devoted to discussing various metacharacters and what they do.
+ 
+ Here's a complete list of the metacharacters; their meanings will be discussed
+ in the rest of this HOWTO. ::
+ 
+-   . ^ $ * + ? { [ ] \ | ( )
++   . ^ $ * + ? { } [ ] \ | ( )
+ 
+ The first metacharacters we'll look at are ``[`` and ``]``. They're used for
+ specifying a character class, which is a set of characters that you wish to
+ match.  Characters can be listed individually, or a range of characters can be
+ indicated by giving two characters and separating them by a ``'-'``.  For
+ example, ``[abc]`` will match any of the characters ``a``, ``b``, or ``c``; this
+ is the same as ``[a-c]``, which uses a range to express the same set of
+ characters.  If you wanted to match only lowercase letters, your RE would be
+ ``[a-z]``.
+ 
+ Metacharacters are not active inside classes.  For example, ``[akm$]`` will
+ match any of the characters ``'a'``, ``'k'``, ``'m'``, or ``'$'``; ``'$'`` is
+@@ -104,25 +103,28 @@
+ character.  For example, ``[^5]`` will match any character except ``'5'``.
+ 
+ Perhaps the most important metacharacter is the backslash, ``\``.   As in Python
+ string literals, the backslash can be followed by various characters to signal
+ various special sequences.  It's also used to escape all the metacharacters so
+ you can still match them in patterns; for example, if you need to match a ``[``
+ or  ``\``, you can precede them with a backslash to remove their special
+ meaning: ``\[`` or ``\\``.
+ 
+ Some of the special sequences beginning with ``'\'`` represent predefined sets
+ of characters that are often useful, such as the set of digits, the set of
+ letters, or the set of anything that isn't whitespace.  The following predefined
+-special sequences are available:
++special sequences are a subset of those available. The equivalent classes are
++for byte string patterns. For a complete list of sequences and expanded class
++definitions for Unicode string patterns, see the last part of
++:ref:`Regular Expression Syntax <re-syntax>`.
+ 
+ ``\d``
+    Matches any decimal digit; this is equivalent to the class ``[0-9]``.
+ 
+ ``\D``
+    Matches any non-digit character; this is equivalent to the class ``[^0-9]``.
+ 
+ ``\s``
+    Matches any whitespace character; this is equivalent to the class ``[
+    \t\n\r\f\v]``.
+ 
+ ``\S``
+@@ -255,25 +257,25 @@
+ 
+ 
+ Compiling Regular Expressions
+ -----------------------------
+ 
+ Regular expressions are compiled into pattern objects, which have
+ methods for various operations such as searching for pattern matches or
+ performing string substitutions. ::
+ 
+    >>> import re
+    >>> p = re.compile('ab*')
+    >>> print p
+-   <_sre.SRE_Pattern object at 80b4150>
++   <_sre.SRE_Pattern object at 0x...>
+ 
+ :func:`re.compile` also accepts an optional *flags* argument, used to enable
+ various special features and syntax variations.  We'll go over the available
+ settings later, but for now a single example will do::
+ 
+    >>> p = re.compile('ab*', re.IGNORECASE)
+ 
+ The RE is passed to :func:`re.compile` as a string.  REs are handled as strings
+ because regular expressions aren't part of the core Python language, and no
+ special syntax was created for expressing them.  (There are applications that
+ don't need REs at all, so there's no need to bloat the language specification by
+ including them.) Instead, the :mod:`re` module is simply a C extension module
+@@ -368,43 +370,43 @@
+ whether the RE matches or fails. :file:`redemo.py` can be quite useful when
+ trying to debug a complicated RE.  Phil Schwartz's `Kodos
+ <http://kodos.sourceforge.net/>`_ is also an interactive tool for developing and
+ testing RE patterns.
+ 
+ This HOWTO uses the standard Python interpreter for its examples. First, run the
+ Python interpreter, import the :mod:`re` module, and compile a RE::
+ 
+    Python 2.2.2 (#1, Feb 10 2003, 12:57:01)
+    >>> import re
+    >>> p = re.compile('[a-z]+')
+    >>> p
+-   <_sre.SRE_Pattern object at 80c3c28>
++   <_sre.SRE_Pattern object at 0x...>
+ 
+ Now, you can try matching various strings against the RE ``[a-z]+``.  An empty
+ string shouldn't match at all, since ``+`` means 'one or more repetitions'.
+ :meth:`match` should return ``None`` in this case, which will cause the
+ interpreter to print no output.  You can explicitly print the result of
+ :meth:`match` to make this clear. ::
+ 
+    >>> p.match("")
+    >>> print p.match("")
+    None
+ 
+ Now, let's try it on a string that it should match, such as ``tempo``.  In this
+ case, :meth:`match` will return a :class:`MatchObject`, so you should store the
+ result in a variable for later use. ::
+ 
+    >>> m = p.match('tempo')
+    >>> print m
+-   <_sre.SRE_Match object at 80c4f68>
++   <_sre.SRE_Match object at 0x...>
+ 
+ Now you can query the :class:`MatchObject` for information about the matching
+ string.   :class:`MatchObject` instances also have several methods and
+ attributes; the most important ones are:
+ 
+ +------------------+--------------------------------------------+
+ | Method/Attribute | Purpose                                    |
+ +==================+============================================+
+ | ``group()``      | Return the string matched by the RE        |
+ +------------------+--------------------------------------------+
+ | ``start()``      | Return the starting position of the match  |
+ +------------------+--------------------------------------------+
+@@ -425,25 +427,25 @@
+ 
+ :meth:`group` returns the substring that was matched by the RE.  :meth:`start`
+ and :meth:`end` return the starting and ending index of the match. :meth:`span`
+ returns both start and end indexes in a single tuple.  Since the :meth:`match`
+ method only checks if the RE matches at the start of a string, :meth:`start`
+ will always be zero.  However, the :meth:`search` method of patterns
+ scans through the string, so  the match may not start at zero in that
+ case. ::
+ 
+    >>> print p.match('::: message')
+    None
+    >>> m = p.search('::: message') ; print m
+-   <re.MatchObject instance at 80c9650>
++   <_sre.SRE_Match object at 0x...>
+    >>> m.group()
+    'message'
+    >>> m.span()
+    (4, 11)
+ 
+ In actual programs, the most common style is to store the :class:`MatchObject`
+ in a variable, and then check if it was ``None``.  This usually looks like::
+ 
+    p = re.compile( ... )
+    m = p.match( 'string goes here' )
+    if m:
+        print 'Match found: ', m.group()
+@@ -476,25 +478,25 @@
+ ----------------------
+ 
+ You don't have to create a pattern object and call its methods; the
+ :mod:`re` module also provides top-level functions called :func:`match`,
+ :func:`search`, :func:`findall`, :func:`sub`, and so forth.  These functions
+ take the same arguments as the corresponding pattern method, with
+ the RE string added as the first argument, and still return either ``None`` or a
+ :class:`MatchObject` instance. ::
+ 
+    >>> print re.match(r'From\s+', 'Fromage amk')
+    None
+    >>> re.match(r'From\s+', 'From amk Thu May 14 19:12:10 1998')
+-   <re.MatchObject instance at 80c5978>
++   <_sre.SRE_Match object at 0x...>
+ 
+ Under the hood, these functions simply create a pattern object for you
+ and call the appropriate method on it.  They also store the compiled object in a
+ cache, so future calls using the same RE are faster.
+ 
+ Should you use these module-level functions, or should you get the
+ pattern and call its methods yourself?  That choice depends on how
+ frequently the RE will be used, and on your personal coding style.  If the RE is
+ being used at only one point in the code, then the module functions are probably
+ more convenient.  If a program contains a lot of regular expressions, or re-uses
+ the same ones in several locations, then it might be worthwhile to collect all
+ the definitions in one place, in a section of code that compiles all the REs
+@@ -677,84 +679,84 @@
+    To match a literal ``'|'``, use ``\|``, or enclose it inside a character class,
+    as in ``[|]``.
+ 
+ ``^``
+    Matches at the beginning of lines.  Unless the :const:`MULTILINE` flag has been
+    set, this will only match at the beginning of the string.  In :const:`MULTILINE`
+    mode, this also matches immediately after each newline within the string.
+ 
+    For example, if you wish to match the word ``From`` only at the beginning of a
+    line, the RE to use is ``^From``. ::
+ 
+       >>> print re.search('^From', 'From Here to Eternity')
+-      <re.MatchObject instance at 80c1520>
++      <_sre.SRE_Match object at 0x...>
+       >>> print re.search('^From', 'Reciting From Memory')
+       None
+ 
+    .. To match a literal \character{\^}, use \regexp{\e\^} or enclose it
+    .. inside a character class, as in \regexp{[{\e}\^]}.
+ 
+ ``$``
+    Matches at the end of a line, which is defined as either the end of the string,
+    or any location followed by a newline character.     ::
+ 
+       >>> print re.search('}$', '{block}')
+-      <re.MatchObject instance at 80adfa8>
++      <_sre.SRE_Match object at 0x...>
+       >>> print re.search('}$', '{block} ')
+       None
+       >>> print re.search('}$', '{block}\n')
+-      <re.MatchObject instance at 80adfa8>
++      <_sre.SRE_Match object at 0x...>
+ 
+    To match a literal ``'$'``, use ``\$`` or enclose it inside a character class,
+    as in  ``[$]``.
+ 
+ ``\A``
+    Matches only at the start of the string.  When not in :const:`MULTILINE` mode,
+    ``\A`` and ``^`` are effectively the same.  In :const:`MULTILINE` mode, they're
+    different: ``\A`` still matches only at the beginning of the string, but ``^``
+    may match at any location inside the string that follows a newline character.
+ 
+ ``\Z``
+    Matches only at the end of the string.
+ 
+ ``\b``
+    Word boundary.  This is a zero-width assertion that matches only at the
+    beginning or end of a word.  A word is defined as a sequence of alphanumeric
+    characters, so the end of a word is indicated by whitespace or a
+    non-alphanumeric character.
+ 
+    The following example matches ``class`` only when it's a complete word; it won't
+    match when it's contained inside another word. ::
+ 
+       >>> p = re.compile(r'\bclass\b')
+       >>> print p.search('no class at all')
+-      <re.MatchObject instance at 80c8f28>
++      <_sre.SRE_Match object at 0x...>
+       >>> print p.search('the declassified algorithm')
+       None
+       >>> print p.search('one subclass is')
+       None
+ 
+    There are two subtleties you should remember when using this special sequence.
+    First, this is the worst collision between Python's string literals and regular
+    expression sequences.  In Python's string literals, ``\b`` is the backspace
+    character, ASCII value 8.  If you're not using raw strings, then Python will
+    convert the ``\b`` to a backspace, and your RE won't match as you expect it to.
+    The following example looks the same as our previous RE, but omits the ``'r'``
+    in front of the RE string. ::
+ 
+       >>> p = re.compile('\bclass\b')
+       >>> print p.search('no class at all')
+       None
+       >>> print p.search('\b' + 'class' + '\b')
+-      <re.MatchObject instance at 80c3ee0>
++      <_sre.SRE_Match object at 0x...>
+ 
+    Second, inside a character class, where there's no use for this assertion,
+    ``\b`` represents the backspace character, for compatibility with Python's
+    string literals.
+ 
+ ``\B``
+    Another zero-width assertion, this is the opposite of ``\b``, only matching when
+    the current position is not at a word boundary.
+ 
+ 
+ Grouping
+ --------
+@@ -1306,25 +1308,25 @@
+ at every step.  This produces just the right result::
+ 
+    >>> print re.match('<.*?>', s).group()
+    <html>
+ 
+ (Note that parsing HTML or XML with regular expressions is painful.
+ Quick-and-dirty patterns will handle common cases, but HTML and XML have special
+ cases that will break the obvious regular expression; by the time you've written
+ a regular expression that handles all of the possible cases, the patterns will
+ be *very* complicated.  Use an HTML or XML parser module for such tasks.)
+ 
+ 
+-Not Using re.VERBOSE
++Using re.VERBOSE
+ --------------------
+ 
+ By now you've probably noticed that regular expressions are a very compact
+ notation, but they're not terribly readable.  REs of moderate complexity can
+ become lengthy collections of backslashes, parentheses, and metacharacters,
+ making them difficult to read and understand.
+ 
+ For such REs, specifying the ``re.VERBOSE`` flag when compiling the regular
+ expression can be helpful, because it allows you to format the regular
+ expression more clearly.
+ 
+ The ``re.VERBOSE`` flag has several effects.  Whitespace in the regular

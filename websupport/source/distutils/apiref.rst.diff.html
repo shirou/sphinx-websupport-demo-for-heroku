@@ -1,0 +1,765 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>distutils/apiref.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -138,29 +138,29 @@</span>
+    |               | been parsed (and the data stored in the     |
+    |               | :class:`Distribution` instance.)            |
+    +---------------+---------------------------------------------+
+    | *run*         | Stop after all commands have been run (the  |
+    |               | same as  if :func:`setup` had been called   |
+    |               | in the usual way). This is the default      |
+    |               | value.                                      |
+    +---------------+---------------------------------------------+
+ 
+ In addition, the :mod:`distutils.core` module exposed a number of  classes that
+ live elsewhere.
+ 
+<span class="gd">-* :class:`Extension` from :mod:`distutils.extension`</span>
+<span class="gd">-</span>
+<span class="gd">-* :class:`Command` from :mod:`distutils.cmd`</span>
+<span class="gd">-</span>
+<span class="gd">-* :class:`Distribution` from :mod:`distutils.dist`</span>
+<span class="gi">+* :class:`~distutils.extension.Extension` from :mod:`distutils.extension`</span>
+<span class="gi">+</span>
+<span class="gi">+* :class:`~distutils.cmd.Command` from :mod:`distutils.cmd`</span>
+<span class="gi">+</span>
+<span class="gi">+* :class:`~distutils.dist.Distribution` from :mod:`distutils.dist`</span>
+ 
+ A short description of each of these follows, but see the relevant module for
+ the full reference.
+ 
+ 
+ .. class:: Extension
+ 
+    The Extension class describes a single C or C++extension module in a setup
+    script. It accepts the following keyword arguments in its constructor
+ 
+    +------------------------+--------------------------------+---------------------------+
+    | argument name          | value                          | type                      |
+<span class="gu">@@ -838,41 +838,24 @@</span>
+ 
+ :mod:`distutils.emxccompiler` --- OS/2 EMX Compiler
+ ===================================================
+ 
+ .. module:: distutils.emxccompiler
+    :synopsis: OS/2 EMX Compiler support
+ 
+ 
+ This module provides the EMXCCompiler class, a subclass of
+ :class:`UnixCCompiler` that handles the EMX port of the GNU C compiler to OS/2.
+ 
+ 
+<span class="gd">-:mod:`distutils.mwerkscompiler` --- Metrowerks CodeWarrior support</span>
+<span class="gd">-==================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.mwerkscompiler</span>
+<span class="gd">-   :synopsis: Metrowerks CodeWarrior support</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-Contains :class:`MWerksCompiler`, an implementation of the abstract</span>
+<span class="gd">-:class:`CCompiler` class for MetroWerks CodeWarrior on the pre-Mac OS X</span>
+<span class="gd">-Macintosh. Needs work to support CW on Windows or Mac OS X.</span>
+<span class="gd">-</span>
+<span class="gd">-.. % \subsection{Utility modules}</span>
+<span class="gd">-.. %</span>
+<span class="gd">-.. % The following modules all provide general utility functions. They haven&#39;t</span>
+<span class="gd">-.. % all been documented yet.</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+ :mod:`distutils.archive_util` ---  Archiving utilities
+ ======================================================
+ 
+ .. module:: distutils.archive_util
+    :synopsis: Utility functions for creating archive files (tarballs, zip files, ...)
+ 
+ 
+ This module provides a few functions for creating archive files, such as
+ tarballs or zipfiles.
+ 
+ 
+ .. function:: make_archive(base_name, format[, root_dir=None, base_dir=None, verbose=0, dry_run=0])
+<span class="gu">@@ -896,25 +879,25 @@</span>
+    ``&#39;bzip2&#39;``, or ``None``.  Both :program:`tar` and the compression utility named
+    by *compress* must be on the  default program search path, so this is probably
+    Unix-specific.  The  output tar file will be named :file:`base_dir.tar`,
+    possibly plus the appropriate compression extension (:file:`.gz`, :file:`.bz2`
+    or :file:`.Z`).  Return the output filename.
+ 
+    .. XXX This should be replaced with calls to the :mod:`tarfile` module.
+ 
+ 
+ .. function:: make_zipfile(base_name, base_dir[, verbose=0, dry_run=0])
+ 
+    Create a zip file from all files in and under *base_dir*.  The output zip file
+<span class="gd">-   will be named *base_dir* + :file:`.zip`.  Uses either the  :mod:`zipfile` Python</span>
+<span class="gi">+   will be named *base_name* + :file:`.zip`.  Uses either the  :mod:`zipfile` Python</span>
+    module (if available) or the InfoZIP :file:`zip`  utility (if installed and
+    found on the default search path).  If neither  tool is available, raises
+    :exc:`DistutilsExecError`.   Returns the name of the output zip file.
+ 
+ 
+ :mod:`distutils.dep_util` --- Dependency checking
+ =================================================
+ 
+ .. module:: distutils.dep_util
+    :synopsis: Utility functions for simple dependency checking
+ 
+ 
+<span class="gu">@@ -1687,289 +1670,67 @@</span>
+ .. % todo
+ .. % \section{Distutils Commands}
+ .. %
+ .. % This part of Distutils implements the various Distutils commands, such
+ .. % as \code{build}, \code{install} \&amp;c. Each command is implemented as a
+ .. % separate module, with the command name as the name of the module.
+ 
+ 
+ :mod:`distutils.cmd` --- Abstract base class for Distutils commands
+ ===================================================================
+ 
+ .. module:: distutils.cmd
+<span class="gd">-   :synopsis: This module provides the abstract base class Command. This class is subclassed</span>
+<span class="gd">-              by the modules in the distutils.command  subpackage.</span>
+<span class="gi">+   :synopsis: This module provides the abstract base class Command. This class</span>
+<span class="gi">+              is subclassed by the modules in the distutils.command subpackage.</span>
+ 
+ 
+ This module supplies the abstract base class :class:`Command`.
+ 
+ 
+ .. class:: Command(dist)
+ 
+    Abstract base class for defining command classes, the &quot;worker bees&quot; of the
+    Distutils.  A useful analogy for command classes is to think of them as
+<span class="gd">-   subroutines with local variables called *options*.  The options are declared in</span>
+<span class="gd">-   :meth:`initialize_options` and defined (given their final values) in</span>
+<span class="gd">-   :meth:`finalize_options`, both of which must be defined by every command class.</span>
+<span class="gd">-   The distinction between the two is necessary because option values might come</span>
+<span class="gd">-   from the outside world (command line, config file, ...), and any options</span>
+<span class="gd">-   dependent on other options must be computed after these outside influences have</span>
+<span class="gd">-   been processed --- hence :meth:`finalize_options`.  The body of the subroutine,</span>
+<span class="gd">-   where it does all its work based on the values of its options, is the</span>
+<span class="gd">-   :meth:`run` method, which must also be implemented by every command class.</span>
+<span class="gd">-</span>
+<span class="gd">-   The class constructor takes a single argument *dist*, a  :class:`Distribution`</span>
+<span class="gi">+   subroutines with local variables called *options*.  The options are declared</span>
+<span class="gi">+   in :meth:`initialize_options` and defined (given their final values) in</span>
+<span class="gi">+   :meth:`finalize_options`, both of which must be defined by every command</span>
+<span class="gi">+   class.  The distinction between the two is necessary because option values</span>
+<span class="gi">+   might come from the outside world (command line, config file, ...), and any</span>
+<span class="gi">+   options dependent on other options must be computed after these outside</span>
+<span class="gi">+   influences have been processed --- hence :meth:`finalize_options`.  The body</span>
+<span class="gi">+   of the subroutine, where it does all its work based on the values of its</span>
+<span class="gi">+   options, is the :meth:`run` method, which must also be implemented by every</span>
+<span class="gi">+   command class.</span>
+<span class="gi">+</span>
+<span class="gi">+   The class constructor takes a single argument *dist*, a :class:`Distribution`</span>
+    instance.
+ 
+ 
+<span class="gd">-:mod:`distutils.command` --- Individual Distutils commands</span>
+<span class="gd">-==========================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command</span>
+<span class="gd">-   :synopsis: This subpackage contains one module for each standard Distutils command.</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % \subsubsection{Individual Distutils commands}</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.bdist` --- Build a binary installer</span>
+<span class="gd">-===========================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.bdist</span>
+<span class="gd">-   :synopsis: Build a binary installer for a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.bdist_packager` --- Abstract base class for packagers</span>
+<span class="gd">-=============================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.bdist_packager</span>
+<span class="gd">-   :synopsis: Abstract base class for packagers</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.bdist_dumb` --- Build a &quot;dumb&quot; installer</span>
+<span class="gd">-================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.bdist_dumb</span>
+<span class="gd">-   :synopsis: Build a &quot;dumb&quot; installer - a simple archive of files</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.bdist_msi` --- Build a Microsoft Installer binary package</span>
+<span class="gd">-=================================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.bdist_msi</span>
+<span class="gd">-   :synopsis: Build a binary distribution as a Windows MSI file</span>
+<span class="gd">-</span>
+<span class="gd">-.. class:: bdist_msi(Command)</span>
+<span class="gd">-</span>
+<span class="gd">-   Builds a `Windows Installer`_ (.msi) binary package.</span>
+<span class="gd">-</span>
+<span class="gd">-   .. _Windows Installer: http://msdn.microsoft.com/en-us/library/cc185688(VS.85).aspx</span>
+<span class="gd">-</span>
+<span class="gd">-   In most cases, the ``bdist_msi`` installer is a better choice than the</span>
+<span class="gd">-   ``bdist_wininst`` installer, because it provides better support for</span>
+<span class="gd">-   Win64 platforms, allows administrators to perform non-interactive</span>
+<span class="gd">-   installations, and allows installation through group policies.</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.bdist_rpm` --- Build a binary distribution as a Redhat RPM and SRPM</span>
+<span class="gd">-===========================================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.bdist_rpm</span>
+<span class="gd">-   :synopsis: Build a binary distribution as a Redhat RPM and SRPM</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.bdist_wininst` --- Build a Windows installer</span>
+<span class="gd">-====================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.bdist_wininst</span>
+<span class="gd">-   :synopsis: Build a Windows installer</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.sdist` --- Build a source distribution</span>
+<span class="gd">-==============================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.sdist</span>
+<span class="gd">-   :synopsis: Build a source distribution</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.build` --- Build all files of a package</span>
+<span class="gd">-===============================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.build</span>
+<span class="gd">-   :synopsis: Build all files of a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.build_clib` --- Build any C libraries in a package</span>
+<span class="gd">-==========================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.build_clib</span>
+<span class="gd">-   :synopsis: Build any C libraries in a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.build_ext` --- Build any extensions in a package</span>
+<span class="gd">-========================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.build_ext</span>
+<span class="gd">-   :synopsis: Build any extensions in a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.build_py` --- Build the .py/.pyc files of a package</span>
+<span class="gd">-===========================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.build_py</span>
+<span class="gd">-   :synopsis: Build the .py/.pyc files of a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.build_scripts` --- Build the scripts of a package</span>
+<span class="gd">-=========================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.build_scripts</span>
+<span class="gd">-   :synopsis: Build the scripts of a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.clean` --- Clean a package build area</span>
+<span class="gd">-=============================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.clean</span>
+<span class="gd">-   :synopsis: Clean a package build area</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.config` --- Perform package configuration</span>
+<span class="gd">-=================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.config</span>
+<span class="gd">-   :synopsis: Perform package configuration</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.install` --- Install a package</span>
+<span class="gd">-======================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.install</span>
+<span class="gd">-   :synopsis: Install a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.install_data` --- Install data files from a package</span>
+<span class="gd">-===========================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.install_data</span>
+<span class="gd">-   :synopsis: Install data files from a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.install_headers` --- Install C/C++ header files from a package</span>
+<span class="gd">-======================================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.install_headers</span>
+<span class="gd">-   :synopsis: Install C/C++ header files from a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.install_lib` --- Install library files from a package</span>
+<span class="gd">-=============================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.install_lib</span>
+<span class="gd">-   :synopsis: Install library files from a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.install_scripts` --- Install script files from a package</span>
+<span class="gd">-================================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.install_scripts</span>
+<span class="gd">-   :synopsis: Install script files from a package</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-:mod:`distutils.command.register` --- Register a module with the Python Package Index</span>
+<span class="gd">-=====================================================================================</span>
+<span class="gd">-</span>
+<span class="gd">-.. module:: distutils.command.register</span>
+<span class="gd">-   :synopsis: Register a module with the Python Package Index</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+<span class="gd">-The ``register`` command registers the package with the Python Package  Index.</span>
+<span class="gd">-This is described in more detail in :pep:`301`.</span>
+<span class="gd">-</span>
+<span class="gd">-.. % todo</span>
+<span class="gd">-</span>
+<span class="gd">-</span>
+ Creating a new Distutils command
+ ================================
+ 
+ This section outlines the steps to create a new Distutils command.
+ 
+ A new command lives in a module in the :mod:`distutils.command` package. There
+<span class="gd">-is a sample template in that directory called  :file:`command_template`. Copy</span>
+<span class="gi">+is a sample template in that directory called :file:`command_template`.  Copy</span>
+ this file to a new module with the same name as the new command you&#39;re
+<span class="gd">-implementing. This module should implement a class with the same name as the</span>
+<span class="gd">-module (and the command). So, for instance, to create the command</span>
+<span class="gi">+implementing.  This module should implement a class with the same name as the</span>
+<span class="gi">+module (and the command).  So, for instance, to create the command</span>
+ ``peel_banana`` (so that users can run ``setup.py peel_banana``), you&#39;d copy
+<span class="gd">-:file:`command_template`  to :file:`distutils/command/peel_banana.py`, then edit</span>
+<span class="gi">+:file:`command_template` to :file:`distutils/command/peel_banana.py`, then edit</span>
+ it so that it&#39;s implementing the class :class:`peel_banana`, a subclass of
+ :class:`distutils.cmd.Command`.
+ 
+ Subclasses of :class:`Command` must define the following methods.
+ 
+<span class="gd">-</span>
+ .. method:: Command.initialize_options()
+ 
+    Set default values for all the options that this command supports.  Note that
+    these defaults may be overridden by other commands, by the setup script, by
+    config files, or by the command-line.  Thus, this is not the place to code
+    dependencies between options; generally, :meth:`initialize_options`
+    implementations are just a bunch of ``self.foo = None`` assignments.
+ 
+ 
+ .. method:: Command.finalize_options()
+ 
+    Set final values for all the options that this command supports. This is
+<span class="gu">@@ -1979,25 +1740,265 @@</span>
+    set *foo* from *bar* as long as *foo* still has the same value it was
+    assigned in :meth:`initialize_options`.
+ 
+ 
+ .. method:: Command.run()
+ 
+    A command&#39;s raison d&#39;etre: carry out the action it exists to perform, controlled
+    by the options initialized in :meth:`initialize_options`, customized by other
+    commands, the setup script, the command-line, and config files, and finalized in
+    :meth:`finalize_options`.  All terminal output and filesystem interaction should
+    be done by :meth:`run`.
+ 
+<span class="gd">-*sub_commands* formalizes the notion of a &quot;family&quot; of commands, eg. ``install``</span>
+<span class="gd">-as the parent with sub-commands ``install_lib``, ``install_headers``, etc.  The</span>
+<span class="gd">-parent of a family of commands defines *sub_commands* as a class attribute; it&#39;s</span>
+<span class="gd">-a list of 2-tuples ``(command_name, predicate)``, with *command_name* a string</span>
+<span class="gd">-and *predicate* an unbound method, a string or None. *predicate* is a method of</span>
+<span class="gd">-the parent command that determines whether the corresponding command is</span>
+<span class="gd">-applicable in the current situation.  (Eg. we ``install_headers`` is only</span>
+<span class="gd">-applicable if we have any C header files to install.)  If *predicate* is None,</span>
+<span class="gd">-that command is always applicable.</span>
+<span class="gd">-</span>
+<span class="gd">-*sub_commands* is usually defined at the \*end\* of a class, because predicates</span>
+<span class="gd">-can be unbound methods, so they must already have been defined.  The canonical</span>
+<span class="gd">-example is the :command:`install` command.</span>
+<span class="gi">+</span>
+<span class="gi">+.. attribute:: Command.sub_commands</span>
+<span class="gi">+</span>
+<span class="gi">+   *sub_commands* formalizes the notion of a &quot;family&quot; of commands,</span>
+<span class="gi">+   e.g. ``install`` as the parent with sub-commands ``install_lib``,</span>
+<span class="gi">+   ``install_headers``, etc.  The parent of a family of commands defines</span>
+<span class="gi">+   *sub_commands* as a class attribute; it&#39;s a list of 2-tuples ``(command_name,</span>
+<span class="gi">+   predicate)``, with *command_name* a string and *predicate* a function, a</span>
+<span class="gi">+   string or ``None``.  *predicate* is a method of the parent command that</span>
+<span class="gi">+   determines whether the corresponding command is applicable in the current</span>
+<span class="gi">+   situation.  (E.g. ``install_headers`` is only applicable if we have any C</span>
+<span class="gi">+   header files to install.)  If *predicate* is ``None``, that command is always</span>
+<span class="gi">+   applicable.</span>
+<span class="gi">+</span>
+<span class="gi">+   *sub_commands* is usually defined at the *end* of a class, because</span>
+<span class="gi">+   predicates can be methods of the class, so they must already have been</span>
+<span class="gi">+   defined.  The canonical example is the :command:`install` command.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command` --- Individual Distutils commands</span>
+<span class="gi">+==========================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command</span>
+<span class="gi">+   :synopsis: This subpackage contains one module for each standard Distutils command.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % \subsubsection{Individual Distutils commands}</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.bdist` --- Build a binary installer</span>
+<span class="gi">+===========================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.bdist</span>
+<span class="gi">+   :synopsis: Build a binary installer for a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.bdist_packager` --- Abstract base class for packagers</span>
+<span class="gi">+=============================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.bdist_packager</span>
+<span class="gi">+   :synopsis: Abstract base class for packagers</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.bdist_dumb` --- Build a &quot;dumb&quot; installer</span>
+<span class="gi">+================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.bdist_dumb</span>
+<span class="gi">+   :synopsis: Build a &quot;dumb&quot; installer - a simple archive of files</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.bdist_msi` --- Build a Microsoft Installer binary package</span>
+<span class="gi">+=================================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.bdist_msi</span>
+<span class="gi">+   :synopsis: Build a binary distribution as a Windows MSI file</span>
+<span class="gi">+</span>
+<span class="gi">+.. class:: bdist_msi(Command)</span>
+<span class="gi">+</span>
+<span class="gi">+   Builds a `Windows Installer`_ (.msi) binary package.</span>
+<span class="gi">+</span>
+<span class="gi">+   .. _Windows Installer: http://msdn.microsoft.com/en-us/library/cc185688(VS.85).aspx</span>
+<span class="gi">+</span>
+<span class="gi">+   In most cases, the ``bdist_msi`` installer is a better choice than the</span>
+<span class="gi">+   ``bdist_wininst`` installer, because it provides better support for</span>
+<span class="gi">+   Win64 platforms, allows administrators to perform non-interactive</span>
+<span class="gi">+   installations, and allows installation through group policies.</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.bdist_rpm` --- Build a binary distribution as a Redhat RPM and SRPM</span>
+<span class="gi">+===========================================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.bdist_rpm</span>
+<span class="gi">+   :synopsis: Build a binary distribution as a Redhat RPM and SRPM</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.bdist_wininst` --- Build a Windows installer</span>
+<span class="gi">+====================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.bdist_wininst</span>
+<span class="gi">+   :synopsis: Build a Windows installer</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.sdist` --- Build a source distribution</span>
+<span class="gi">+==============================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.sdist</span>
+<span class="gi">+   :synopsis: Build a source distribution</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.build` --- Build all files of a package</span>
+<span class="gi">+===============================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.build</span>
+<span class="gi">+   :synopsis: Build all files of a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.build_clib` --- Build any C libraries in a package</span>
+<span class="gi">+==========================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.build_clib</span>
+<span class="gi">+   :synopsis: Build any C libraries in a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.build_ext` --- Build any extensions in a package</span>
+<span class="gi">+========================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.build_ext</span>
+<span class="gi">+   :synopsis: Build any extensions in a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.build_py` --- Build the .py/.pyc files of a package</span>
+<span class="gi">+===========================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.build_py</span>
+<span class="gi">+   :synopsis: Build the .py/.pyc files of a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.build_scripts` --- Build the scripts of a package</span>
+<span class="gi">+=========================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.build_scripts</span>
+<span class="gi">+   :synopsis: Build the scripts of a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.clean` --- Clean a package build area</span>
+<span class="gi">+=============================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.clean</span>
+<span class="gi">+   :synopsis: Clean a package build area</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.config` --- Perform package configuration</span>
+<span class="gi">+=================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.config</span>
+<span class="gi">+   :synopsis: Perform package configuration</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.install` --- Install a package</span>
+<span class="gi">+======================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.install</span>
+<span class="gi">+   :synopsis: Install a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.install_data` --- Install data files from a package</span>
+<span class="gi">+===========================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.install_data</span>
+<span class="gi">+   :synopsis: Install data files from a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.install_headers` --- Install C/C++ header files from a package</span>
+<span class="gi">+======================================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.install_headers</span>
+<span class="gi">+   :synopsis: Install C/C++ header files from a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.install_lib` --- Install library files from a package</span>
+<span class="gi">+=============================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.install_lib</span>
+<span class="gi">+   :synopsis: Install library files from a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.install_scripts` --- Install script files from a package</span>
+<span class="gi">+================================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.install_scripts</span>
+<span class="gi">+   :synopsis: Install script files from a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.register` --- Register a module with the Python Package Index</span>
+<span class="gi">+=====================================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.register</span>
+<span class="gi">+   :synopsis: Register a module with the Python Package Index</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+The ``register`` command registers the package with the Python Package  Index.</span>
+<span class="gi">+This is described in more detail in :pep:`301`.</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+:mod:`distutils.command.check` --- Check the meta-data of a package</span>
+<span class="gi">+===================================================================</span>
+<span class="gi">+</span>
+<span class="gi">+.. module:: distutils.command.check</span>
+<span class="gi">+   :synopsis: Check the metadata of a package</span>
+<span class="gi">+</span>
+<span class="gi">+</span>
+<span class="gi">+The ``check`` command performs some tests on the meta-data of a package.</span>
+<span class="gi">+For example, it verifies that all required meta-data are provided as</span>
+<span class="gi">+the arguments passed to the :func:`setup` function.</span>
+<span class="gi">+</span>
+<span class="gi">+.. % todo</span>
+</pre></div>
+
+</body>
+</html>

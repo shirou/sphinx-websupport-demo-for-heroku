@@ -1,0 +1,201 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>distutils/packageindex.rst</title>
+<style type="text/css">
+.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+</style>
+</head>
+<body>
+<div class="highlight"><pre><span class="gu">@@ -1,33 +1,33 @@</span>
+ .. _package-index:
+ 
+ **********************************
+ Registering with the Package Index
+ **********************************
+ 
+ The Python Package Index (PyPI) holds meta-data describing distributions
+ packaged with distutils. The distutils command :command:`register` is used to
+ submit your distribution&#39;s meta-data to the index. It is invoked as follows::
+ 
+<span class="gd">-   python setup.py register</span>
+<span class="gi">+    python setup.py register</span>
+ 
+ Distutils will respond with the following prompt::
+ 
+<span class="gd">-   running register</span>
+<span class="gd">-   We need to know who you are, so please choose either:</span>
+<span class="gd">-    1. use your existing login,</span>
+<span class="gd">-    2. register as a new user,</span>
+<span class="gd">-    3. have the server generate a new password for you (and email it to you), or</span>
+<span class="gd">-    4. quit</span>
+<span class="gd">-   Your selection [default 1]:</span>
+<span class="gi">+    running register</span>
+<span class="gi">+    We need to know who you are, so please choose either:</span>
+<span class="gi">+        1. use your existing login,</span>
+<span class="gi">+        2. register as a new user,</span>
+<span class="gi">+        3. have the server generate a new password for you (and email it to you), or</span>
+<span class="gi">+        4. quit</span>
+<span class="gi">+    Your selection [default 1]:</span>
+ 
+ Note: if your username and password are saved locally, you will not see this
+ menu.
+ 
+ If you have not registered with PyPI, then you will need to do so now. You
+ should choose option 2, and enter your details as required. Soon after
+ submitting your details, you will receive an email which will be used to confirm
+ your registration.
+ 
+ Once you are registered, you may choose option 1 from the menu. You will be
+ prompted for your PyPI username and password, and :command:`register` will then
+ submit your meta-data to the index.
+<span class="gu">@@ -46,48 +46,59 @@</span>
+ By default PyPI will list all versions of a given package. To hide certain
+ versions, the Hidden property should be set to yes. This must be edited through
+ the web interface.
+ 
+ 
+ .. _pypirc:
+ 
+ The .pypirc file
+ ================
+ 
+ The format of the :file:`.pypirc` file is as follows::
+ 
+<span class="gd">-   [distutils]</span>
+<span class="gd">-   index-servers =</span>
+<span class="gd">-     pypi</span>
+<span class="gi">+    [distutils]</span>
+<span class="gi">+    index-servers =</span>
+<span class="gi">+        pypi</span>
+ 
+<span class="gd">-   [pypi]</span>
+<span class="gd">-   repository: &lt;repository-url&gt;</span>
+<span class="gd">-   username: &lt;username&gt;</span>
+<span class="gd">-   password: &lt;password&gt;</span>
+<span class="gi">+    [pypi]</span>
+<span class="gi">+    repository: &lt;repository-url&gt;</span>
+<span class="gi">+    username: &lt;username&gt;</span>
+<span class="gi">+    password: &lt;password&gt;</span>
+ 
+<span class="gd">-*repository* can be omitted and defaults to ``http://www.python.org/pypi``.</span>
+<span class="gi">+The *distutils* section defines a *index-servers* variable that lists the</span>
+<span class="gi">+name of all sections describing a repository.</span>
+ 
+<span class="gd">-If you want to define another server a new section can be created::</span>
+<span class="gi">+Each section describing a repository defines three variables:</span>
+ 
+<span class="gd">-   [distutils]</span>
+<span class="gd">-   index-servers =</span>
+<span class="gd">-     pypi</span>
+<span class="gd">-     other</span>
+<span class="gi">+- *repository*, that defines the url of the PyPI server. Defaults to</span>
+<span class="gi">+    ``http://www.python.org/pypi``.</span>
+<span class="gi">+- *username*, which is the registered username on the PyPI server.</span>
+<span class="gi">+- *password*, that will be used to authenticate. If omitted the user</span>
+<span class="gi">+    will be prompt to type it when needed.</span>
+ 
+<span class="gd">-   [pypi]</span>
+<span class="gd">-   repository: &lt;repository-url&gt;</span>
+<span class="gd">-   username: &lt;username&gt;</span>
+<span class="gd">-   password: &lt;password&gt;</span>
+<span class="gi">+If you want to define another server a new section can be created and</span>
+<span class="gi">+listed in the *index-servers* variable::</span>
+ 
+<span class="gd">-   [other]</span>
+<span class="gd">-   repository: http://example.com/pypi</span>
+<span class="gd">-   username: &lt;username&gt;</span>
+<span class="gd">-   password: &lt;password&gt;</span>
+<span class="gi">+    [distutils]</span>
+<span class="gi">+    index-servers =</span>
+<span class="gi">+        pypi</span>
+<span class="gi">+        other</span>
+ 
+<span class="gd">-The command can then be called with the -r option::</span>
+<span class="gi">+    [pypi]</span>
+<span class="gi">+    repository: &lt;repository-url&gt;</span>
+<span class="gi">+    username: &lt;username&gt;</span>
+<span class="gi">+    password: &lt;password&gt;</span>
+ 
+<span class="gd">-   python setup.py register -r http://example.com/pypi</span>
+<span class="gi">+    [other]</span>
+<span class="gi">+    repository: http://example.com/pypi</span>
+<span class="gi">+    username: &lt;username&gt;</span>
+<span class="gi">+    password: &lt;password&gt;</span>
+ 
+<span class="gd">-Or even with the section name::</span>
+<span class="gi">+:command:`register` can then be called with the -r option to point the</span>
+<span class="gi">+repository to work with::</span>
+ 
+<span class="gd">-   python setup.py register -r other</span>
+<span class="gi">+    python setup.py register -r http://example.com/pypi</span>
+ 
+<span class="gi">+For convenience, the name of the section that describes the repository</span>
+<span class="gi">+may also be used::</span>
+<span class="gi">+</span>
+<span class="gi">+    python setup.py register -r other</span>
+</pre></div>
+
+</body>
+</html>

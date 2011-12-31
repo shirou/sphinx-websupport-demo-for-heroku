@@ -1,0 +1,29 @@
+@@ -113,26 +113,26 @@
+ /.MacOSX/environment.plist`. See Apple's Technical Document QA1067 for details.
+ 
+ For more information on installation Python packages in MacPython, see section
+ :ref:`mac-package-manager`.
+ 
+ 
+ .. _ide:
+ 
+ The IDE
+ =======
+ 
+ MacPython ships with the standard IDLE development environment. A good
+-introduction to using IDLE can be found at http://hkn.eecs.berkeley.edu/
+-dyoo/python/idle_intro/index.html.
++introduction to using IDLE can be found at
++http://hkn.eecs.berkeley.edu/~dyoo/python/idle_intro/index.html.
+ 
+ 
+ .. _mac-package-manager:
+ 
+ Installing Additional Python Packages
+ =====================================
+ 
+ There are several methods to install additional Python packages:
+ 
+ * http://pythonmac.org/packages/ contains selected compiled packages for Python
+   2.5, 2.4, and 2.3.
+ 
