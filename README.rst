@@ -12,7 +12,8 @@ can not
 - voting
 - comment
 
-This repository includes (a part of) python-doc-ja which can not be searched original Sphinx javascript search. By using this web support, you can search with any keyword with few seconds.
+This repository includes (a part of) python-doc-ja which can not be
+searched by original Sphinx javascript search. By using this web support, you can search with any keyword with few seconds.
 
 
 On th local environment
@@ -25,9 +26,10 @@ On th local environment
   % virtualenv --no-site-packages .
   % bin/activate
   % pip install -r requirements.txt
+  (puts your rst files to websupport/sources/)
   % python websupport/build.py
   % python websupport/__init__.py
-  (access to http://127.0.0.1:5000/contents via your web browser)	
+  (access to http://127.0.0.1:5000/contents via your web browser)
 
 
 On the Heroku
